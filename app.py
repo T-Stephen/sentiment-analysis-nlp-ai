@@ -522,6 +522,10 @@ def export_telemetry(format_type: str):
         )
     return JSONResponse(content=data)
 
+@app.get("/favicon.ico", include_in_schema=False)
+def favicon():
+    return Response(content=b"", status_code=204)
+
 # --- FLAGSHIP LUXURY UI: OBSIDIAN INTELLIGENCE TERMINAL ---
 @app.get("/", response_class=HTMLResponse)
 def serve_dashboard():
@@ -531,6 +535,7 @@ def serve_dashboard():
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SENTINEL AI — Executive Sentiment Intelligence Platform</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -2794,8 +2799,16 @@ def serve_dashboard():
                 return;
             }
 
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
+            // Zero-dimension defensive guard: prevent division by zero, NaN coordinates, and layout thrashing
+            const cWidth = canvas.offsetWidth;
+            const cHeight = canvas.offsetHeight;
+            if (!cWidth || !cHeight || cWidth <= 0 || cHeight <= 0) {
+                animFrameId = requestAnimationFrame(drawHarmonicWave);
+                return;
+            }
+
+            canvas.width = cWidth;
+            canvas.height = cHeight;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             const width = canvas.width;
@@ -2865,6 +2878,7 @@ def serve_dashboard():
 
         // URL Hash Navigation & Tab Synchronization
         const VALID_VIEWS = ['analyze', 'consensus', 'benchmarks', 'telemetry', 'developer'];
+        let isInternalHashUpdate = false;
 
         function switchTab(viewId, updateHash = true) {
             if (!VALID_VIEWS.includes(viewId)) {
@@ -2888,6 +2902,7 @@ def serve_dashboard():
             }
 
             if (updateHash && window.location.hash !== '#' + viewId) {
+                isInternalHashUpdate = true;
                 window.location.hash = viewId;
             }
 
@@ -2902,6 +2917,10 @@ def serve_dashboard():
         }
 
         function handleHashRoute() {
+            if (isInternalHashUpdate) {
+                isInternalHashUpdate = false;
+                return;
+            }
             const hash = window.location.hash.replace(/^#/, '');
             if (VALID_VIEWS.includes(hash)) {
                 switchTab(hash, false);
@@ -3531,3 +3550,7 @@ def serve_dashboard():
 </body>
 </html>
 """
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
