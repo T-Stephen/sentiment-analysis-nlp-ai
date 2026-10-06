@@ -538,30 +538,27 @@ def serve_dashboard():
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             color-scheme: dark;
+            --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            --font-mono: 'Geist Mono', 'JetBrains Mono', 'SF Mono', monospace;
 
-            /* Surfaces: Precision Intelligence Console */
-            --surface-void: #07080B;
-            --surface-chassis: #0C0E14;
-            --surface-plate: #12151D;
-            --surface-well: #090B10;
-            --surface-hover: #171B24;
+            /* Monolithic Obsidian Surfaces */
+            --bg-void: #07080B;
+            --bg-surface: #0C0E14;
+            --bg-panel: #12151D;
+            --bg-elevated: #181B24;
+            --bg-well: #090B10;
 
-            /* Hairlines & Borders */
-            --border-subtle: rgba(255, 255, 255, 0.06);
-            --border-hairline: rgba(255, 255, 255, 0.10);
-            --border-focus: #3B82F6;
+            /* Borders & Highlights */
+            --border-hairline: rgba(255, 255, 255, 0.07);
+            --border-subtle: rgba(255, 255, 255, 0.12);
+            --border-focus: #38BDF8;
+            --highlight-inset: inset 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.02);
 
-            /* Typography */
-            --text-primary: #F8FAFC;
-            --text-body: #CBD5E1;
-            --text-muted: #8090A5;
-            --text-disabled: #475569;
-
-            /* Semantic Data Signals */
+            /* Signal Colors */
             --signal-positive: #10B981;
             --signal-positive-bg: rgba(16, 185, 129, 0.10);
             --signal-positive-border: rgba(16, 185, 129, 0.25);
@@ -574,1522 +571,1299 @@ def serve_dashboard():
             --signal-neutral-bg: rgba(148, 163, 184, 0.10);
             --signal-neutral-border: rgba(148, 163, 184, 0.25);
 
-            --signal-divergence: #F59E0B;
-            --signal-divergence-bg: rgba(245, 158, 11, 0.12);
-            --signal-divergence-border: rgba(245, 158, 11, 0.30);
+            --signal-warning: #F59E0B;
+            --signal-warning-bg: rgba(245, 158, 11, 0.10);
+            --signal-warning-border: rgba(245, 158, 11, 0.25);
 
-            /* Primary Action */
-            --action-primary: #2563EB;
-            --action-primary-hover: #1D4ED8;
-            --action-primary-active: #1E40AF;
-            --action-primary-text: #FFFFFF;
+            --accent-tech: #38BDF8;
+            --accent-tech-bg: rgba(56, 189, 248, 0.10);
+            --accent-tech-border: rgba(56, 189, 248, 0.25);
 
-            /* Geometry System */
-            --radius-outer: 12px;
-            --radius-inner: 8px;
-            --radius-control: 6px;
-            --radius-pill: 9999px;
+            /* Typography Colors */
+            --text-primary: #F8FAFC;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
 
-            /* Typography Stacks */
-            --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            --font-mono: 'Geist Mono', 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+            /* Radii (Hardware Architecture) */
+            --radius-chassis: 16px;
+            --radius-core: 12px;
+            --radius-control: 8px;
+            --radius-badge: 6px;
+
+            /* Restrained Transitions */
+            --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-normal: 220ms cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
-            background-color: var(--surface-void);
-            color: var(--text-body);
             font-family: var(--font-sans);
-            font-size: 13px;
+            background-color: var(--bg-void);
+            color: var(--text-primary);
             line-height: 1.5;
-            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100dvh;
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
         }
 
-        /* Subtle Technical Ambient Layer */
-        .ambient-layer {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(circle at 20% 12%, rgba(37, 99, 235, 0.03) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 88%, rgba(16, 185, 129, 0.02) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
+        /* FOCUS OUTLINES (ACCESSIBILITY) */
+        a:focus-visible, button:focus-visible, textarea:focus-visible, select:focus-visible, input:focus-visible {
+            outline: 2px solid var(--border-focus);
+            outline-offset: 2px;
         }
 
-        /* SYSTEM HEADER */
-        header {
-            padding: 14px 36px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--surface-chassis);
-            border-bottom: 1px solid var(--border-hairline);
+        /* MASTHEAD APP BAR */
+        .masthead {
             position: sticky;
             top: 0;
             z-index: 100;
-            gap: 20px;
-        }
-
-        .brand-block {
+            background: rgba(12, 14, 20, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-hairline);
+            height: 54px;
             display: flex;
             align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 0 24px;
         }
 
-        .brand-identity {
+        .masthead-left {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
         }
 
-        .brand-name {
-            font-family: var(--font-sans);
-            font-size: 15px;
+        .brand-monogram {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: var(--radius-badge);
+            background: var(--bg-panel);
+            border: 1px solid var(--border-subtle);
+            font-size: 13px;
+        }
+
+        .brand-title {
+            font-size: 14px;
             font-weight: 700;
-            letter-spacing: -0.02em;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
             color: var(--text-primary);
-            text-transform: uppercase;
-            line-height: 1.2;
-        }
-
-        .brand-subtitle {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            color: var(--text-muted);
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-        }
-
-        /* OPERATIONAL METADATA STRIP */
-        .system-meta-strip {
             display: flex;
             align-items: center;
             gap: 8px;
-            border-left: 1px solid var(--border-subtle);
-            padding-left: 18px;
-            flex-wrap: wrap;
         }
 
-        .meta-pill {
+        .badge-version {
             font-family: var(--font-mono);
-            font-size: 10px;
-            color: var(--text-muted);
-            background: var(--surface-plate);
-            border: 1px solid var(--border-subtle);
-            padding: 3px 8px;
-            border-radius: var(--radius-control);
+            font-size: 10.5px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: var(--radius-badge);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-hairline);
+            color: var(--text-secondary);
+            letter-spacing: 0;
+            text-transform: none;
+        }
+
+        .badge-status {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            white-space: nowrap;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--signal-positive);
+            padding: 2px 8px;
+            background: var(--signal-positive-bg);
+            border: 1px solid var(--signal-positive-border);
+            border-radius: var(--radius-badge);
         }
 
         .status-dot {
-            display: inline-block;
             width: 6px;
             height: 6px;
             border-radius: 50%;
-            background-color: var(--signal-positive);
-            box-shadow: 0 0 5px rgba(16, 185, 129, 0.5);
+            background: var(--signal-positive);
         }
 
-        /* NAV TABS */
-        .nav-tabs {
+        /* NAVIGATION SEGMENTED DOCK */
+        .nav-dock {
             display: flex;
+            align-items: center;
             gap: 4px;
-            background: var(--surface-well);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-hairline);
             padding: 3px;
-            border-radius: var(--radius-inner);
-            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-control);
+            overflow-x: auto;
+            max-width: 100%;
         }
 
         .tab-btn {
             background: transparent;
-            border: 1px solid transparent;
+            border: none;
+            color: var(--text-secondary);
             font-family: var(--font-sans);
-            font-size: 12px;
+            font-size: 12.5px;
             font-weight: 500;
-            color: var(--text-muted);
+            padding: 5px 14px;
+            border-radius: 6px;
             cursor: pointer;
-            padding: 6px 14px;
-            border-radius: var(--radius-control);
-            transition: all 0.15s ease;
-            text-decoration: none;
-            min-height: 32px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            transition: all var(--transition-fast);
             white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .tab-btn:hover {
             color: var(--text-primary);
-            background: var(--surface-hover);
+            background: rgba(255, 255, 255, 0.04);
         }
 
         .tab-btn.active {
-            background: var(--surface-plate);
             color: var(--text-primary);
-            border-color: var(--border-hairline);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+            background: var(--bg-elevated);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            font-weight: 600;
         }
 
         /* MAIN CONTAINER */
-        main {
-            flex: 1;
-            max-width: 1360px;
+        .app-shell {
+            max-width: 1540px;
             width: 100%;
-            margin: 20px auto;
-            padding: 0 28px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .view-panel { display: none; }
-        .view-panel.active { display: block; }
-
-        /* IN-APPLICATION NOTIFICATION BANNER */
-        .app-notification {
-            display: none;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 12px 18px;
-            border-radius: var(--radius-inner);
-            margin-bottom: 20px;
-            font-size: 12px;
-            background: var(--surface-plate);
-            border: 1px solid var(--border-hairline);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-            animation: slideDown 0.2s ease-out;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .notification-error {
-            background: var(--signal-negative-bg);
-            border-color: var(--signal-negative-border);
-            color: var(--text-primary);
-        }
-
-        .notification-warning {
-            background: var(--signal-divergence-bg);
-            border-color: var(--signal-divergence-border);
-            color: var(--text-primary);
-        }
-
-        .notification-icon {
-            font-family: var(--font-mono);
-            font-weight: 700;
-            font-size: 14px;
-            line-height: 1.2;
-            color: var(--signal-negative);
-        }
-
-        .notification-warning .notification-icon {
-            color: var(--signal-divergence);
-        }
-
-        .notification-body {
+            margin: 0 auto;
+            padding: 20px 24px 48px;
             flex: 1;
-        }
-
-        .notification-title {
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 2px;
-        }
-
-        .notification-msg {
-            color: var(--text-body);
-        }
-
-        .notification-close {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 16px;
-            line-height: 1;
-            padding: 0 4px;
-        }
-
-        .notification-close:hover {
-            color: var(--text-primary);
-        }
-
-        /* RESPONSIBLE AI DOMAIN ADVISORY BANNER */
-        .domain-notice {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--surface-chassis);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-inner);
-            padding: 12px 18px;
-            margin-bottom: 20px;
-            font-size: 12px;
+            flex-direction: column;
             gap: 16px;
         }
 
-        .domain-notice-main {
+        /* DOMAIN & PRIVACY ADVISORY BANNERS */
+        .advisory-strip {
             display: flex;
-            align-items: baseline;
-            gap: 10px;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-core);
+            padding: 10px 16px;
+            font-size: 12px;
+            gap: 16px;
             flex-wrap: wrap;
         }
 
-        .domain-tag {
+        .advisory-domain {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+        }
+
+        .advisory-domain-tag {
             font-family: var(--font-mono);
+            font-size: 10.5px;
             font-weight: 600;
-            font-size: 11px;
-            color: var(--signal-neutral);
-            letter-spacing: 0.08em;
             text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-tech);
+            background: var(--accent-tech-bg);
+            border: 1px solid var(--accent-tech-border);
+            padding: 2px 7px;
+            border-radius: var(--radius-badge);
             white-space: nowrap;
         }
 
-        .domain-desc {
-            color: var(--text-muted);
-            line-height: 1.45;
-        }
-
-        .domain-notice-meta {
+        .advisory-privacy {
             font-family: var(--font-mono);
             font-size: 11px;
             color: var(--text-muted);
-            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .advisory-privacy strong {
+            color: var(--text-secondary);
+        }
+
+        /* VIEW PANELS */
+        .view-panel {
+            display: none;
+            width: 100%;
+        }
+
+        .view-panel.active {
+            display: block;
+        }
+
+        /* DOUBLE-BEZEL HARDWARE CARDS */
+        .chassis-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-chassis);
+            padding: 12px;
+            box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.65), 0 4px 12px -2px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .core-well {
+            background: var(--bg-panel);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            box-shadow: var(--highlight-inset);
+            border-radius: var(--radius-core);
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }
 
         /* GRID LAYOUTS */
         .grid-2col {
             display: grid;
-            grid-template-columns: 1.15fr 0.85fr;
-            gap: 20px;
+            grid-template-columns: 58% 42%;
+            gap: 16px;
             align-items: start;
         }
 
-        /* DOUBLE-BEZEL CARD ARCHITECTURE */
-        .bezel-card {
-            background: var(--surface-plate);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-outer);
-            padding: 1px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+        .grid-3col {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
         }
 
-        .bezel-core {
-            background: var(--surface-chassis);
-            border: 1px solid var(--border-hairline);
-            border-radius: var(--radius-inner);
-            padding: 22px;
-        }
-
-        .card-header-row {
+        /* CARD HEADERS */
+        .panel-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 14px;
+            justify-content: space-between;
+            margin-bottom: 2px;
         }
 
-        .card-title {
-            font-family: var(--font-mono);
-            font-size: 11px;
+        .panel-title {
+            font-size: 12px;
             font-weight: 600;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            color: var(--text-muted);
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        /* SAMPLE PRESETS STRIP */
+        /* PRESET STRIP */
         .preset-strip {
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 12px;
             flex-wrap: wrap;
         }
 
-        .preset-strip-label {
+        .preset-label {
             font-family: var(--font-mono);
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
+            font-size: 10.5px;
             color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
         }
 
         .preset-chip {
-            background: var(--surface-well);
+            background: var(--bg-surface);
             border: 1px solid var(--border-hairline);
-            color: var(--text-body);
+            color: var(--text-secondary);
             font-family: var(--font-sans);
-            font-size: 11px;
+            font-size: 11.5px;
             font-weight: 500;
-            padding: 5px 12px;
-            border-radius: var(--radius-control);
+            padding: 4px 10px;
+            border-radius: var(--radius-badge);
             cursor: pointer;
-            transition: all 0.15s ease;
-            min-height: 28px;
-            display: inline-flex;
-            align-items: center;
+            transition: all var(--transition-fast);
         }
 
         .preset-chip:hover {
             color: var(--text-primary);
-            border-color: var(--border-focus);
-            background: var(--surface-hover);
+            border-color: var(--border-subtle);
+            background: var(--bg-elevated);
         }
 
-        .preset-chip:active {
-            background: var(--surface-plate);
+        /* INPUT AREA */
+        .input-dock {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        /* INPUT AREA & TOOLBAR */
-        .nlp-textarea {
+        .text-input {
             width: 100%;
-            height: 135px;
-            background: var(--surface-well);
+            min-height: 160px;
+            background: var(--bg-well);
             border: 1px solid var(--border-hairline);
             border-radius: var(--radius-control);
-            padding: 14px;
+            padding: 14px 16px;
+            color: var(--text-primary);
             font-family: var(--font-sans);
             font-size: 14px;
-            line-height: 1.5;
-            color: var(--text-primary);
+            line-height: 1.6;
             resize: vertical;
             outline: none;
-            transition: border-color 0.15s ease;
+            transition: border-color var(--transition-fast);
         }
 
-        .nlp-textarea:focus {
+        .text-input:focus {
             border-color: var(--border-focus);
+            box-shadow: 0 0 0 1px var(--border-focus);
         }
 
-        .nlp-textarea::placeholder {
-            color: var(--text-disabled);
-        }
-
-        .nlp-toolbar {
+        .input-meta-bar {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-top: 6px;
+            justify-content: space-between;
             font-family: var(--font-mono);
             font-size: 11px;
             color: var(--text-muted);
         }
 
-        .nlp-metrics {
+        .input-counters {
             display: flex;
-            gap: 10px;
             align-items: center;
+            gap: 12px;
         }
 
-        .nlp-actions {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .btn-clear {
-            background: transparent;
+        .btn-link {
+            background: none;
             border: none;
             color: var(--text-muted);
             font-family: var(--font-mono);
             font-size: 11px;
             cursor: pointer;
-            padding: 4px 8px;
-            border-radius: var(--radius-control);
-            transition: all 0.15s ease;
-            min-height: 26px;
-            display: inline-flex;
-            align-items: center;
+            text-decoration: underline;
         }
 
-        .btn-clear:hover {
-            color: var(--signal-negative);
-            background: var(--signal-negative-bg);
+        .btn-link:hover {
+            color: var(--text-primary);
         }
 
-        .key-hint {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            color: var(--text-muted);
-            background: var(--surface-well);
-            border: 1px solid var(--border-subtle);
-            padding: 3px 8px;
-            border-radius: 4px;
-            letter-spacing: 0.02em;
-        }
-
-        /* CONTROLS & ENGINE SELECTOR */
-        .controls-bar {
+        /* CONTROLS ROW */
+        .controls-row {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-top: 14px;
+            justify-content: space-between;
             gap: 12px;
             flex-wrap: wrap;
         }
 
-        .engine-select {
-            background: var(--surface-well);
-            border: 1px solid var(--border-hairline);
-            padding: 8px 12px;
-            font-size: 12px;
-            border-radius: var(--radius-control);
-            outline: none;
-            color: var(--text-primary);
-            font-family: var(--font-mono);
-            cursor: pointer;
-            flex: 1;
-            min-width: 280px;
-            min-height: 38px;
-            transition: border-color 0.15s ease;
+        .engine-picker {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .engine-select:focus {
+        .picker-label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .select-engine {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-hairline);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            font-size: 12.5px;
+            font-weight: 500;
+            padding: 7px 12px;
+            border-radius: var(--radius-control);
+            outline: none;
+            cursor: pointer;
+            transition: border-color var(--transition-fast);
+        }
+
+        .select-engine:focus {
             border-color: var(--border-focus);
         }
 
-        .engine-select option {
-            background: var(--surface-plate);
-            color: var(--text-primary);
-            font-family: var(--font-mono);
-        }
-
+        /* TACTILE PRIMARY BUTTON */
         .btn-primary {
-            background: var(--action-primary);
-            color: var(--action-primary-text);
-            border: none;
-            padding: 9px 20px;
-            font-family: var(--font-sans);
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.02em;
-            border-radius: var(--radius-control);
-            cursor: pointer;
-            transition: background 0.15s ease, opacity 0.15s ease;
-            white-space: nowrap;
-            min-height: 38px;
             display: inline-flex;
             align-items: center;
-            justify-content: center;
+            gap: 10px;
+            background: #F8FAFC;
+            color: #07080B;
+            border: none;
+            font-family: var(--font-sans);
+            font-size: 12.5px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 7px 16px 7px 18px;
+            border-radius: var(--radius-control);
+            cursor: pointer;
+            transition: all var(--transition-fast);
         }
 
         .btn-primary:hover:not(:disabled) {
-            background: var(--action-primary-hover);
+            background: #FFFFFF;
+            transform: translateY(-1px);
         }
 
         .btn-primary:active:not(:disabled) {
-            background: var(--action-primary-active);
+            transform: scale(0.98);
         }
 
-        .btn-primary:disabled, .btn-outline:disabled {
-            opacity: 0.6;
+        .btn-primary:disabled {
+            opacity: 0.5;
             cursor: not-allowed;
         }
 
-        .btn-outline {
-            background: transparent;
-            color: var(--text-body);
-            border: 1px solid var(--border-hairline);
-            padding: 6px 14px;
-            font-size: 11px;
-            font-family: var(--font-mono);
-            border-radius: var(--radius-control);
-            cursor: pointer;
-            transition: all 0.15s ease;
-            min-height: 32px;
+        .btn-icon-pill {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            white-space: nowrap;
-        }
-
-        .btn-outline:hover:not(:disabled) {
-            color: var(--text-primary);
-            border-color: var(--border-focus);
-            background: var(--surface-hover);
-        }
-
-        /* SIGNAL VISUALIZATION SEMANTICS */
-        .signal-header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 14px;
-            margin-bottom: 4px;
-        }
-
-        .signal-state-indicator {
-            font-family: var(--font-mono);
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: rgba(7, 8, 11, 0.12);
             font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            color: var(--signal-neutral);
+        }
+
+        /* POST-INFERENCE METADATA STRIP */
+        .meta-strip {
             display: flex;
             align-items: center;
-            gap: 6px;
-        }
-
-        .signal-state-indicator.state-pos {
-            color: var(--signal-positive);
-        }
-
-        .signal-state-indicator.state-neg {
-            color: var(--signal-negative);
-        }
-
-        .signal-state-indicator.state-proc {
-            color: var(--border-focus);
-        }
-
-        #neuralCanvas {
-            width: 100%;
-            height: 52px;
-            background: transparent;
+            gap: 16px;
+            background: var(--bg-well);
+            border: 1px solid var(--border-hairline);
             border-radius: var(--radius-control);
-            border: 1px solid var(--border-subtle);
+            padding: 8px 14px;
+            font-family: var(--font-mono);
+            font-size: 11.5px;
+            color: var(--text-secondary);
+            flex-wrap: wrap;
         }
 
-        .signal-caption {
-            font-family: var(--font-sans);
-            font-size: 10px;
-            line-height: 1.4;
-            color: var(--text-muted);
-            margin-top: 6px;
-            padding: 4px 6px;
-            border-left: 2px solid var(--border-hairline);
+        .meta-strip-item strong {
+            color: var(--text-primary);
         }
 
-        /* METRIC HERO DISPLAY */
-        .metric-hero {
+        /* XAI EXPLAINABILITY PANEL */
+        .xai-box {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            border-top: 1px solid var(--border-hairline);
+            padding-top: 16px;
+        }
+
+        .xai-header {
             display: flex;
             align-items: baseline;
             justify-content: space-between;
-            padding-bottom: 14px;
-            border-bottom: 1px solid var(--border-subtle);
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
-        .metric-primary-block {
+        .xai-formula-tag {
+            font-family: var(--font-mono);
+            font-size: 10.5px;
+            color: var(--accent-tech);
+            background: var(--accent-tech-bg);
+            border: 1px solid var(--accent-tech-border);
+            padding: 2px 7px;
+            border-radius: var(--radius-badge);
+        }
+
+        .xai-disclaimer {
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .xai-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .driver-subpanel {
+            background: var(--bg-well);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-control);
+            padding: 12px;
             display: flex;
             flex-direction: column;
+            gap: 8px;
         }
 
-        .metric-primary-label {
+        .driver-col-title {
             font-family: var(--font-mono);
-            font-size: 10px;
+            font-size: 10.5px;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.06em;
-            color: var(--text-muted);
-            margin-bottom: 2px;
-        }
-
-        .polarity-score {
-            font-family: var(--font-sans);
-            font-size: 38px;
-            font-weight: 600;
-            color: var(--text-primary);
-            letter-spacing: -0.03em;
-            font-variant-numeric: tabular-nums;
-            line-height: 1.1;
-        }
-
-        .polarity-score-caption {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
-
-        .badge-sentiment {
-            font-family: var(--font-mono);
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            padding: 5px 12px;
-            border-radius: var(--radius-pill);
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 6px;
-        }
-
-        .badge-pos {
-            background: var(--signal-positive-bg);
-            color: var(--signal-positive);
-            border: 1px solid var(--signal-positive-border);
-        }
-
-        .badge-neg {
-            background: var(--signal-negative-bg);
-            color: var(--signal-negative);
-            border: 1px solid var(--signal-negative-border);
-        }
-
-        .badge-neu {
-            background: var(--signal-neutral-bg);
-            color: var(--signal-neutral);
-            border: 1px solid var(--signal-neutral-border);
-        }
-
-        /* BIPOLAR POLARITY CONTINUUM GAUGE */
-        .polarity-gauge-container {
-            margin-top: 14px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid var(--border-subtle);
-        }
-
-        .polarity-gauge-header {
-            display: flex;
             justify-content: space-between;
-            font-family: var(--font-mono);
-            font-size: 10px;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
         }
 
-        .polarity-track {
-            position: relative;
-            width: 100%;
-            height: 8px;
-            background: var(--surface-well);
-            border-radius: var(--radius-pill);
-            border: 1px solid var(--border-hairline);
-            overflow: visible;
-        }
-
-        .polarity-neutral-band {
-            position: absolute;
-            left: 45%;
-            width: 10%;
-            top: 0;
-            bottom: 0;
-            background: rgba(148, 163, 184, 0.20);
-            border-left: 1px dashed rgba(148, 163, 184, 0.35);
-            border-right: 1px dashed rgba(148, 163, 184, 0.35);
-        }
-
-        .polarity-center-line {
-            position: absolute;
-            left: 50%;
-            top: -2px;
-            bottom: -2px;
-            width: 2px;
-            background: var(--text-muted);
-            transform: translateX(-50%);
-        }
-
-        .polarity-indicator {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--signal-neutral);
-            border: 2px solid var(--surface-chassis);
-            box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
-            transition: left 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.2s ease;
-            z-index: 2;
-        }
-
-        .indicator-pos {
-            background: var(--signal-positive);
-            box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
-        }
-
-        .indicator-neg {
-            background: var(--signal-negative);
-            box-shadow: 0 0 8px rgba(244, 63, 94, 0.6);
-        }
-
-        .indicator-neu {
-            background: var(--signal-neutral);
-            box-shadow: 0 0 8px rgba(148, 163, 184, 0.4);
-        }
-
-        .polarity-ticks {
-            display: flex;
-            justify-content: space-between;
-            font-family: var(--font-mono);
-            font-size: 9px;
-            color: var(--text-disabled);
-            margin-top: 4px;
-        }
-
-        .telemetry-meta-row {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-top: 14px;
-            font-size: 12px;
-        }
-
-        .telemetry-meta-label {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 2px;
-            letter-spacing: 0.04em;
-        }
-
-        .telemetry-meta-val {
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        /* PROPORTIONAL XAI ATTRIBUTION DRIVER BARS */
-        .attribution-group {
-            margin-top: 12px;
-        }
-
-        .attribution-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 6px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .attribution-header-pos {
-            color: var(--signal-positive);
-        }
-
-        .attribution-header-neg {
-            color: var(--signal-negative);
-        }
-
-        .attribution-bars-container {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
+        .driver-col-title.pos { color: var(--signal-positive); }
+        .driver-col-title.neg { color: var(--signal-negative); }
 
         .driver-bar-row {
             display: grid;
-            grid-template-columns: 110px 1fr 72px;
+            grid-template-columns: 85px 1fr 65px;
             align-items: center;
-            gap: 10px;
-            background: var(--surface-well);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-control);
-            padding: 6px 10px;
-            transition: border-color 0.15s ease, background-color 0.15s ease;
-            cursor: default;
-        }
-
-        .driver-bar-row:hover {
-            border-color: var(--border-hairline);
-            background: var(--surface-hover);
+            gap: 8px;
+            font-family: var(--font-mono);
+            font-size: 11px;
         }
 
         .driver-token {
-            font-family: var(--font-mono);
-            font-size: 11px;
             color: var(--text-primary);
-            white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .driver-bar-track {
-            width: 100%;
             height: 6px;
             background: rgba(255, 255, 255, 0.05);
-            border-radius: var(--radius-pill);
+            border-radius: 3px;
             overflow: hidden;
-            position: relative;
         }
 
         .driver-bar-fill {
             height: 100%;
-            border-radius: var(--radius-pill);
-            transition: width 0.25s ease-out;
+            border-radius: 3px;
+            transition: width var(--transition-normal);
         }
 
-        .driver-bar-fill-pos {
-            background: var(--signal-positive);
-            box-shadow: 0 0 6px rgba(16, 185, 129, 0.35);
-        }
+        .driver-bar-fill.pos { background: var(--signal-positive); }
+        .driver-bar-fill.neg { background: var(--signal-negative); }
 
-        .driver-bar-fill-neg {
-            background: var(--signal-negative);
-            box-shadow: 0 0 6px rgba(244, 63, 94, 0.35);
-        }
-
-        .driver-val {
-            font-family: var(--font-mono);
-            font-size: 11px;
-            font-weight: 600;
+        .driver-weight {
             text-align: right;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .driver-val-pos {
-            color: var(--signal-positive);
-        }
-
-        .driver-val-neg {
-            color: var(--signal-negative);
-        }
-
-        .driver-empty-hint {
-            font-family: var(--font-mono);
-            font-size: 11px;
-            color: var(--text-muted);
-            padding: 8px 12px;
-            background: var(--surface-well);
-            border: 1px dashed var(--border-subtle);
-            border-radius: var(--radius-control);
-        }
-
-        /* CANONICAL 2X2 CONFUSION MATRIX */
-        .matrix-table-wrapper {
-            margin-top: 16px;
-            overflow-x: auto;
-        }
-
-        .matrix-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 4px;
-            font-size: 12px;
-        }
-
-        .matrix-table th, .matrix-table td {
-            padding: 12px 14px;
-            text-align: center;
-            border-radius: var(--radius-control);
-        }
-
-        .matrix-corner {
-            background: transparent;
-            font-family: var(--font-mono);
-            font-size: 10px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            text-align: left !important;
-        }
-
-        .matrix-header-cell {
-            background: var(--surface-plate);
-            font-family: var(--font-mono);
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-primary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            border: 1px solid var(--border-subtle);
-        }
-
-        .matrix-row-header {
-            background: var(--surface-plate);
-            font-family: var(--font-mono);
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-primary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            text-align: left !important;
-            border: 1px solid var(--border-subtle);
-        }
-
-        .matrix-quadrant {
-            background: var(--surface-well);
-            border: 1px solid var(--border-hairline);
-            text-align: center;
-            vertical-align: middle;
-            transition: all 0.15s ease;
-        }
-
-        .quadrant-tn {
-            background: rgba(16, 185, 129, 0.05);
-            border-color: rgba(16, 185, 129, 0.2);
-        }
-
-        .quadrant-tp {
-            background: rgba(16, 185, 129, 0.05);
-            border-color: rgba(16, 185, 129, 0.2);
-        }
-
-        .quadrant-fp {
-            background: rgba(244, 63, 94, 0.05);
-            border-color: rgba(244, 63, 94, 0.2);
-        }
-
-        .quadrant-fn {
-            background: rgba(244, 63, 94, 0.05);
-            border-color: rgba(244, 63, 94, 0.2);
-        }
-
-        .matrix-quadrant-title {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 4px;
-        }
-
-        .matrix-quadrant-num {
-            font-family: var(--font-sans);
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text-primary);
-            font-variant-numeric: tabular-nums;
-        }
-
-        .quadrant-tn .matrix-quadrant-num, .quadrant-tp .matrix-quadrant-num {
-            color: var(--signal-positive);
-        }
-
-        .quadrant-fp .matrix-quadrant-num, .quadrant-fn .matrix-quadrant-num {
-            color: var(--signal-negative);
-        }
-
-        .matrix-quadrant-pct {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            color: var(--text-body);
-            margin-top: 2px;
-        }
-
-        .matrix-total-cell {
-            background: var(--surface-plate);
-            font-family: var(--font-mono);
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-body);
-            border: 1px solid var(--border-subtle);
-        }
-
-        .matrix-rates-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-top: 14px;
-        }
-
-        .rate-card {
-            background: var(--surface-well);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-control);
-            padding: 10px 14px;
-        }
-
-        .rate-label {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-        }
-
-        .rate-value {
-            font-family: var(--font-sans);
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-top: 2px;
-            font-variant-numeric: tabular-nums;
-        }
-
-        /* MODEL SWITCHER TABS IN BENCHMARKS */
-        .model-toggle-strip {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-        }
-
-        .model-toggle-btn {
-            background: var(--surface-well);
-            border: 1px solid var(--border-hairline);
-            color: var(--text-muted);
-            font-family: var(--font-mono);
-            font-size: 11px;
-            padding: 6px 12px;
-            border-radius: var(--radius-control);
-            cursor: pointer;
-            transition: all 0.15s ease;
-            min-height: 32px;
-            display: inline-flex;
-            align-items: center;
-        }
-
-        .model-toggle-btn:hover {
-            color: var(--text-primary);
-            border-color: var(--border-focus);
-        }
-
-        .model-toggle-btn.active {
-            background: var(--surface-plate);
-            color: var(--text-primary);
-            border-color: var(--action-primary);
-        }
-
-        /* TABLES */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-        }
-
-        th, td {
-            text-align: left;
-            padding: 12px 14px;
-            border-bottom: 1px solid var(--border-subtle);
-            color: var(--text-body);
-        }
-
-        th {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--text-muted);
-            background: var(--surface-plate);
-        }
-
-        td strong {
-            color: var(--text-primary);
             font-weight: 500;
         }
 
-        /* STATS GRID */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
+        .driver-weight.pos { color: var(--signal-positive); }
+        .driver-weight.neg { color: var(--signal-negative); }
+
+        .driver-empty {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-muted);
+            font-style: italic;
+            padding: 4px 0;
+        }
+
+        /* RIGHT PANEL: CLASSIFICATION TELEMETRY */
+        .telemetry-stack {
+            display: flex;
+            flex-direction: column;
             gap: 16px;
-            margin-bottom: 20px;
         }
 
-        .stat-card {
-            background: var(--surface-plate);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-inner);
-            padding: 16px;
-        }
-
-        .stat-num {
-            font-family: var(--font-sans);
-            font-size: 28px;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-top: 4px;
-            font-variant-numeric: tabular-nums;
-        }
-
-        /* TELEMETRY TOOLBAR & CONTROLS */
-        .telemetry-toolbar {
+        .sentiment-card {
+            background: var(--bg-well);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-core);
+            padding: 20px;
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-            background: var(--surface-well);
-            padding: 8px 12px;
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-inner);
         }
 
-        .filter-sentiment-group {
-            display: flex;
-            gap: 4px;
-            background: var(--surface-chassis);
-            padding: 3px;
-            border-radius: var(--radius-control);
-            border: 1px solid var(--border-subtle);
-        }
-
-        .filter-btn {
-            background: transparent;
-            border: 1px solid transparent;
-            color: var(--text-muted);
-            font-family: var(--font-mono);
-            font-size: 11px;
-            font-weight: 500;
-            padding: 5px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            min-height: 28px;
-            display: inline-flex;
-            align-items: center;
-        }
-
-        .filter-btn:hover {
-            color: var(--text-primary);
-            background: var(--surface-hover);
-        }
-
-        .filter-btn.active {
-            background: var(--surface-plate);
-            color: var(--text-primary);
-            border-color: var(--border-hairline);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
-        }
-
-        .filter-controls-group {
+        .sentiment-badge-large {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
             display: flex;
             align-items: center;
             gap: 10px;
-            flex-wrap: wrap;
-            flex: 1;
-            justify-content: flex-end;
         }
 
-        .filter-select {
-            background: var(--surface-chassis);
-            border: 1px solid var(--border-hairline);
-            color: var(--text-primary);
+        .badge-sentiment-tag {
             font-family: var(--font-mono);
             font-size: 11px;
-            padding: 6px 12px;
-            border-radius: var(--radius-control);
-            outline: none;
-            cursor: pointer;
-            min-height: 32px;
-        }
-
-        .filter-select:focus {
-            border-color: var(--border-focus);
-        }
-
-        .filter-select option {
-            background: var(--surface-plate);
-            color: var(--text-primary);
-        }
-
-        .filter-search-input {
-            background: var(--surface-chassis);
-            border: 1px solid var(--border-hairline);
-            color: var(--text-primary);
-            font-family: var(--font-sans);
-            font-size: 12px;
-            padding: 6px 12px;
-            border-radius: var(--radius-control);
-            outline: none;
-            min-width: 200px;
-            min-height: 32px;
-            transition: border-color 0.15s ease;
-        }
-
-        .filter-search-input:focus {
-            border-color: var(--border-focus);
-        }
-
-        .filter-search-input::placeholder {
-            color: var(--text-disabled);
-            font-size: 11px;
-        }
-
-        /* EXPANDABLE TELEMETRY ROW / DRAWER */
-        .telemetry-row {
-            cursor: pointer;
-            transition: background 0.12s ease;
-        }
-
-        .telemetry-row:hover {
-            background: var(--surface-hover);
-        }
-
-        .record-drawer {
-            display: none;
-            background: var(--surface-well);
-        }
-
-        .record-drawer.open {
-            display: table-row;
-        }
-
-        .drawer-content-box {
-            padding: 14px 18px;
-            border-bottom: 1px solid var(--border-subtle);
-            font-family: var(--font-mono);
-            font-size: 11px;
-        }
-
-        .drawer-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px 20px;
-        }
-
-        .drawer-field-label {
-            color: var(--text-muted);
-            font-size: 10px;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 2px;
+            padding: 3px 8px;
+            border-radius: var(--radius-badge);
         }
 
-        .drawer-field-val {
-            color: var(--text-primary);
-            font-weight: 500;
+        .sentiment-pos { color: var(--signal-positive); }
+        .sentiment-pos .badge-sentiment-tag {
+            background: var(--signal-positive-bg);
+            border: 1px solid var(--signal-positive-border);
+            color: var(--signal-positive);
         }
 
-        /* MOBILE STACKED TELEMETRY CARDS (< 768px) */
-        .desktop-telemetry-view {
-            display: block;
+        .sentiment-neg { color: var(--signal-negative); }
+        .sentiment-neg .badge-sentiment-tag {
+            background: var(--signal-negative-bg);
+            border: 1px solid var(--signal-negative-border);
+            color: var(--signal-negative);
         }
 
-        .mobile-telemetry-view {
-            display: none;
+        .sentiment-neu { color: var(--signal-neutral); }
+        .sentiment-neu .badge-sentiment-tag {
+            background: var(--signal-neutral-bg);
+            border: 1px solid var(--signal-neutral-border);
+            color: var(--signal-neutral);
         }
 
-        .telemetry-card {
-            background: var(--surface-well);
+        /* POLARITY HUD */
+        .hud-block {
+            background: var(--bg-well);
             border: 1px solid var(--border-hairline);
-            border-radius: var(--radius-inner);
-            padding: 14px 16px;
-            transition: border-color 0.15s ease;
-        }
-
-        .telemetry-card:hover {
-            border-color: var(--border-focus);
-        }
-
-        .card-top-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .card-time {
-            font-family: var(--font-mono);
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        .card-engine-tag {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            color: var(--text-body);
-            background: var(--surface-plate);
-            padding: 2px 6px;
-            border-radius: 4px;
-            border: 1px solid var(--border-subtle);
-        }
-
-        .card-metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            padding: 10px 0;
-            border-top: 1px solid var(--border-subtle);
-            border-bottom: 1px solid var(--border-subtle);
-            margin-bottom: 10px;
-        }
-
-        .card-metric-cell {
+            border-radius: var(--radius-core);
+            padding: 16px;
             display: flex;
             flex-direction: column;
+            gap: 10px;
         }
 
-        .card-metric-cell .cell-label {
-            font-family: var(--font-mono);
-            font-size: 9px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            letter-spacing: 0.04em;
-        }
-
-        .card-metric-cell .cell-val {
-            font-family: var(--font-mono);
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-top: 2px;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .card-expand-btn {
-            width: 100%;
-            background: transparent;
-            border: 1px dashed var(--border-subtle);
-            border-radius: var(--radius-control);
-            color: var(--text-muted);
-            font-family: var(--font-mono);
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            padding: 8px 12px;
-            cursor: pointer;
+        .hud-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            transition: all 0.15s ease;
-            min-height: 36px;
+            justify-content: space-between;
         }
 
-        .card-expand-btn:hover {
-            color: var(--text-primary);
-            border-color: var(--border-hairline);
-            background: var(--surface-hover);
-        }
-
-        .card-drawer-content {
-            display: none;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px dashed var(--border-subtle);
+        .hud-title {
             font-family: var(--font-mono);
             font-size: 11px;
-        }
-
-        .card-drawer-content.open {
-            display: block;
-        }
-
-        .mobile-drawer-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px 14px;
-        }
-
-        /* EMPTY STATE */
-        .telemetry-empty-state {
-            display: none;
-            text-align: center;
-            padding: 36px 20px;
-            background: var(--surface-well);
-            border: 1px dashed var(--border-subtle);
-            border-radius: var(--radius-inner);
-            margin-top: 10px;
-        }
-
-        .empty-icon {
-            font-family: var(--font-mono);
-            font-size: 24px;
             color: var(--text-muted);
-            margin-bottom: 8px;
-            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
         }
 
-        .empty-title {
+        .hud-val {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .polarity-track {
+            position: relative;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            margin: 10px 0;
+            border: 1px solid var(--border-hairline);
+        }
+
+        .polarity-center-line {
+            position: absolute;
+            top: -2px;
+            bottom: -2px;
+            left: 50%;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-50%);
+        }
+
+        .polarity-marker {
+            position: absolute;
+            top: -3px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #FFFFFF;
+            border: 2px solid var(--bg-surface);
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+            transform: translateX(-50%);
+            transition: left var(--transition-normal);
+            left: 50%;
+        }
+
+        .polarity-scale-labels {
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        /* CONFIDENCE GAUGE */
+        .progress-bar-track {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--accent-tech);
+            border-radius: 4px;
+            transition: width var(--transition-normal);
+            width: 0%;
+        }
+
+        /* AFFECTIVE STATE HUD */
+        .emotion-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--font-mono);
             font-size: 13px;
             font-weight: 600;
             color: var(--text-primary);
-            margin-bottom: 4px;
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-control);
+            width: fit-content;
         }
 
-        .empty-desc {
+        /* FEEDBACK ACTIONS */
+        .feedback-strip {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-well);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-core);
+            padding: 12px 16px;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .feedback-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .feedback-btns {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-feedback {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-hairline);
+            color: var(--text-secondary);
+            font-family: var(--font-sans);
+            font-size: 11.5px;
+            font-weight: 500;
+            padding: 5px 12px;
+            border-radius: var(--radius-control);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-feedback:hover:not(:disabled) {
+            color: var(--text-primary);
+            border-color: var(--border-subtle);
+        }
+
+        .btn-feedback.confirm:hover:not(:disabled) {
+            border-color: var(--signal-positive);
+            color: var(--signal-positive);
+        }
+
+        .btn-feedback.flag:hover:not(:disabled) {
+            border-color: var(--signal-negative);
+            color: var(--signal-negative);
+        }
+
+        .btn-feedback:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* VIEW 2: MODEL CONSENSUS */
+        .consensus-summary {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-core);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .consensus-ratio-badge {
+            font-family: var(--font-mono);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--signal-positive);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .disagreement-alert {
+            background: var(--signal-warning-bg);
+            border: 1px solid var(--signal-warning-border);
+            color: var(--signal-warning);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            padding: 8px 12px;
+            border-radius: var(--radius-control);
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .model-card-metric {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .model-card-metric:last-child {
+            border-bottom: none;
+        }
+
+        .metric-name {
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        .metric-val {
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-weight: 600;
+        }
+
+        /* VIEW 3: BENCHMARKS */
+        .benchmark-hero {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .stat-tile {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-core);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .stat-tile-label {
+            font-family: var(--font-mono);
             font-size: 11px;
             color: var(--text-muted);
-            max-width: 440px;
-            margin: 0 auto;
+            text-transform: uppercase;
         }
 
-        /* METHODOLOGY NOTE */
-        .method-note {
-            background: var(--surface-well);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-control);
-            padding: 12px 14px;
-            font-size: 12px;
-            line-height: 1.5;
-            color: var(--text-muted);
-            margin-top: 14px;
-        }
-
-        .method-note strong {
+        .stat-tile-val {
+            font-family: var(--font-mono);
+            font-size: 22px;
+            font-weight: 700;
             color: var(--text-primary);
         }
 
-        /* ACCESSIBILITY FOCUS RING */
-        *:focus-visible {
-            outline: 2px solid var(--border-focus) !important;
-            outline-offset: 2px !important;
+        .cm-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            margin-top: 8px;
         }
 
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.001ms !important;
-                transition-duration: 0.001ms !important;
+        .cm-table th, .cm-table td {
+            border: 1px solid var(--border-hairline);
+            padding: 8px 10px;
+            text-align: center;
+        }
+
+        .cm-table th {
+            background: var(--bg-surface);
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 11px;
+        }
+
+        .cm-cell-num {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* VIEW 4: TELEMETRY & HISTORY */
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-control);
+            background: var(--bg-panel);
+        }
+
+        .audit-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .audit-table th {
+            background: var(--bg-surface);
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-align: left;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border-hairline);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .audit-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            color: var(--text-secondary);
+        }
+
+        .audit-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-primary);
+        }
+
+        .table-actions-strip {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .filter-input {
+            background: var(--bg-well);
+            border: 1px solid var(--border-hairline);
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            padding: 6px 12px;
+            border-radius: var(--radius-control);
+            outline: none;
+            width: 220px;
+        }
+
+        .filter-input:focus {
+            border-color: var(--border-focus);
+        }
+
+        .btn-export {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-hairline);
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            font-size: 11.5px;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: var(--radius-control);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-export:hover {
+            color: var(--text-primary);
+            border-color: var(--border-subtle);
+        }
+
+        /* VIEW 5: DEVELOPER */
+        .api-editor {
+            width: 100%;
+            height: 140px;
+            background: var(--bg-well);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-control);
+            padding: 12px;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            line-height: 1.5;
+            outline: none;
+            resize: vertical;
+        }
+
+        .api-editor:focus {
+            border-color: var(--border-focus);
+        }
+
+        .api-response-pre {
+            background: var(--bg-well);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-control);
+            padding: 14px;
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            font-size: 11.5px;
+            min-height: 180px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        /* TOAST ALERT */
+        .toast-banner {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 1000;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.8);
+            border-radius: var(--radius-control);
+            padding: 12px 18px;
+            font-size: 12.5px;
+            color: var(--text-primary);
+            display: none;
+            align-items: center;
+            gap: 12px;
+            max-width: 420px;
+        }
+
+        .toast-banner.show {
+            display: flex;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* RESPONSIVE BEHAVIOR */
+        @media (max-width: 1024px) {
+            .grid-2col {
+                grid-template-columns: 1fr;
+            }
+            .grid-3col {
+                grid-template-columns: 1fr;
+            }
+            .benchmark-hero {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
-        /* RESPONSIVE LAYOUT BREAKPOINTS (1024px, 768px, 640px, 390px) */
-        @media (max-width: 1024px) {
-            .grid-2col { grid-template-columns: 1fr; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            main { padding: 0 20px; margin: 16px auto; }
-            header { padding: 14px 20px; }
-            .matrix-rates-grid { grid-template-columns: repeat(2, 1fr); }
-            .controls-bar { flex-direction: column; align-items: stretch; }
-            .engine-select { min-width: 100%; }
+        /* GLOBAL RESPONSIVE SAFETY */
+        html {
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+
+        body {
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+
+        .masthead {
+            max-width: 100vw;
+            box-sizing: border-box;
+        }
+
+        .nav-dock {
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         @media (max-width: 768px) {
-            .desktop-telemetry-view { display: none !important; }
-            .mobile-telemetry-view { display: flex !important; flex-direction: column; gap: 10px; }
-            .telemetry-toolbar { flex-direction: column; align-items: stretch; }
-            .filter-sentiment-group { width: 100%; justify-content: space-between; }
-            .filter-btn { flex: 1; text-align: center; min-height: 38px; }
-            .filter-controls-group { width: 100%; justify-content: stretch; }
-            .filter-select, .filter-search-input, #btnRefreshHistory { width: 100%; min-height: 38px; }
-            .domain-notice { flex-direction: column; align-items: flex-start; gap: 8px; }
-            .tab-btn { min-height: 38px; }
-            .preset-chip { min-height: 36px; }
-            .system-meta-strip { border-left: none; padding-left: 0; }
+            .masthead {
+                height: auto;
+                padding: 8px 12px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            .masthead-left {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: nowrap;
+            }
+            .badge-status {
+                display: none; /* Collapses wide status pill on mobile masthead */
+            }
+            .nav-dock {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                flex-shrink: 1;
+            }
+            .nav-dock::-webkit-scrollbar {
+                display: none;
+            }
+            .tab-btn {
+                padding: 5px 10px;
+                font-size: 11.5px;
+            }
+            .app-shell {
+                padding: 10px 8px 36px;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+            .chassis-card {
+                padding: 8px;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+            .core-well {
+                padding: 14px 10px;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+            .advisory-strip {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+                padding: 10px 12px;
+            }
+            .controls-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .engine-picker {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .select-engine {
+                flex: 1;
+            }
+            .btn-primary {
+                width: 100%;
+                justify-content: center;
+            }
+            .driver-bar-row {
+                grid-template-columns: 70px 1fr 50px;
+            }
+            .sentiment-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .feedback-strip {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            .feedback-btns {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .btn-feedback {
+                flex: 1;
+                justify-content: center;
+            }
+            .xai-grid {
+                grid-template-columns: 1fr;
+            }
+            .benchmark-hero {
+                grid-template-columns: 1fr;
+            }
+            .table-wrap {
+                border: none;
+                background: transparent;
+                overflow-x: visible;
+            }
+            .table-actions-strip {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-input {
+                width: 100%;
+            }
+            /* MOBILE TELEMETRY CARDS */
+            .audit-table thead {
+                display: none;
+            }
+            .audit-table, .audit-table tbody, .audit-table tr, .audit-table td {
+                display: block;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .audit-table tr {
+                background: var(--bg-panel);
+                border: 1px solid var(--border-hairline);
+                border-radius: var(--radius-control);
+                margin-bottom: 12px;
+                padding: 10px 12px;
+            }
+            .audit-table td {
+                display: flex;
+                justify-content: space-between;
+                padding: 6px 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+                white-space: normal;
+                word-break: break-all;
+            }
+            .audit-table td:last-child {
+                border-bottom: none;
+            }
+            .audit-table td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: var(--text-muted);
+                text-transform: uppercase;
+                font-size: 10.5px;
+                margin-right: 8px;
+                flex-shrink: 0;
+            }
         }
 
-        @media (max-width: 640px) {
-            .stats-grid { grid-template-columns: 1fr; }
-            .telemetry-meta-row { grid-template-columns: 1fr; }
-            .brand-block { flex-direction: column; align-items: flex-start; gap: 8px; }
-            .nav-tabs { overflow-x: auto; max-width: 100%; }
-            .matrix-rates-grid { grid-template-columns: 1fr; }
-            .driver-bar-row { grid-template-columns: 85px 1fr 65px; gap: 6px; padding: 5px 8px; }
-            .preset-strip { flex-direction: column; align-items: flex-start; }
-            .card-metrics-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-
-        @media (max-width: 390px) {
-            main { padding: 0 12px; margin: 12px auto; }
-            header { padding: 10px 14px; }
-            .bezel-core { padding: 14px; }
-            .polarity-score { font-size: 32px; }
-            .mobile-drawer-grid { grid-template-columns: 1fr; }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                transition: none !important;
+                animation: none !important;
+                transform: none !important;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="ambient-layer"></div>
 
-    <header>
-        <div class="brand-block">
-            <div class="brand-identity">
-                <div class="brand-name">Sentinel AI</div>
-                <div class="brand-subtitle">NLP Sentiment Intelligence Platform</div>
-            </div>
-            <div class="system-meta-strip" aria-label="System Environment Telemetry">
-                <span class="meta-pill" title="Gateway Architecture: FastAPI"><span class="status-dot"></span> System: Operational</span>
-                <span class="meta-pill" title="Loaded production models in memory">Engines: 3 Ready</span>
-                <span class="meta-pill" title="Training & Calibration Baseline">Corpus: IMDB 50K</span>
-                <span class="meta-pill" title="Platform Build Release">v14.3.0-PROD</span>
-            </div>
+    <!-- TOP MASTHEAD APP BAR -->
+    <header class="masthead">
+        <div class="masthead-left">
+            <span class="brand-monogram">🛡️</span>
+            <span class="brand-title">
+                SENTINEL AI
+                <span class="badge-version">v14.3.0-PROD</span>
+            </span>
+            <span class="badge-status" id="systemHealthBadge" title="System operational status">
+                <span class="status-dot"></span>
+                <span>ONLINE · 3 ENGINES READY</span>
+            </span>
         </div>
-        <nav class="nav-tabs" role="tablist" aria-label="Platform Workspaces">
+
+        <nav class="nav-dock" role="tablist" aria-label="Main Navigation">
             <button class="tab-btn active" role="tab" id="tab-analyze" aria-selected="true" aria-controls="view-analyze" onclick="switchTab('analyze')">Inference Console</button>
             <button class="tab-btn" role="tab" id="tab-consensus" aria-selected="false" aria-controls="view-consensus" onclick="switchTab('consensus')">Model Consensus</button>
             <button class="tab-btn" role="tab" id="tab-benchmarks" aria-selected="false" aria-controls="view-benchmarks" onclick="switchTab('benchmarks')">Model Registry &amp; Benchmarks</button>
@@ -2098,821 +1872,550 @@ def serve_dashboard():
         </nav>
     </header>
 
-    <main>
-        <!-- IN-APP NOTIFICATION BANNER (ACCESSIBLE ERROR & NOTICE CHANNEL) -->
-        <div id="appNotification" class="app-notification" role="alert" aria-live="polite">
-            <div class="notification-icon" id="notificationIcon">!</div>
-            <div class="notification-body">
-                <div class="notification-title" id="notificationTitle">System Notice</div>
-                <div class="notification-msg" id="notificationMessage">Notification content</div>
-            </div>
-            <button type="button" class="notification-close" onclick="dismissNotification()" aria-label="Dismiss notification">&times;</button>
-        </div>
+    <div class="app-shell">
 
-        <!-- RESPONSIBLE AI DOMAIN ADVISORY -->
-        <div class="domain-notice" role="region" aria-label="Responsible AI Domain Advisory">
-            <div class="domain-notice-main">
-                <span class="domain-tag">Analysis Domain: IMDB / Movie Reviews</span>
-                <span class="domain-desc">
-                    Classifiers are trained and calibrated on narrative discourse corpus. Operational generalization to financial, clinical, or legal texts may exhibit statistical distribution shift. Sentiment classifications represent probabilistic model outputs rather than universal truth.
-                </span>
+        <!-- DOMAIN & PRIVACY ADVISORY STRIP -->
+        <div class="advisory-strip" role="region" aria-label="Domain & Privacy Governance Advisory">
+            <div class="advisory-domain">
+                <span class="advisory-domain-tag">MODEL DOMAIN: IMDB 50K</span>
+                <span>Classifiers calibrated on narrative review corpus. Operational generalization to financial, legal, or customer service domains may exhibit statistical shift.</span>
             </div>
-            <div class="domain-notice-meta">
-                50,000 Verified Ground Truth Corpus
+            <div class="advisory-privacy">
+                <strong>RAW TEXT STORAGE: DISABLED</strong>
+                <span>· Server-side SHA-256 anonymization active prior to SQLite write.</span>
             </div>
         </div>
 
         <!-- TAB 1: INFERENCE CONSOLE -->
-        <section id="view-analyze" class="view-panel active" role="tabpanel" aria-labelledby="tab-analyze">
+        <main id="view-analyze" class="view-panel active" role="tabpanel" aria-labelledby="tab-analyze">
             <div class="grid-2col">
-                <div class="bezel-card">
-                    <div class="bezel-core" style="display:flex; flex-direction:column; justify-content:space-between; min-height:480px;">
-                        <div>
-                            <!-- EVALUATION SAMPLE PRESETS -->
-                            <div class="preset-strip" role="group" aria-label="Evaluation Sample Presets">
-                                <span class="preset-strip-label">Evaluation Presets:</span>
-                                <button type="button" class="preset-chip" onclick="applyPreset('pos')" aria-label="Load Positive Audit preset" title="Predefined demonstration review with positive sentiment">Positive Audit</button>
-                                <button type="button" class="preset-chip" onclick="applyPreset('neg')" aria-label="Load Critical Discontent preset" title="Predefined demonstration review with critical sentiment">Critical Discontent</button>
-                                <button type="button" class="preset-chip" onclick="applyPreset('mixed')" aria-label="Load Mixed Consensus Test preset" title="Predefined demonstration review with mixed sentiment">Mixed Consensus Test</button>
-                            </div>
 
-                            <div class="card-header-row" style="margin-bottom:8px;">
-                                <span class="card-title">Natural Language Ingestion Console</span>
-                                <span class="key-hint" title="Submit analysis via keyboard shortcut">Ctrl + Enter / &#8984; + Enter</span>
-                            </div>
+                <!-- LEFT SIDE: INGESTION WORKSTATION -->
+                <section class="chassis-card" aria-label="Ingestion Workstation">
+                    <div class="core-well">
+                        <div class="panel-header">
+                            <span class="panel-title">Natural Language Discourse Ingestion</span>
+                        </div>
 
-                            <textarea id="nlpInput" class="nlp-textarea" placeholder="Submit natural language review or statement for executive sentiment intelligence extraction..."></textarea>
-                            
-                            <!-- TOOLBAR WITH CHAR & WORD COUNTERS AND CLEAR ACTION -->
-                            <div class="nlp-toolbar">
-                                <div class="nlp-metrics">
+                        <!-- EVALUATION PRESETS -->
+                        <div class="preset-strip" role="group" aria-label="Evaluation Presets">
+                            <span class="preset-label">EVALUATION PRESETS:</span>
+                            <button type="button" class="preset-chip" onclick="applyPreset('pos')" title="Load Positive Sample">Positive Audit</button>
+                            <button type="button" class="preset-chip" onclick="applyPreset('neg')" title="Load Critical Sample">Critical Discontent</button>
+                            <button type="button" class="preset-chip" onclick="applyPreset('mixed')" title="Load Mixed Sample">Mixed Consensus Test</button>
+                        </div>
+
+                        <!-- TEXTAREA & COUNTERS -->
+                        <div class="input-dock">
+                            <textarea id="nlpInput" class="text-input" placeholder="Enter review discourse for sentiment evaluation (1 to 5,000 characters)..." aria-label="Review discourse input text"></textarea>
+                            <div class="input-meta-bar">
+                                <div class="input-counters">
                                     <span id="charCount">0 / 5000 chars</span>
-                                    <span>&bull;</span>
+                                    <span>·</span>
                                     <span id="wordCount">0 words</span>
+                                    <span>·</span>
+                                    <span>Press Ctrl+Enter to execute</span>
                                 </div>
-                                <div class="nlp-actions">
-                                    <button type="button" onclick="clearInput()" class="btn-clear" aria-label="Clear input text">&times; Clear</button>
+                                <button type="button" class="btn-link" onclick="clearInput()">Clear</button>
+                            </div>
+                        </div>
+
+                        <!-- ENGINE SELECTOR & EXECUTE BUTTON -->
+                        <div class="controls-row">
+                            <div class="engine-picker">
+                                <label for="engineSelect" class="picker-label">Classifier:</label>
+                                <select id="engineSelect" class="select-engine">
+                                    <option value="logistic_regression">Logistic Regression (L2 Sigmoid)</option>
+                                    <option value="linear_svm">Linear SVM (Platt-Calibrated)</option>
+                                    <option value="naive_bayes">Multinomial Naive Bayes</option>
+                                </select>
+                            </div>
+
+                            <button id="btnAnalyze" class="btn-primary" onclick="executeAnalysis()">
+                                <span>Execute Analysis</span>
+                                <span class="btn-icon-pill">→</span>
+                            </button>
+                        </div>
+
+                        <!-- POST-INFERENCE METADATA -->
+                        <div id="metaStrip" class="meta-strip" style="display:none;" aria-live="polite">
+                            <span class="meta-strip-item">Latency: <strong id="resLatency">—</strong></span>
+                            <span>·</span>
+                            <span class="meta-strip-item">Tokens Analyzed: <strong id="resTokens">—</strong></span>
+                            <span>·</span>
+                            <span class="meta-strip-item">Request ID: <strong id="resReqId">—</strong></span>
+                        </div>
+
+                        <!-- XAI PANEL: STATISTICAL ATTRIBUTION -->
+                        <div class="xai-box" aria-label="Feature Contribution & Attribution">
+                            <div class="xai-header">
+                                <span class="panel-title">FEATURE CONTRIBUTION &amp; STATISTICAL ATTRIBUTION</span>
+                                <span class="xai-formula-tag">Formula: TF-IDF × Model Weight</span>
+                            </div>
+                            <p class="xai-disclaimer">Statistical feature contribution to the model decision boundary; not causal attribution.</p>
+
+                            <div class="xai-grid">
+                                <!-- Positive Drivers -->
+                                <div class="driver-subpanel">
+                                    <div class="driver-col-title pos">
+                                        <span>Positive Drivers</span>
+                                        <span>Weight</span>
+                                    </div>
+                                    <div id="posDriversList">
+                                        <div class="driver-empty">Awaiting analysis execution...</div>
+                                    </div>
+                                </div>
+
+                                <!-- Negative Drivers -->
+                                <div class="driver-subpanel">
+                                    <div class="driver-col-title neg">
+                                        <span>Negative Drivers</span>
+                                        <span>Weight</span>
+                                    </div>
+                                    <div id="negDriversList">
+                                        <div class="driver-empty">Awaiting analysis execution...</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- OPERATIONAL STATE TRACE -->
-                        <div>
-                            <div class="signal-header-row">
-                                <span class="card-title" style="margin-bottom:0;">Operational State Trace</span>
-                                <span id="signalStatus" class="signal-state-indicator" aria-live="polite">
-                                    <span class="status-dot" style="width:5px; height:5px; background:var(--signal-neutral); box-shadow:none;"></span>
-                                    <span>STANDBY</span>
-                                </span>
-                            </div>
-                            <canvas id="neuralCanvas"></canvas>
-                            <div class="signal-caption">
-                                Operational interface state visualizer (STANDBY / ANALYZING / CLASSIFIED). Waveform trace is not an acoustic signal or model statistic. Authoritative metrics are the Polarity Score and Confidence values above.
-                            </div>
-                        </div>
-
-                        <!-- INSTRUMENTATION ENGINE SELECTOR -->
-                        <div class="controls-bar">
-                            <select id="modelChoice" class="engine-select" aria-label="Classifier Engine Selection" onchange="onModelChoiceChange()">
-                                <option value="logistic_regression">Logistic Regression v1.0 &bull; Active &bull; 0.0008 ms/sample</option>
-                                <option value="linear_svm">Linear SVM v1.0 (Calibrated) &bull; Ready &bull; 0.0022 ms/sample</option>
-                                <option value="naive_bayes">Multinomial Naive Bayes &bull; Baseline &bull; 0.0005 ms/sample</option>
-                            </select>
-                            <button id="execBtn" onclick="executeInference()" class="btn-primary">Execute Analysis</button>
-                        </div>
                     </div>
-                </div>
+                </section>
 
-                <div style="display:flex; flex-direction:column; gap:16px;">
-                    <!-- CLASSIFICATION FINDING & BIPOLAR GAUGE CARD -->
-                    <div class="bezel-card">
-                        <div class="bezel-core" aria-live="polite">
-                            <div class="card-header-row">
-                                <span class="card-title">Classification Finding &amp; State</span>
-                                <span id="resConfidence" style="font-family:var(--font-mono); font-size:12px; color:var(--text-muted); font-weight:500;">Confidence: --%</span>
-                            </div>
+                <!-- RIGHT SIDE: CLASSIFICATION TELEMETRY -->
+                <section class="chassis-card" aria-label="Classification Telemetry">
+                    <div class="core-well telemetry-stack">
+                        <div class="panel-header">
+                            <span class="panel-title">Classification Telemetry</span>
+                        </div>
 
-                            <div class="metric-hero">
-                                <div class="metric-primary-block">
-                                    <span class="metric-primary-label">Polarity Score</span>
-                                    <div class="polarity-score" id="resScore">0.00</div>
-                                    <span class="polarity-score-caption">Bounded Range [-1.0000, +1.0000]</span>
-                                </div>
-                                <div class="badge-sentiment badge-neu" id="resSentiment">STANDBY</div>
-                            </div>
-
-                            <!-- BIPOLAR POLARITY CONTINUUM GAUGE -->
-                            <div class="polarity-gauge-container">
-                                <div class="polarity-gauge-header">
-                                    <span>Negative (-1.0)</span>
-                                    <span>Neutral Threshold [&plusmn;0.10]</span>
-                                    <span>Positive (+1.0)</span>
-                                </div>
-                                <div class="polarity-track">
-                                    <div class="polarity-neutral-band" title="Neutral classification threshold [-0.10, +0.10]"></div>
-                                    <div class="polarity-center-line" title="Equilibrium center (0.00)"></div>
-                                    <div class="polarity-indicator indicator-neu" id="polarityIndicator" style="left: 50%;" title="Polarity position"></div>
-                                </div>
-                                <div class="polarity-ticks">
-                                    <span>-1.0</span>
-                                    <span>-0.5</span>
-                                    <span>-0.1</span>
-                                    <span style="color:var(--text-muted);">0.0</span>
-                                    <span>+0.1</span>
-                                    <span>+0.5</span>
-                                    <span>+1.0</span>
+                        <!-- PRIMARY SENTIMENT CARD -->
+                        <div class="sentiment-card">
+                            <div>
+                                <div class="hud-title" style="margin-bottom:4px;">Predicted Sentiment</div>
+                                <div id="resSentiment" class="sentiment-badge-large sentiment-neu">
+                                    <span>NEUTRAL</span>
+                                    <span class="badge-sentiment-tag">BASELINE</span>
                                 </div>
                             </div>
-
-                            <div class="telemetry-meta-row">
-                                <div>
-                                    <div class="telemetry-meta-label">Affective Heuristic</div>
-                                    <div class="telemetry-meta-val" id="resEmotion">--</div>
-                                </div>
-                                <div>
-                                    <div class="telemetry-meta-label">Ingestion Latency</div>
-                                    <div class="telemetry-meta-val" id="resLatency">-- ms</div>
-                                </div>
-                                <div>
-                                    <div class="telemetry-meta-label">Tracking ID</div>
-                                    <div class="telemetry-meta-val" id="resReqId" style="font-family:var(--font-mono); font-size:11px;">--</div>
-                                </div>
+                            <div>
+                                <div class="hud-title" style="margin-bottom:4px;">Affective Heuristic</div>
+                                <div id="resEmotion" class="emotion-badge">Balanced Neutral</div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- FEATURE ATTRIBUTION (XAI) CARD -->
-                    <div class="bezel-card">
-                        <div class="bezel-core">
-                            <div class="card-header-row">
-                                <span class="card-title">Feature Contribution &amp; Attribution (XAI)</span>
-                                <span id="xaiEngineLabel" style="font-family:var(--font-mono); font-size:10px; color:var(--text-muted);">TF-IDF &times; Weights</span>
+                        <!-- POLARITY HUD -->
+                        <div class="hud-block">
+                            <div class="hud-header">
+                                <span class="hud-title">Normalized Polarity Score (ai_score)</span>
+                                <span id="resPolarityScore" class="hud-val">0.0000</span>
                             </div>
-
-                            <div class="attribution-group">
-                                <div class="attribution-header attribution-header-pos">
-                                    <span>Positive Drivers (+w)</span>
-                                    <span style="font-family:var(--font-mono); font-size:10px; color:var(--text-muted);">Normalized Impact</span>
-                                </div>
-                                <div class="attribution-bars-container" id="posDrivers">
-                                    <div class="driver-empty-hint">Awaiting input...</div>
-                                </div>
+                            <div class="polarity-track" aria-hidden="true">
+                                <div class="polarity-center-line"></div>
+                                <div id="polarityMarker" class="polarity-marker"></div>
                             </div>
-
-                            <div class="attribution-group">
-                                <div class="attribution-header attribution-header-neg">
-                                    <span>Negative Drivers (-w)</span>
-                                    <span style="font-family:var(--font-mono); font-size:10px; color:var(--text-muted);">Normalized Impact</span>
-                                </div>
-                                <div class="attribution-bars-container" id="negDrivers">
-                                    <div class="driver-empty-hint">Awaiting input...</div>
-                                </div>
-                            </div>
-
-                            <div class="method-note">
-                                <strong>Mathematical Methodology:</strong> Features are extracted via Porter stemming and 5,000-term TF-IDF vectorization. Statistical attribution is calculated strictly as \( \text{TF-IDF} \times w_i \) where \( w_i \) represents model weight coefficients (or log odds ratios for Naive Bayes). Statistical contribution indicates feature influence within the decision boundary and does not represent causal necessity.
+                            <div class="polarity-scale-labels">
+                                <span>-1.0000 (Negative)</span>
+                                <span>0.0000 (Neutral)</span>
+                                <span>+1.0000 (Positive)</span>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- OPERATOR AUDIT VERIFICATION -->
-                    <div class="bezel-card">
-                        <div class="bezel-core" style="padding: 14px 20px;">
-                            <div style="display:flex; justify-content:space-between; align-items:center;">
-                                <span style="font-size:12px; color:var(--text-muted);">Operator Audit Verification</span>
-                                <span id="feedConfirm" style="display:none; font-family:var(--font-mono); font-size:11px; color:var(--signal-positive);">RECORDED &check;</span>
-                                <div style="display:flex; gap:8px;">
-                                    <button id="btnFeedConfirm" onclick="sendTelemetry(true)" class="btn-outline">Confirm Accurate</button>
-                                    <button id="btnFeedDispute" onclick="sendTelemetry(false)" class="btn-outline">Flag Disputed</button>
-                                </div>
+                        <!-- CALIBRATED CONFIDENCE GAUGE -->
+                        <div class="hud-block">
+                            <div class="hud-header">
+                                <span class="hud-title">Calibrated Confidence Margin</span>
+                                <span id="resConfidence" class="hud-val">50.00%</span>
+                            </div>
+                            <div class="progress-bar-track" role="progressbar" id="confProgressTrack" aria-valuemin="50" aria-valuemax="100" aria-valuenow="50">
+                                <div id="confProgressBar" class="progress-bar-fill" style="width: 50%;"></div>
+                            </div>
+                            <div class="hud-header" style="margin-top:4px;">
+                                <span style="font-size:10.5px; color:var(--text-muted);">Probability derived from calibrated classifier output.</span>
                             </div>
                         </div>
+
+                        <!-- USER REINFORCEMENT FEEDBACK -->
+                        <div class="feedback-strip">
+                            <span class="feedback-label">Audit Verification:</span>
+                            <div class="feedback-btns">
+                                <input type="hidden" id="currentPredId" value="">
+                                <button type="button" id="btnConfirmFeedback" class="btn-feedback confirm" onclick="submitFeedbackAction(true)" disabled>
+                                    <span>✓</span> Confirm Result
+                                </button>
+                                <button type="button" id="btnFlagFeedback" class="btn-feedback flag" onclick="submitFeedbackAction(false)" disabled>
+                                    <span>✕</span> Flag Incorrect
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
-                </div>
+                </section>
+
             </div>
-            <input type="hidden" id="currentPredId">
-        </section>
+        </main>
 
         <!-- TAB 2: MODEL CONSENSUS -->
         <section id="view-consensus" class="view-panel" role="tabpanel" aria-labelledby="tab-consensus">
-            <div class="bezel-card" style="margin-bottom:20px;">
-                <div class="bezel-core">
-                    <div class="card-header-row">
+            <div class="chassis-card">
+                <div class="core-well">
+                    <div class="panel-header">
+                        <span class="panel-title">Tri-Engine Multi-Model Consensus Cockpit</span>
+                        <button class="btn-primary" onclick="executeConsensus()">Evaluate Consensus</button>
+                    </div>
+
+                    <!-- CONSENSUS STATUS -->
+                    <div class="consensus-summary">
                         <div>
-                            <div class="card-title">Multi-Model Consensus Evaluation Engine</div>
-                            <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">Runs all 3 production classifiers concurrently to detect alignment or epistemic model disagreement.</p>
+                            <div class="hud-title" style="margin-bottom:4px;">Consensus Agreement Ratio</div>
+                            <div id="consensusRatio" class="consensus-ratio-badge">AWAITING EVALUATION</div>
                         </div>
-                        <button id="btnConsensusRun" onclick="executeConsensus()" class="btn-primary">Run All 3 Models</button>
-                    </div>
-
-                    <div id="consensusBanner" style="display:none; padding:12px 18px; border-radius:var(--radius-inner); margin-top:14px; font-family:var(--font-mono); font-size:12px;"></div>
-
-                    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; margin-top:16px;">
-                        <div class="bezel-card">
-                            <div class="bezel-core" style="padding:16px;">
-                                <div style="font-family:var(--font-mono); font-size:10px; color:var(--text-muted); text-transform:uppercase;">Logistic Regression v1.0</div>
-                                <div style="font-size:10px; color:var(--text-disabled); font-family:var(--font-mono); margin-top:1px;">L2 Regularized GLM</div>
-                                <div style="font-size:22px; font-weight:600; color:var(--text-primary); margin-top:6px;" id="cs-lr-sentiment">--</div>
-                                <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted); margin-top:4px;" id="cs-lr-meta">Score: -- | Conf: --%</div>
-                            </div>
+                        <div id="disagreementAlert" class="disagreement-alert" role="alert">
+                            <span>⚠️ Inter-Engine Divergence Detected across Classifiers</span>
                         </div>
-                        <div class="bezel-card">
-                            <div class="bezel-core" style="padding:16px;">
-                                <div style="font-family:var(--font-mono); font-size:10px; color:var(--text-muted); text-transform:uppercase;">Linear SVM v1.0</div>
-                                <div style="font-size:10px; color:var(--text-disabled); font-family:var(--font-mono); margin-top:1px;">Platt Calibrated SVC</div>
-                                <div style="font-size:22px; font-weight:600; color:var(--text-primary); margin-top:6px;" id="cs-svm-sentiment">--</div>
-                                <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted); margin-top:4px;" id="cs-svm-meta">Score: -- | Conf: --%</div>
-                            </div>
-                        </div>
-                        <div class="bezel-card">
-                            <div class="bezel-core" style="padding:16px;">
-                                <div style="font-family:var(--font-mono); font-size:10px; color:var(--text-muted); text-transform:uppercase;">Multinomial Naive Bayes</div>
-                                <div style="font-size:10px; color:var(--text-disabled); font-family:var(--font-mono); margin-top:1px;">Log-Odds Probabilistic</div>
-                                <div style="font-size:22px; font-weight:600; color:var(--text-primary); margin-top:6px;" id="cs-nb-sentiment">--</div>
-                                <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted); margin-top:4px;" id="cs-nb-meta">Score: -- | Conf: --%</div>
-                            </div>
+                        <div>
+                            <div class="hud-title" style="margin-bottom:4px;">Consensus Latency</div>
+                            <div id="consensusLatency" class="hud-val">—</div>
                         </div>
                     </div>
+
+                    <!-- 3 ENGINE COMPARISON CARDS -->
+                    <div class="grid-3col">
+                        <!-- Logistic Regression -->
+                        <div class="hud-block" id="cardModelLR">
+                            <div class="hud-header">
+                                <span class="panel-title">Logistic Regression</span>
+                                <span class="badge-version">L2 Regularized</span>
+                            </div>
+                            <div class="model-card-metric">
+                                <span class="metric-name">Sentiment:</span>
+                                <span class="metric-val" id="lrSentiment">—</span>
+                            </div>
+                            <div class="model-card-metric">
+                                <span class="metric-name">Polarity (ai_score):</span>
+                                <span class="metric-val" id="lrScore">—</span>
+                            </div>
+                            <div class="model-card-metric">
+                                <span class="metric-name">Calibrated Confidence:</span>
+                                <span class="metric-val" id="lrConf">—</span>
+                            </div>
+                            <div class="model-card-metric">
+                                <span class="metric-name">Affective Heuristic:</span>
+                                <span class="metric-val" id="lrEmotion">—</span>
+                            </div>
+                        </div>
+
+                        <!-- Linear SVM -->
+                        <div class="hud-block" id="cardModelSVM">
+                            <div class="hud-header">
+                                <span class="panel-title">Linear SVM</span>
+                                <span class="badge-version">Platt-Calibrated</span>
+                            </div>
+                            <div class="model-card-metric">
+                                <span class="metric-name">Sentiment:</span>
+                                <span class="metric-val" id="svmSentiment">—</span>
+                            </div>
+                            <div class="model-card-metric">
+                                <span class="metric-name">Polarity (ai_score):</span>
+                                <span class="metric-val" id="svmScore">—</span>
+                            </div>
+                            <div class="model-card-metric">
+                                <span class="metric-name">Calibrated Confidence:</span>
+                                <span class="metric-val" id="svmConf">—</span>
+                            </div>
+                            <div class="model-card-metric">
+                                <span class="metric-name">Affective Heuristic:</span>
+                                <span class="metric-val" id="svmEmotion">—</span>
+                            </div>
+                        </div>
+
+                        <!-- Naive Bayes -->
+                        <div class="hud-block" id="cardModelNB">
+                            <div class="hud-header">
+                                <span class="panel-title">Naive Bayes</span>
+                                <span class="badge-version">Multinomial</span>
+                            </div>
+                            <div class="model-card-metric">
+                                <span class="metric-name">Sentiment:</span>
+                                <span class="metric-val" id="nbSentiment">—</span>
+                            </div>
+                            <div class="model-card-metric">
+                                <span class="metric-name">Polarity (ai_score):</span>
+                                <span class="metric-val" id="nbScore">—</span>
+                            </div>
+                            <div class="model-card-metric">
+                                <span class="metric-name">Calibrated Confidence:</span>
+                                <span class="metric-val" id="nbConf">—</span>
+                            </div>
+                            <div class="model-card-metric">
+                                <span class="metric-name">Affective Heuristic:</span>
+                                <span class="metric-val" id="nbEmotion">—</span>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
 
         <!-- TAB 3: MODEL REGISTRY & BENCHMARKS -->
         <section id="view-benchmarks" class="view-panel" role="tabpanel" aria-labelledby="tab-benchmarks">
-            <div class="bezel-card" style="margin-bottom:20px;">
-                <div class="bezel-core">
-                    <div class="card-header-row">
-                        <div>
-                            <div class="card-title">Standardized Evaluation Benchmarks</div>
-                            <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">Evaluated on 10,000 independent test partition samples from the IMDB 50K benchmark corpus (80/20 train/test split, random seed 42).</p>
+            <div class="chassis-card">
+                <div class="core-well">
+                    <div class="panel-header">
+                        <span class="panel-title">Model Registry &amp; Verified Offline Benchmarks</span>
+                        <span class="badge-version">OFFLINE BENCHMARK</span>
+                    </div>
+
+                    <!-- DATASET SPECIFICATIONS -->
+                    <div class="benchmark-hero">
+                        <div class="stat-tile">
+                            <span class="stat-tile-label">Dataset</span>
+                            <span class="stat-tile-val" style="font-size:16px;">IMDB 50K</span>
+                            <span style="font-size:10.5px; color:var(--text-muted);">Large Movie Review Corpus</span>
+                        </div>
+                        <div class="stat-tile">
+                            <span class="stat-tile-label">Partitioning</span>
+                            <span class="stat-tile-val" style="font-size:16px;">80% / 20%</span>
+                            <span style="font-size:10.5px; color:var(--text-muted);">10,000 Test Samples (Seed 42)</span>
+                        </div>
+                        <div class="stat-tile">
+                            <span class="stat-tile-label">Feature Pipeline</span>
+                            <span class="stat-tile-val" style="font-size:16px;">5,000 TF-IDF</span>
+                            <span style="font-size:10.5px; color:var(--text-muted);">Porter Stemmer · NLTK Stopwords</span>
+                        </div>
+                        <div class="stat-tile">
+                            <span class="stat-tile-label">Environment</span>
+                            <span class="stat-tile-val" style="font-size:16px;">Python 3.11</span>
+                            <span style="font-size:10.5px; color:var(--text-muted);">scikit-learn 1.3.2</span>
                         </div>
                     </div>
 
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Model Architecture</th>
-                                <th>Status</th>
-                                <th>Accuracy</th>
-                                <th>Precision</th>
-                                <th>Recall</th>
-                                <th>F1 Score</th>
-                                <th>ROC AUC</th>
-                                <th>Latency / Sample</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Logistic Regression v1.0</strong> (L2 Reg)</td>
-                                <td><span style="font-family:var(--font-mono); font-size:10px; padding:2px 8px; border-radius:var(--radius-pill); background:var(--signal-positive-bg); color:var(--signal-positive); border:1px solid var(--signal-positive-border);">ACTIVE</span></td>
-                                <td style="font-family:var(--font-mono);">88.55%</td>
-                                <td style="font-family:var(--font-mono);">0.8747</td>
-                                <td style="font-family:var(--font-mono);">0.9020</td>
-                                <td style="font-family:var(--font-mono);">0.8881</td>
-                                <td style="font-family:var(--font-mono);">0.9571</td>
-                                <td style="font-family:var(--font-mono);">0.0008 ms</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Linear SVM v1.0</strong> (Platt Calibrated)</td>
-                                <td><span style="font-family:var(--font-mono); font-size:10px; padding:2px 8px; border-radius:var(--radius-pill); background:var(--signal-positive-bg); color:var(--signal-positive); border:1px solid var(--signal-positive-border);">READY</span></td>
-                                <td style="font-family:var(--font-mono);">88.40%</td>
-                                <td style="font-family:var(--font-mono);">0.8751</td>
-                                <td style="font-family:var(--font-mono);">0.8980</td>
-                                <td style="font-family:var(--font-mono);">0.8864</td>
-                                <td style="font-family:var(--font-mono);">0.9534</td>
-                                <td style="font-family:var(--font-mono);">0.0022 ms</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Multinomial Naive Bayes</strong> (Probabilistic)</td>
-                                <td><span style="font-family:var(--font-mono); font-size:10px; padding:2px 8px; border-radius:var(--radius-pill); background:var(--signal-positive-bg); color:var(--signal-positive); border:1px solid var(--signal-positive-border);">READY</span></td>
-                                <td style="font-family:var(--font-mono);">85.20%</td>
-                                <td style="font-family:var(--font-mono);">0.8654</td>
-                                <td style="font-family:var(--font-mono);">0.8330</td>
-                                <td style="font-family:var(--font-mono);">0.8489</td>
-                                <td style="font-family:var(--font-mono);">0.9272</td>
-                                <td style="font-family:var(--font-mono);">0.0005 ms</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                    <!-- 3 MODEL BENCHMARK CARDS -->
+                    <div class="grid-3col">
+                        <!-- Logistic Regression -->
+                        <div class="hud-block">
+                            <span class="panel-title">Logistic Regression v1.0</span>
+                            <div class="model-card-metric"><span class="metric-name">Accuracy:</span><span class="metric-val">88.55%</span></div>
+                            <div class="model-card-metric"><span class="metric-name">Precision:</span><span class="metric-val">0.8747</span></div>
+                            <div class="model-card-metric"><span class="metric-name">Recall:</span><span class="metric-val">0.9020</span></div>
+                            <div class="model-card-metric"><span class="metric-name">F1 Score:</span><span class="metric-val">0.8881</span></div>
+                            <div class="model-card-metric"><span class="metric-name">ROC-AUC:</span><span class="metric-val">0.9571</span></div>
+                            <div class="model-card-metric"><span class="metric-name">Benchmark Latency:</span><span class="metric-val">0.0008 ms</span></div>
 
-            <!-- CANONICAL 2x2 CONFUSION MATRIX -->
-            <div class="bezel-card">
-                <div class="bezel-core">
-                    <div class="card-header-row">
-                        <div>
-                            <div class="card-title">Canonical 2 &times; 2 Confusion Matrix &amp; Diagnostic Rates</div>
-                            <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">
-                                Rigorous cross-tabulation of ground-truth test partition (10,000 samples) vs classifier decisions.
-                            </p>
+                            <span class="hud-title" style="margin-top:8px;">2×2 Confusion Matrix</span>
+                            <table class="cm-table" aria-label="Logistic Regression Confusion Matrix">
+                                <tr><th></th><th>Pred Neg</th><th>Pred Pos</th></tr>
+                                <tr><th>Actual Neg</th><td class="cm-cell-num">4,310</td><td>651</td></tr>
+                                <tr><th>Actual Pos</th><td>494</td><td class="cm-cell-num">4,545</td></tr>
+                            </table>
                         </div>
-                        <span id="cmActiveModelLabel" style="font-family:var(--font-mono); font-size:11px; color:var(--action-primary); font-weight:600;">
-                            Logistic Regression v1.0
-                        </span>
+
+                        <!-- Linear SVM -->
+                        <div class="hud-block">
+                            <span class="panel-title">Linear SVM v1.0</span>
+                            <div class="model-card-metric"><span class="metric-name">Accuracy:</span><span class="metric-val">88.40%</span></div>
+                            <div class="model-card-metric"><span class="metric-name">Precision:</span><span class="metric-val">0.8751</span></div>
+                            <div class="model-card-metric"><span class="metric-name">Recall:</span><span class="metric-val">0.8980</span></div>
+                            <div class="model-card-metric"><span class="metric-name">F1 Score:</span><span class="metric-val">0.8864</span></div>
+                            <div class="model-card-metric"><span class="metric-name">ROC-AUC:</span><span class="metric-val">0.9534</span></div>
+                            <div class="model-card-metric"><span class="metric-name">Benchmark Latency:</span><span class="metric-val">0.0022 ms</span></div>
+
+                            <span class="hud-title" style="margin-top:8px;">2×2 Confusion Matrix</span>
+                            <table class="cm-table" aria-label="Linear SVM Confusion Matrix">
+                                <tr><th></th><th>Pred Neg</th><th>Pred Pos</th></tr>
+                                <tr><th>Actual Neg</th><td class="cm-cell-num">4,315</td><td>646</td></tr>
+                                <tr><th>Actual Pos</th><td>514</td><td class="cm-cell-num">4,525</td></tr>
+                            </table>
+                        </div>
+
+                        <!-- Naive Bayes -->
+                        <div class="hud-block">
+                            <span class="panel-title">Multinomial Naive Bayes</span>
+                            <div class="model-card-metric"><span class="metric-name">Accuracy:</span><span class="metric-val">85.10%</span></div>
+                            <div class="model-card-metric"><span class="metric-name">Precision:</span><span class="metric-val">0.8471</span></div>
+                            <div class="model-card-metric"><span class="metric-name">Recall:</span><span class="metric-val">0.8595</span></div>
+                            <div class="model-card-metric"><span class="metric-name">F1 Score:</span><span class="metric-val">0.8532</span></div>
+                            <div class="model-card-metric"><span class="metric-name">ROC-AUC:</span><span class="metric-val">0.9255</span></div>
+                            <div class="model-card-metric"><span class="metric-name">Benchmark Latency:</span><span class="metric-val">0.0005 ms</span></div>
+
+                            <span class="hud-title" style="margin-top:8px;">2×2 Confusion Matrix</span>
+                            <table class="cm-table" aria-label="Naive Bayes Confusion Matrix">
+                                <tr><th></th><th>Pred Neg</th><th>Pred Pos</th></tr>
+                                <tr><th>Actual Neg</th><td class="cm-cell-num">4,179</td><td>782</td></tr>
+                                <tr><th>Actual Pos</th><td>708</td><td class="cm-cell-num">4,331</td></tr>
+                            </table>
+                        </div>
                     </div>
 
-                    <!-- MODEL SWITCHER -->
-                    <div class="model-toggle-strip" role="group" aria-label="Confusion Matrix Model Switcher">
-                        <button type="button" class="model-toggle-btn active" onclick="switchMatrixModel('logistic_regression', this)">Logistic Regression</button>
-                        <button type="button" class="model-toggle-btn" onclick="switchMatrixModel('linear_svm', this)">Linear SVM</button>
-                        <button type="button" class="model-toggle-btn" onclick="switchMatrixModel('naive_bayes', this)">Multinomial NB</button>
-                    </div>
-
-                    <!-- 2x2 TABLE -->
-                    <div class="matrix-table-wrapper">
-                        <table class="matrix-table" aria-label="Canonical 2x2 Confusion Matrix">
-                            <thead>
-                                <tr>
-                                    <th class="matrix-corner" scope="col">Actual \ Predicted</th>
-                                    <th class="matrix-header-cell" scope="col">Predicted Negative</th>
-                                    <th class="matrix-header-cell" scope="col">Predicted Positive</th>
-                                    <th class="matrix-header-cell" scope="col">Total Actual</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th class="matrix-row-header" scope="row">Actual Negative</th>
-                                    <td class="matrix-quadrant quadrant-tn">
-                                        <div class="matrix-quadrant-title">True Negative (TN)</div>
-                                        <div class="matrix-quadrant-num" id="val-tn">4,310</div>
-                                        <div class="matrix-quadrant-pct" id="pct-tn">43.10%</div>
-                                    </td>
-                                    <td class="matrix-quadrant quadrant-fp">
-                                        <div class="matrix-quadrant-title">False Positive (FP)</div>
-                                        <div class="matrix-quadrant-num" id="val-fp">651</div>
-                                        <div class="matrix-quadrant-pct" id="pct-fp">6.51% (Type I)</div>
-                                    </td>
-                                    <td class="matrix-total-cell" id="cm-total-neg">4,961</td>
-                                </tr>
-                                <tr>
-                                    <th class="matrix-row-header" scope="row">Actual Positive</th>
-                                    <td class="matrix-quadrant quadrant-fn">
-                                        <div class="matrix-quadrant-title">False Negative (FN)</div>
-                                        <div class="matrix-quadrant-num" id="val-fn">494</div>
-                                        <div class="matrix-quadrant-pct" id="pct-fn">4.94% (Type II)</div>
-                                    </td>
-                                    <td class="matrix-quadrant quadrant-tp">
-                                        <div class="matrix-quadrant-title">True Positive (TP)</div>
-                                        <div class="matrix-quadrant-num" id="val-tp">4,545</div>
-                                        <div class="matrix-quadrant-pct" id="pct-tp">45.45%</div>
-                                    </td>
-                                    <td class="matrix-total-cell" id="cm-total-pos">5,039</td>
-                                </tr>
-                                <tr>
-                                    <th class="matrix-row-header" scope="row">Total Predicted</th>
-                                    <td class="matrix-total-cell" id="cm-col-neg">4,804</td>
-                                    <td class="matrix-total-cell" id="cm-col-pos">5,196</td>
-                                    <td class="matrix-total-cell" style="color:var(--text-primary); font-weight:700;" id="cm-grand-total">10,000</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- ANALYTICAL RATES -->
-                    <div class="matrix-rates-grid">
-                        <div class="rate-card">
-                            <div class="rate-label">Sensitivity / Recall (TP Rate)</div>
-                            <div class="rate-value" id="cm-sensitivity">90.20%</div>
-                        </div>
-                        <div class="rate-card">
-                            <div class="rate-label">Specificity (TN Rate)</div>
-                            <div class="rate-value" id="cm-specificity">86.88%</div>
-                        </div>
-                        <div class="rate-card">
-                            <div class="rate-label">Precision / PPV</div>
-                            <div class="rate-value" id="cm-precision">87.47%</div>
-                        </div>
-                        <div class="rate-card">
-                            <div class="rate-label">Overall Accuracy</div>
-                            <div class="rate-value" id="cm-accuracy">88.55%</div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
 
         <!-- TAB 4: TELEMETRY & HISTORY -->
         <section id="view-telemetry" class="view-panel" role="tabpanel" aria-labelledby="tab-telemetry">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="card-title">Total Analyses Ingested</div>
-                    <div class="stat-num" id="stTotal">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="card-title">Positive Signals</div>
-                    <div class="stat-num" style="color:var(--signal-positive);" id="stPos">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="card-title">Negative Signals</div>
-                    <div class="stat-num" style="color:var(--signal-negative);" id="stNeg">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="card-title">Latency P95 Percentile</div>
-                    <div class="stat-num" id="stP95">0.00 <span style="font-size:14px; color:var(--text-muted);">ms</span></div>
-                </div>
-            </div>
-
-            <div class="bezel-card" style="margin-bottom:20px;">
-                <div class="bezel-core">
-                    <div class="card-header-row" style="margin-bottom:12px;">
-                        <div>
-                            <div class="card-title">Operational Telemetry Records</div>
-                            <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">
-                                Chronological audit ledger. Click any record row or card to inspect forensic details.
-                            </p>
+            <div class="chassis-card">
+                <div class="core-well">
+                    <div class="panel-header">
+                        <span class="panel-title">Production Telemetry &amp; SQLite Audit Journal</span>
+                        <div style="display:flex; gap:8px;">
+                            <button class="btn-export" onclick="exportData('csv')">Export CSV</button>
+                            <button class="btn-export" onclick="exportData('json')">Export JSON</button>
                         </div>
                     </div>
 
-                    <!-- TELEMETRY FILTERING TOOLBAR -->
-                    <div class="telemetry-toolbar">
-                        <div class="filter-sentiment-group" role="group" aria-label="Filter by Classification Sentiment">
-                            <button type="button" class="filter-btn active" data-sentiment="ALL" onclick="setSentimentFilter('ALL', this)">All</button>
-                            <button type="button" class="filter-btn" data-sentiment="Positive" onclick="setSentimentFilter('Positive', this)">Positive</button>
-                            <button type="button" class="filter-btn" data-sentiment="Negative" onclick="setSentimentFilter('Negative', this)">Negative</button>
-                            <button type="button" class="filter-btn" data-sentiment="Neutral" onclick="setSentimentFilter('Neutral', this)">Neutral</button>
+                    <!-- ANALYTICS HUD TILES -->
+                    <div class="benchmark-hero">
+                        <div class="stat-tile">
+                            <span class="stat-tile-label">Total Inferences</span>
+                            <span id="statTotal" class="stat-tile-val">0</span>
                         </div>
-
-                        <div class="filter-controls-group">
-                            <select id="filterEngine" class="filter-select" aria-label="Filter by Classifier Model" onchange="applyTelemetryFilters()">
-                                <option value="ALL">All Classifier Models</option>
-                                <option value="logistic_regression">Logistic Regression</option>
-                                <option value="linear_svm">Linear SVM</option>
-                                <option value="naive_bayes">Multinomial Naive Bayes</option>
-                            </select>
-
-                            <input type="search" id="filterSearch" class="filter-search-input" placeholder="Search by Request ID, emotion, engine..." aria-label="Search telemetry records" oninput="applyTelemetryFilters()">
-
-                            <button type="button" id="btnRefreshHistory" onclick="refreshHistory()" class="btn-outline" aria-label="Refresh operational telemetry records">Refresh Log</button>
+                        <div class="stat-tile">
+                            <span class="stat-tile-label">Sentiment Spread (Pos / Neg / Neu)</span>
+                            <span id="statSpread" class="stat-tile-val" style="font-size:16px;">0 / 0 / 0</span>
+                        </div>
+                        <div class="stat-tile">
+                            <span class="stat-tile-label">Avg Execution Latency</span>
+                            <span id="statAvgLat" class="stat-tile-val">0.00 ms</span>
+                        </div>
+                        <div class="stat-tile">
+                            <span class="stat-tile-label">P95 / P99 Latency</span>
+                            <span id="statPercentiles" class="stat-tile-val" style="font-size:16px;">— / —</span>
                         </div>
                     </div>
 
-                    <!-- ACCESSIBLE EMPTY STATE -->
-                    <div id="telemetryEmptyState" class="telemetry-empty-state" role="status" aria-live="polite">
-                        <span class="empty-icon">&#8856;</span>
-                        <div class="empty-title">No telemetry records match the current filters.</div>
-                        <div class="empty-desc">Adjust your sentiment filter, model selection, or search query to view operational records.</div>
-                        <button type="button" onclick="resetTelemetryFilters()" class="btn-outline" style="margin-top:12px;">Reset Filters</button>
+                    <!-- SEARCH & REFRESH TOOLBAR -->
+                    <div class="table-actions-strip">
+                        <input type="text" id="historyFilter" class="filter-input" placeholder="Filter by engine or sentiment..." oninput="filterHistoryTable()">
+                        <button class="btn-export" onclick="fetchTelemetryData()">Refresh Audit Log</button>
                     </div>
 
-                    <!-- DESKTOP VIEW: TABULAR FORMAT (>= 768px) -->
-                    <div class="desktop-telemetry-view" style="overflow-x:auto;">
-                        <table aria-label="Operational Telemetry Audit Log">
+                    <!-- AUDIT TABLE (10 REAL FIELDS) -->
+                    <div class="table-wrap">
+                        <table class="audit-table" aria-label="Telemetry History Records">
                             <thead>
                                 <tr>
-                                    <th>Timestamp (UTC)</th>
+                                    <th>ID</th>
                                     <th>Request ID</th>
                                     <th>Engine</th>
-                                    <th>Classification</th>
-                                    <th>Polarity Score</th>
+                                    <th>Sentiment</th>
+                                    <th>Polarity</th>
                                     <th>Confidence</th>
+                                    <th>Affective State</th>
                                     <th>Latency</th>
-                                    <th>Feedback</th>
+                                    <th>Audit Feedback</th>
+                                    <th>Timestamp</th>
                                 </tr>
                             </thead>
                             <tbody id="historyTableBody">
-                                <tr><td colspan="8" style="text-align:center; color:var(--text-muted);">Loading telemetry records...</td></tr>
+                                <tr>
+                                    <td colspan="10" style="text-align:center; color:var(--text-muted); padding:20px;">Loading telemetry records...</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <!-- MOBILE VIEW: STACKED INTELLIGENCE RECORDS (< 768px) -->
-                    <div class="mobile-telemetry-view" id="mobileHistoryContainer" aria-label="Operational Telemetry Cards">
-                        <div style="text-align:center; color:var(--text-muted); padding:20px;">Loading telemetry records...</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- OPERATIONAL EXPORTS -->
-            <div class="bezel-card">
-                <div class="bezel-core">
-                    <div class="card-header-row" style="margin-bottom:0;">
-                        <div>
-                            <div class="card-title" style="margin-bottom:2px;">Operational Telemetry Export</div>
-                            <p style="font-size:12px; color:var(--text-muted);">Export production database logs for compliance, governance, and model monitoring.</p>
-                        </div>
-                        <div style="display:flex; gap:10px;">
-                            <button onclick="window.location.href='/api/v1/export/csv'" class="btn-outline">Export CSV File</button>
-                            <button onclick="window.location.href='/api/v1/export/json'" class="btn-outline">Export JSON Stream</button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- TAB 5: API DOCUMENTATION -->
+        <!-- TAB 5: API INTERFACE & DEVELOPER -->
         <section id="view-developer" class="view-panel" role="tabpanel" aria-labelledby="tab-developer">
             <div class="grid-2col">
-                <div class="bezel-card">
-                    <div class="bezel-core">
-                        <div class="card-header-row">
-                            <span class="card-title">Interactive Console: POST /api/v1/predict</span>
-                            <span style="font-family:var(--font-mono); font-size:11px; color:var(--signal-positive);">HTTP 200 OK</span>
+
+                <!-- REST CLIENT SANDBOX -->
+                <div class="chassis-card">
+                    <div class="core-well">
+                        <div class="panel-header">
+                            <span class="panel-title">Interactive REST Sandbox: POST /api/v1/predict</span>
+                            <span id="apiStatusTag" class="badge-version">READY</span>
                         </div>
-                        <textarea id="apiPayload" style="width:100%; height:120px; background:var(--surface-well); border:1px solid var(--border-hairline); color:var(--text-primary); font-family:var(--font-mono); font-size:12px; padding:12px; border-radius:var(--radius-control); outline:none;">{
+                        <label for="devPayload" class="picker-label">JSON Payload:</label>
+                        <textarea id="devPayload" class="api-editor" aria-label="JSON Request Payload">{
   "text": "The performance was truly spectacular, elegant and deeply engaging.",
   "model_choice": "logistic_regression"
 }</textarea>
-                        <div style="margin-top:12px; display:flex; justify-content:flex-end;">
-                            <button id="btnTestApi" onclick="testAPI()" class="btn-primary">Send Test Request</button>
+                        <div style="display:flex; justify-content:flex-end;">
+                            <button id="btnSendApi" class="btn-primary" onclick="sendApiRequest()">
+                                <span>Send Test Request</span>
+                                <span class="btn-icon-pill">→</span>
+                            </button>
                         </div>
-                        <pre id="apiResponse" style="background:var(--surface-well); padding:14px; border:1px solid var(--border-hairline); min-height:180px; margin-top:14px; color:var(--text-body); font-family:var(--font-mono); font-size:11px; border-radius:var(--radius-control); overflow-x:auto;">// Output will render here...</pre>
+                        <label class="picker-label">Server Response:</label>
+                        <pre id="devResponse" class="api-response-pre">// Response will render here upon request execution...</pre>
                     </div>
                 </div>
 
-                <div class="bezel-card">
-                    <div class="bezel-core">
-                        <div class="card-title" style="margin-bottom:14px;">Core System Diagnostics</div>
-                        <div style="font-size:12px; line-height:2.0; color:var(--text-primary);">
-                            <div style="border-bottom:1px solid var(--border-subtle); padding-bottom:10px; margin-bottom:10px;">
-                                <span style="color:var(--text-muted);">API Gateway:</span> <span style="float:right; color:var(--signal-positive); font-family:var(--font-mono);">ONLINE (FastAPI 0.110+)</span><br>
-                                <span style="color:var(--text-muted);">Storage Engine:</span> <span style="float:right; color:var(--signal-positive); font-family:var(--font-mono);">SQLITE CONNECTED</span><br>
-                                <span style="color:var(--text-muted);">Active Models:</span> <span style="float:right; color:var(--text-primary); font-family:var(--font-mono);">3 ENGINES READY</span><br>
-                                <span style="color:var(--text-muted);">Platform Build:</span> <span style="float:right; font-family:var(--font-mono);">v14.3.0-PROD</span>
+                <!-- SYSTEM DIAGNOSTICS -->
+                <div class="chassis-card">
+                    <div class="core-well">
+                        <div class="panel-header">
+                            <span class="panel-title">Core System Health &amp; Gateway Diagnostics</span>
+                            <button class="btn-export" onclick="checkHealth()">Ping /health</button>
+                        </div>
+                        <div class="model-card-metric"><span class="metric-name">API Gateway:</span><span class="metric-val" id="diagStatus">ONLINE (FastAPI)</span></div>
+                        <div class="model-card-metric"><span class="metric-name">Storage Engine:</span><span class="metric-val" id="diagDb">SQLITE CONNECTED</span></div>
+                        <div class="model-card-metric"><span class="metric-name">Active Models:</span><span class="metric-val" id="diagModels">3 ENGINES READY</span></div>
+                        <div class="model-card-metric"><span class="metric-name">TF-IDF Vectorizer:</span><span class="metric-val" id="diagVec">LOADED (5,000 Features)</span></div>
+                        <div class="model-card-metric"><span class="metric-name">Platform Release:</span><span class="metric-val">v14.3.0-PROD</span></div>
+
+                        <div style="border-top:1px solid var(--border-hairline); padding-top:14px; margin-top:10px;">
+                            <span class="panel-title" style="margin-bottom:8px;">Interactive API Specifications</span>
+                            <div style="display:flex; gap:12px; margin-top:8px;">
+                                <a href="/docs" target="_blank" rel="noopener noreferrer" class="btn-export" style="text-decoration:none;">Open Swagger UI (/docs)</a>
+                                <a href="/redoc" target="_blank" rel="noopener noreferrer" class="btn-export" style="text-decoration:none;">Open ReDoc (/redoc)</a>
                             </div>
-                            <div style="font-size:12px; color:var(--text-muted);">
-                                <strong>Enterprise Governance:</strong> Raw natural language text is SHA-256 redacted by default prior to database persistence to maintain strict executive privacy compliance.
-                            </div>
+                        </div>
+
+                        <div style="border-top:1px solid var(--border-hairline); padding-top:14px; margin-top:10px; font-size:11.5px; color:var(--text-muted); line-height:1.6;">
+                            <strong>Enterprise Governance Policy:</strong> Natural language input is transmitted securely over HTTP/TLS. Raw natural language text is anonymized with SHA-256 digests prior to SQLite storage when STORE_RAW_TEXT is disabled.
                         </div>
                     </div>
                 </div>
+
             </div>
         </section>
-    </main>
+
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="appToast" class="toast-banner" role="alert" aria-live="polite">
+        <span id="toastIcon">ℹ️</span>
+        <span id="toastMessage" style="flex:1;">Notification content</span>
+        <button type="button" class="toast-close" onclick="dismissToast()" aria-label="Dismiss alert">&times;</button>
+    </div>
 
     <script>
         // --- RESTFUL UI CONTROLLER ---
-        const canvas = document.getElementById('neuralCanvas');
-        const ctx = canvas.getContext('2d');
-        let time = 0;
-        let isAnalyzing = false;
-        let currentSignalState = 'idle'; // 'idle', 'processing', 'positive', 'negative', 'neutral'
-        let animFrameId = null;
-        let currentTabId = 'analyze';
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        let benchmarkCache = null;
-
-        // Telemetry State
-        let cachedHistoryList = [];
-        let activeSentimentFilter = 'ALL';
-        let activeEngineFilter = 'ALL';
-        let activeSearchQuery = '';
-        const expandedRecordIds = new Set();
-
-        // Model Choice Mapping for Header and XAI Labels
-        const MODEL_NAMES = {
-            logistic_regression: "Logistic Regression v1.0",
-            linear_svm: "Linear SVM v1.0",
-            naive_bayes: "Multinomial Naive Bayes"
-        };
-
-        function onModelChoiceChange() {
-            const sel = document.getElementById('modelChoice');
-            const chosen = sel.value;
-            const xaiLabel = document.getElementById('xaiEngineLabel');
-            if (xaiLabel) {
-                xaiLabel.innerText = "Active Attribution: " + (MODEL_NAMES[chosen] || chosen);
-            }
-        }
-
-        // Demonstration Presets
-        const PRESETS = {
-            pos: "The operational execution was flawless, delivering outstanding efficiency.",
-            neg: "The system suffered severe outages and unacceptably sluggish response times.",
-            mixed: "The visual execution was extraordinary, though the pacing dragged considerably."
-        };
-
-        function applyPreset(key) {
-            const text = PRESETS[key] || '';
-            const input = document.getElementById('nlpInput');
-            input.value = text;
-            updateInputMetrics();
-            input.focus();
-        }
-
-        function clearInput() {
-            const input = document.getElementById('nlpInput');
-            input.value = '';
-            updateInputMetrics();
-            input.focus();
-        }
-
-        function updateInputMetrics() {
-            const input = document.getElementById('nlpInput');
-            const text = input.value;
-            const charLen = text.length;
-            const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-            document.getElementById('charCount').innerText = `${charLen} / 5000 chars`;
-            document.getElementById('wordCount').innerText = `${words} word${words === 1 ? '' : 's'}`;
-        }
-
-        document.getElementById('nlpInput').addEventListener('input', updateInputMetrics);
-
-        // Keyboard shortcut listener: Ctrl+Enter / Cmd+Enter execution
-        document.getElementById('nlpInput').addEventListener('keydown', (e) => {
-            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-                e.preventDefault();
-                if (!isAnalyzing) {
-                    executeInference();
-                }
-            }
-        });
-
-        // In-App Accessible Notification (Replacing native alert)
-        function showNotification(title, message, type = 'error') {
-            const el = document.getElementById('appNotification');
-            const icon = document.getElementById('notificationIcon');
-            const titleEl = document.getElementById('notificationTitle');
-            const msgEl = document.getElementById('notificationMessage');
-
-            titleEl.innerText = title;
-            msgEl.innerText = message;
-            el.className = 'app-notification notification-' + type;
-            icon.innerHTML = type === 'error' ? '&#9888;' : '&#8505;';
-            el.style.display = 'flex';
-
-            clearTimeout(window.notificationTimeout);
-            window.notificationTimeout = setTimeout(() => {
-                dismissNotification();
-            }, 6000);
-        }
-
-        function dismissNotification() {
-            const el = document.getElementById('appNotification');
-            if (el) el.style.display = 'none';
-        }
-
-        // Signal Visualization Semantics (Explicit state terminology)
-        const SIGNAL_LABELS = {
-            idle: "STANDBY",
-            processing: "ANALYZING",
-            positive: "POSITIVE CLASSIFICATION",
-            negative: "NEGATIVE CLASSIFICATION",
-            neutral: "NEUTRAL CLASSIFICATION"
-        };
-
-        function updateSignalStatus(state) {
-            currentSignalState = state;
-            const statusEl = document.getElementById('signalStatus');
-            if (!statusEl) return;
-
-            const label = SIGNAL_LABELS[state] || "STANDBY";
-            let dotColor = 'var(--signal-neutral)';
-
-            if (state === 'idle') {
-                dotColor = 'var(--signal-neutral)';
-                statusEl.className = 'signal-state-indicator';
-            } else if (state === 'processing') {
-                dotColor = 'var(--border-focus)';
-                statusEl.className = 'signal-state-indicator state-proc';
-            } else if (state === 'positive') {
-                dotColor = 'var(--signal-positive)';
-                statusEl.className = 'signal-state-indicator state-pos';
-            } else if (state === 'negative') {
-                dotColor = 'var(--signal-negative)';
-                statusEl.className = 'signal-state-indicator state-neg';
-            } else if (state === 'neutral') {
-                dotColor = 'var(--signal-neutral)';
-                statusEl.className = 'signal-state-indicator';
-            }
-
-            statusEl.innerHTML = `<span class="status-dot" style="width:5px; height:5px; background:${dotColor}; box-shadow:0 0 5px ${dotColor};"></span><span>${label}</span>`;
-        }
-
-        function drawHarmonicWave() {
-            if (prefersReducedMotion) {
-                canvas.width = canvas.offsetWidth;
-                canvas.height = canvas.offsetHeight;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.beginPath();
-                ctx.moveTo(0, canvas.height / 2);
-                ctx.lineTo(canvas.width, canvas.height / 2);
-                ctx.strokeStyle = 'rgba(148, 163, 184, 0.3)';
-                ctx.lineWidth = 1;
-                ctx.stroke();
-                return;
-            }
-
-            // Strict lifecycle performance — stop when hidden or not on analyze tab
-            if (document.visibilityState === 'hidden' || currentTabId !== 'analyze') {
-                animFrameId = null;
-                return;
-            }
-
-            // Zero-dimension defensive guard: prevent division by zero, NaN coordinates, and layout thrashing
-            const cWidth = canvas.offsetWidth;
-            const cHeight = canvas.offsetHeight;
-            if (!cWidth || !cHeight || cWidth <= 0 || cHeight <= 0) {
-                animFrameId = requestAnimationFrame(drawHarmonicWave);
-                return;
-            }
-
-            canvas.width = cWidth;
-            canvas.height = cHeight;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            const width = canvas.width;
-            const height = canvas.height;
-            const centerY = height / 2;
-
-            let speedMult = 0.8;
-            let ampMult = 0.9;
-            let waveColors = ['rgba(148, 163, 184, 0.35)', 'rgba(59, 130, 246, 0.25)'];
-
-            if (currentSignalState === 'processing') {
-                speedMult = 2.8;
-                ampMult = 1.6;
-                waveColors = ['rgba(59, 130, 246, 0.65)', 'rgba(37, 99, 235, 0.50)'];
-            } else if (currentSignalState === 'positive') {
-                speedMult = 1.1;
-                ampMult = 1.0;
-                waveColors = ['rgba(16, 185, 129, 0.60)', 'rgba(5, 150, 105, 0.35)'];
-            } else if (currentSignalState === 'negative') {
-                speedMult = 1.7;
-                ampMult = 1.3;
-                waveColors = ['rgba(244, 63, 94, 0.60)', 'rgba(225, 29, 72, 0.35)'];
-            } else if (currentSignalState === 'neutral') {
-                speedMult = 0.9;
-                ampMult = 0.8;
-                waveColors = ['rgba(148, 163, 184, 0.50)', 'rgba(100, 116, 139, 0.30)'];
-            }
-
-            for (let i = 0; i < waveColors.length; i++) {
-                ctx.beginPath();
-                ctx.moveTo(0, centerY);
-                for (let x = 0; x < width; x++) {
-                    const frequency = 0.008 + (i * 0.004);
-                    const amplitude = (7 + Math.sin(time * 0.4 + i) * 5) * ampMult;
-                    const offset = time * (1.0 + i) * 15 * speedMult;
-                    const envelope = Math.sin((x / width) * Math.PI);
-                    const y = centerY + Math.sin(x * frequency + (offset * 0.02)) * amplitude * envelope;
-                    ctx.lineTo(x, y);
-                }
-                ctx.strokeStyle = waveColors[i];
-                ctx.lineWidth = 1.5;
-                ctx.stroke();
-            }
-
-            time += 0.015 * speedMult;
-            animFrameId = requestAnimationFrame(drawHarmonicWave);
-        }
-
-        function startWaveformIfActive() {
-            if (!animFrameId && !prefersReducedMotion && document.visibilityState === 'visible' && currentTabId === 'analyze') {
-                animFrameId = requestAnimationFrame(drawHarmonicWave);
-            }
-        }
-
-        document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'visible') {
-                startWaveformIfActive();
-            } else {
-                if (animFrameId) {
-                    cancelAnimationFrame(animFrameId);
-                    animFrameId = null;
-                }
-            }
-        });
-
-        startWaveformIfActive();
-
-        // URL Hash Navigation & Tab Synchronization
         const VALID_VIEWS = ['analyze', 'consensus', 'benchmarks', 'telemetry', 'developer'];
         let isInternalHashUpdate = false;
+        let isAnalyzing = false;
+        let historyRecordsCache = [];
 
+        // Tab Switching & Hash Navigation Sync
         function switchTab(viewId, updateHash = true) {
-            if (!VALID_VIEWS.includes(viewId)) {
-                viewId = 'analyze';
-            }
-            currentTabId = viewId;
+            if (!VALID_VIEWS.includes(viewId)) return;
 
-            document.querySelectorAll('.view-panel').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => {
-                el.classList.remove('active');
-                el.setAttribute('aria-selected', 'false');
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                const isActive = (btn.id === 'tab-' + viewId);
+                btn.classList.toggle('active', isActive);
+                btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
             });
 
-            const targetView = document.getElementById('view-' + viewId);
-            if (targetView) targetView.classList.add('active');
-
-            const activeBtn = document.getElementById('tab-' + viewId);
-            if (activeBtn) {
-                activeBtn.classList.add('active');
-                activeBtn.setAttribute('aria-selected', 'true');
-            }
+            document.querySelectorAll('.view-panel').forEach(panel => {
+                panel.classList.toggle('active', panel.id === 'view-' + viewId);
+            });
 
             if (updateHash && window.location.hash !== '#' + viewId) {
                 isInternalHashUpdate = true;
                 window.location.hash = viewId;
             }
 
+            // Lazy data fetching based on active tab
             if (viewId === 'telemetry') {
-                refreshAnalytics();
-                refreshHistory();
-            } else if (viewId === 'benchmarks') {
-                loadBenchmarkData();
-            } else if (viewId === 'analyze') {
-                startWaveformIfActive();
+                fetchTelemetryData();
+            } else if (viewId === 'developer') {
+                checkHealth();
             }
         }
 
@@ -2924,628 +2427,422 @@ def serve_dashboard():
             const hash = window.location.hash.replace(/^#/, '');
             if (VALID_VIEWS.includes(hash)) {
                 switchTab(hash, false);
-            } else if (hash === '') {
-                switchTab('analyze', false);
             } else {
-                switchTab('analyze', true);
+                switchTab('analyze', false);
             }
         }
 
         window.addEventListener('hashchange', handleHashRoute);
 
-        // Feature Attribution Renderer (Proportional Visual Bars)
-        function escapeHtml(str) {
-            if (str === null || str === undefined) return '';
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#39;');
+        // Character & Word Counter
+        const nlpInput = document.getElementById('nlpInput');
+        const charCount = document.getElementById('charCount');
+        const wordCount = document.getElementById('wordCount');
+
+        function updateCounters() {
+            const val = nlpInput.value;
+            charCount.innerText = `${val.length} / 5000 chars`;
+            const words = val.trim().length > 0 ? val.trim().split(/\s+/).filter(Boolean).length : 0;
+            wordCount.innerText = `${words} words`;
         }
 
-        function renderAttributionBars(posDrivers, negDrivers) {
-            const posContainer = document.getElementById('posDrivers');
-            const negContainer = document.getElementById('negDrivers');
+        nlpInput.addEventListener('input', updateCounters);
+        nlpInput.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                executeAnalysis();
+            }
+        });
 
-            const allDrivers = [...(posDrivers || []), ...(negDrivers || [])];
-            const maxWeight = allDrivers.length > 0 ?
-                Math.max(...allDrivers.map(d => Math.abs(d.weight)), 0.0001) : 1;
+        function clearInput() {
+            nlpInput.value = '';
+            updateCounters();
+            nlpInput.focus();
+        }
+
+        // Evaluation Presets
+        const PRESETS = {
+            pos: "An absolute cinematic triumph with mesmerizing visuals, brilliant direction, and profound emotional storytelling.",
+            neg: "A dreadful, disorganized and agonizing waste of valuable time. The pacing was terrible and dialogue awful.",
+            mixed: "The cinematography and acting were exceptional and superb, but the plot was completely dull and slow."
+        };
+
+        function applyPreset(key) {
+            if (PRESETS[key]) {
+                nlpInput.value = PRESETS[key];
+                updateCounters();
+            }
+        }
+
+        // Toast Notifications
+        let toastTimeout = null;
+        function showToast(msg, icon = 'ℹ️') {
+            const toast = document.getElementById('appToast');
+            document.getElementById('toastIcon').innerText = icon;
+            document.getElementById('toastMessage').innerText = msg;
+            toast.classList.add('show');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(dismissToast, 4000);
+        }
+
+        function dismissToast() {
+            document.getElementById('appToast').classList.remove('show');
+        }
+
+        // Single Inference Analysis
+        async function executeAnalysis() {
+            const text = nlpInput.value.trim();
+            if (!text) {
+                showToast("Please provide review discourse text before executing analysis.", "⚠️");
+                nlpInput.focus();
+                return;
+            }
+
+            if (isAnalyzing) return;
+            isAnalyzing = true;
+
+            const btn = document.getElementById('btnAnalyze');
+            const originalBtnHtml = btn.innerHTML;
+            btn.innerHTML = '<span>Analyzing...</span><span class="btn-icon-pill">⏳</span>';
+            btn.disabled = true;
+
+            const engine = document.getElementById('engineSelect').value;
+
+            try {
+                const res = await fetch('/api/v1/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text, model_choice: engine })
+                });
+
+                if (!res.ok) {
+                    const errData = await res.json().catch(() => ({}));
+                    throw new Error(errData.detail || `Server returned HTTP ${res.status}`);
+                }
+
+                const data = await res.json();
+
+                // Update Metadata Strip
+                document.getElementById('resLatency').innerText = `${data.latency_ms.toFixed(2)} ms`;
+                document.getElementById('resTokens').innerText = `${data.tokens_count} tokens`;
+                document.getElementById('resReqId').innerText = data.request_id;
+                document.getElementById('metaStrip').style.display = 'flex';
+
+                // Update Sentiment Badge
+                const sEl = document.getElementById('resSentiment');
+                sEl.className = 'sentiment-badge-large ' + (
+                    data.sentiment === 'Positive' ? 'sentiment-pos' :
+                    data.sentiment === 'Negative' ? 'sentiment-neg' : 'sentiment-neu'
+                );
+                sEl.innerHTML = `<span>${data.sentiment.toUpperCase()}</span><span class="badge-sentiment-tag">${engine.toUpperCase()}</span>`;
+
+                // Update Affective Heuristic
+                document.getElementById('resEmotion').innerText = data.emotion;
+
+                // Update Polarity HUD (ai_score: -1.0000 to +1.0000)
+                const score = data.ai_score;
+                document.getElementById('resPolarityScore').innerText = (score >= 0 ? '+' : '') + score.toFixed(4);
+                const pct = Math.max(0, Math.min(100, ((score + 1) / 2) * 100));
+                document.getElementById('polarityMarker').style.left = `${pct.toFixed(2)}%`;
+
+                // Update Calibrated Confidence
+                document.getElementById('resConfidence').innerText = `${data.confidence.toFixed(2)}%`;
+                document.getElementById('confProgressBar').style.width = `${data.confidence.toFixed(2)}%`;
+                document.getElementById('confProgressTrack').setAttribute('aria-valuenow', data.confidence.toFixed(2));
+
+                // Update Feedback Controls
+                document.getElementById('currentPredId').value = data.prediction_id;
+                document.getElementById('btnConfirmFeedback').disabled = false;
+                document.getElementById('btnFlagFeedback').disabled = false;
+
+                // Render XAI Driver Bars
+                renderXaiDrivers(data.explanation.positive_drivers, data.explanation.negative_drivers);
+
+            } catch (err) {
+                console.error("Inference Error:", err);
+                showToast("Inference Failed: " + err.message, "❌");
+            } finally {
+                btn.innerHTML = originalBtnHtml;
+                btn.disabled = false;
+                isAnalyzing = false;
+            }
+        }
+
+        // Render XAI Drivers
+        function renderXaiDrivers(posDrivers, negDrivers) {
+            const posList = document.getElementById('posDriversList');
+            const negList = document.getElementById('negDriversList');
+
+            const all = [...(posDrivers || []), ...(negDrivers || [])];
+            const maxWeight = all.length > 0 ? Math.max(...all.map(d => Math.abs(d.weight)), 0.0001) : 1;
 
             if (!posDrivers || posDrivers.length === 0) {
-                posContainer.innerHTML = '<div class="driver-empty-hint">None detected within vocabulary</div>';
+                posList.innerHTML = '<div class="driver-empty">None detected within vocabulary</div>';
             } else {
-                posContainer.innerHTML = posDrivers.map(d => {
-                    const absVal = Math.abs(d.weight);
-                    const widthPct = Math.min(100, Math.max(6, Math.round((absVal / maxWeight) * 100)));
-                    const weightStr = `+${Number(d.weight).toFixed(4)}`;
-                    const safeToken = escapeHtml(d.token);
-                    const titleText = `Token: ${safeToken}&#10;Weight: ${weightStr}&#10;Formula: TF-IDF &times; Model Coefficient`;
-
+                posList.innerHTML = posDrivers.map(d => {
+                    const absW = Math.abs(d.weight);
+                    const widthPct = Math.min(100, Math.max(8, Math.round((absW / maxWeight) * 100)));
                     return `
-                        <div class="driver-bar-row" title="${titleText}">
-                            <span class="driver-token" title="${safeToken}">${safeToken}</span>
-                            <div class="driver-bar-track" role="meter" aria-label="Token ${safeToken}: weight ${weightStr}" aria-valuenow="${absVal.toFixed(4)}" aria-valuemin="0" aria-valuemax="${maxWeight.toFixed(4)}">
-                                <div class="driver-bar-fill driver-bar-fill-pos" style="width: ${widthPct}%;"></div>
+                        <div class="driver-bar-row" title="Token: ${escapeHtml(d.token)} | Weight: +${d.weight.toFixed(4)}">
+                            <span class="driver-token">${escapeHtml(d.token)}</span>
+                            <div class="driver-bar-track">
+                                <div class="driver-bar-fill pos" style="width: ${widthPct}%;"></div>
                             </div>
-                            <span class="driver-val driver-val-pos">${weightStr}</span>
+                            <span class="driver-weight pos">+${d.weight.toFixed(4)}</span>
                         </div>
                     `;
                 }).join('');
             }
 
             if (!negDrivers || negDrivers.length === 0) {
-                negContainer.innerHTML = '<div class="driver-empty-hint">None detected within vocabulary</div>';
+                negList.innerHTML = '<div class="driver-empty">None detected within vocabulary</div>';
             } else {
-                negContainer.innerHTML = negDrivers.map(d => {
-                    const absVal = Math.abs(d.weight);
-                    const widthPct = Math.min(100, Math.max(6, Math.round((absVal / maxWeight) * 100)));
-                    const weightStr = `${Number(d.weight).toFixed(4)}`;
-                    const safeToken = escapeHtml(d.token);
-                    const titleText = `Token: ${safeToken}&#10;Weight: ${weightStr}&#10;Formula: TF-IDF &times; Model Coefficient`;
-
+                negList.innerHTML = negDrivers.map(d => {
+                    const absW = Math.abs(d.weight);
+                    const widthPct = Math.min(100, Math.max(8, Math.round((absW / maxWeight) * 100)));
                     return `
-                        <div class="driver-bar-row" title="${titleText}">
-                            <span class="driver-token" title="${safeToken}">${safeToken}</span>
-                            <div class="driver-bar-track" role="meter" aria-label="Token ${safeToken}: weight ${weightStr}" aria-valuenow="${absVal.toFixed(4)}" aria-valuemin="0" aria-valuemax="${maxWeight.toFixed(4)}">
-                                <div class="driver-bar-fill driver-bar-fill-neg" style="width: ${widthPct}%;"></div>
+                        <div class="driver-bar-row" title="Token: ${escapeHtml(d.token)} | Weight: ${d.weight.toFixed(4)}">
+                            <span class="driver-token">${escapeHtml(d.token)}</span>
+                            <div class="driver-bar-track">
+                                <div class="driver-bar-fill neg" style="width: ${widthPct}%;"></div>
                             </div>
-                            <span class="driver-val driver-val-neg">${weightStr}</span>
+                            <span class="driver-weight neg">${d.weight.toFixed(4)}</span>
                         </div>
                     `;
                 }).join('');
             }
         }
 
-        // Execute Single Inference
-        async function executeInference() {
-            const text = document.getElementById('nlpInput').value.trim();
-            const modelChoice = document.getElementById('modelChoice').value;
-            if (!text) {
-                showNotification("Input Validation", "Please enter natural language text before executing analysis.", "warning");
-                return;
-            }
+        // Feedback Submission
+        async function submitFeedbackAction(isCorrect) {
+            const predId = document.getElementById('currentPredId').value;
+            if (!predId) return;
 
-            const btn = document.getElementById('execBtn');
-            btn.innerText = "Analyzing...";
-            btn.disabled = true;
-            isAnalyzing = true;
-            updateSignalStatus('processing');
-            document.getElementById('feedConfirm').style.display = 'none';
-
-            try {
-                const res = await fetch('/api/v1/predict', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ text: text, model_choice: modelChoice })
-                });
-
-                if (!res.ok) {
-                    const err = await res.json();
-                    showNotification("Analysis Execution Error", err.detail || "Request failed to process.", "error");
-                    updateSignalStatus('idle');
-                    return;
-                }
-
-                const data = await res.json();
-
-                let sign = data.ai_score > 0 ? '+' : '';
-                document.getElementById('resScore').innerText = `${sign}${data.ai_score.toFixed(4)}`;
-
-                const badge = document.getElementById('resSentiment');
-                badge.innerText = data.sentiment;
-                badge.className = 'badge-sentiment ' + (
-                    data.sentiment === 'Positive' ? 'badge-pos' : 
-                    data.sentiment === 'Negative' ? 'badge-neg' : 'badge-neu'
-                );
-
-                // Update Bipolar Gauge Position (-1.00 to +1.00 mapped to 0% to 100%)
-                const pct = Math.max(0, Math.min(100, ((data.ai_score + 1.0) / 2.0) * 100.0));
-                const indicator = document.getElementById('polarityIndicator');
-                indicator.style.left = `${pct.toFixed(2)}%`;
-                indicator.className = 'polarity-indicator ' + (
-                    data.sentiment === 'Positive' ? 'indicator-pos' : 
-                    data.sentiment === 'Negative' ? 'indicator-neg' : 'indicator-neu'
-                );
-
-                document.getElementById('resConfidence').innerText = `Confidence: ${data.confidence}%`;
-                document.getElementById('resEmotion').innerText = data.emotion;
-                document.getElementById('resLatency').innerText = `${data.latency_ms} ms`;
-                document.getElementById('resReqId').innerText = data.request_id;
-                document.getElementById('currentPredId').value = data.prediction_id;
-
-                // Render Attribution Drivers as Proportional Bars
-                renderAttributionBars(
-                    data.explanation.positive_drivers,
-                    data.explanation.negative_drivers
-                );
-
-                // Update Waveform & Status according to actual inference result
-                if (data.sentiment === 'Positive') {
-                    updateSignalStatus('positive');
-                } else if (data.sentiment === 'Negative') {
-                    updateSignalStatus('negative');
-                } else {
-                    updateSignalStatus('neutral');
-                }
-
-            } catch (e) {
-                console.error("Inference execution error:", e);
-                showNotification("Network Error", "Failed to connect to the inference server.", "error");
-                updateSignalStatus('idle');
-            } finally {
-                btn.innerText = "Execute Analysis";
-                btn.disabled = false;
-                isAnalyzing = false;
-            }
-        }
-
-        // Execute Consensus with Restrained Loading State
-        async function executeConsensus() {
-            const text = document.getElementById('nlpInput').value.trim();
-            if (!text) {
-                showNotification("Input Required", "Please enter natural language text in the Inference Console first.", "warning");
-                switchTab('analyze');
-                return;
-            }
-
-            const btn = document.getElementById('btnConsensusRun');
-            if (btn) {
-                btn.innerText = "Evaluating Models...";
-                btn.disabled = true;
-            }
-
-            try {
-                const res = await fetch('/api/v1/consensus', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ text: text })
-                });
-
-                if (!res.ok) {
-                    const err = await res.json();
-                    showNotification("Consensus Error", err.detail || "Consensus execution failed.", "error");
-                    return;
-                }
-
-                const data = await res.json();
-                const banner = document.getElementById('consensusBanner');
-                banner.style.display = 'block';
-
-                if (data.disagreement_detected) {
-                    banner.style.background = 'var(--signal-divergence-bg)';
-                    banner.style.border = '1px solid var(--signal-divergence-border)';
-                    banner.style.color = 'var(--signal-divergence)';
-                    banner.innerHTML = `<strong>EPISTEMIC DISAGREEMENT DETECTED:</strong> ${data.agreement_ratio} &mdash; Majority Consensus: ${data.consensus_sentiment}`;
-                } else {
-                    banner.style.background = 'var(--signal-positive-bg)';
-                    banner.style.border = '1px solid var(--signal-positive-border)';
-                    banner.style.color = 'var(--signal-positive)';
-                    banner.innerHTML = `<strong>HIGH CONSENSUS:</strong> ${data.agreement_ratio} &mdash; Unanimous: ${data.consensus_sentiment}`;
-                }
-
-                // Render Models
-                const lr = data.models.logistic_regression;
-                const svm = data.models.linear_svm;
-                const nb = data.models.naive_bayes;
-
-                document.getElementById('cs-lr-sentiment').innerText = lr.sentiment;
-                document.getElementById('cs-lr-meta').innerText = `Score: ${lr.ai_score} | Conf: ${lr.confidence}%`;
-
-                document.getElementById('cs-svm-sentiment').innerText = svm.sentiment;
-                document.getElementById('cs-svm-meta').innerText = `Score: ${svm.ai_score} | Conf: ${svm.confidence}%`;
-
-                document.getElementById('cs-nb-sentiment').innerText = nb.sentiment;
-                document.getElementById('cs-nb-meta').innerText = `Score: ${nb.ai_score} | Conf: ${nb.confidence}%`;
-
-            } catch (e) {
-                console.error("Consensus execution error:", e);
-                showNotification("Network Error", "Failed to communicate with consensus engine.", "error");
-            } finally {
-                if (btn) {
-                    btn.innerText = "Run All 3 Models";
-                    btn.disabled = false;
-                }
-            }
-        }
-
-        // Feedback Submission with Restrained Loading State
-        async function sendTelemetry(isCorrect) {
-            const id = document.getElementById('currentPredId').value;
-            if (!id) return;
-
-            const confirmBtn = document.getElementById('btnFeedConfirm');
-            const disputeBtn = document.getElementById('btnFeedDispute');
-            if (confirmBtn) confirmBtn.disabled = true;
-            if (disputeBtn) disputeBtn.disabled = true;
+            const btnConfirm = document.getElementById('btnConfirmFeedback');
+            const btnFlag = document.getElementById('btnFlagFeedback');
+            btnConfirm.disabled = true;
+            btnFlag.disabled = true;
 
             try {
                 const res = await fetch('/api/v1/feedback', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prediction_id: parseInt(id), is_correct: isCorrect })
+                    body: JSON.stringify({ prediction_id: parseInt(predId, 10), is_correct: isCorrect })
                 });
-                if (res.ok) {
-                    document.getElementById('feedConfirm').style.display = 'inline';
-                }
+
+                if (!res.ok) throw new Error(`Feedback error HTTP ${res.status}`);
+                const data = await res.json();
+                showToast(isCorrect ? "Result confirmed. Telemetry updated." : "Result flagged incorrect. Telemetry updated.", "✓");
             } catch (e) {
                 console.error("Feedback error:", e);
-                showNotification("Telemetry Error", "Failed to record audit feedback.", "error");
-            } finally {
-                if (confirmBtn) confirmBtn.disabled = false;
-                if (disputeBtn) disputeBtn.disabled = false;
+                showToast("Failed to record feedback: " + e.message, "❌");
+                btnConfirm.disabled = false;
+                btnFlag.disabled = false;
             }
         }
 
-        // Refresh Analytics
-        async function refreshAnalytics() {
+        // Multi-Model Consensus Evaluation
+        async function executeConsensus() {
+            const text = nlpInput.value.trim() || PRESETS.mixed;
+
+            const ratioEl = document.getElementById('consensusRatio');
+            const alertEl = document.getElementById('disagreementAlert');
+            const latEl = document.getElementById('consensusLatency');
+
+            ratioEl.innerText = "EVALUATING...";
+
             try {
-                const res = await fetch('/api/v1/analytics');
+                const res = await fetch('/api/v1/consensus', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text })
+                });
+
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const data = await res.json();
-                document.getElementById('stTotal').innerText = data.total_analyzed.toLocaleString();
-                document.getElementById('stPos').innerText = data.positive.toLocaleString();
-                document.getElementById('stNeg').innerText = data.negative.toLocaleString();
 
-                const p95Val = (typeof data.p95_latency_ms === 'number') ? `${data.p95_latency_ms}` : data.p95_latency_ms;
-                document.getElementById('stP95').innerHTML = `${p95Val} <span style="font-size:14px; color:var(--text-muted);">${typeof data.p95_latency_ms === 'number' ? 'ms' : ''}</span>`;
+                ratioEl.innerText = data.agreement_ratio.toUpperCase();
+                ratioEl.style.color = data.disagreement_detected ? 'var(--signal-warning)' : 'var(--signal-positive)';
+                alertEl.style.display = data.disagreement_detected ? 'flex' : 'none';
+                latEl.innerText = `${data.latency_ms.toFixed(2)} ms`;
+
+                // Update LR
+                if (data.models.logistic_regression) {
+                    const m = data.models.logistic_regression;
+                    document.getElementById('lrSentiment').innerText = m.sentiment;
+                    document.getElementById('lrScore').innerText = (m.ai_score >= 0 ? '+' : '') + m.ai_score.toFixed(4);
+                    document.getElementById('lrConf').innerText = `${m.confidence.toFixed(2)}%`;
+                    document.getElementById('lrEmotion').innerText = m.emotion;
+                }
+
+                // Update SVM
+                if (data.models.linear_svm) {
+                    const m = data.models.linear_svm;
+                    document.getElementById('svmSentiment').innerText = m.sentiment;
+                    document.getElementById('svmScore').innerText = (m.ai_score >= 0 ? '+' : '') + m.ai_score.toFixed(4);
+                    document.getElementById('svmConf').innerText = `${m.confidence.toFixed(2)}%`;
+                    document.getElementById('svmEmotion').innerText = m.emotion;
+                }
+
+                // Update NB
+                if (data.models.naive_bayes) {
+                    const m = data.models.naive_bayes;
+                    document.getElementById('nbSentiment').innerText = m.sentiment;
+                    document.getElementById('nbScore').innerText = (m.ai_score >= 0 ? '+' : '') + m.ai_score.toFixed(4);
+                    document.getElementById('nbConf').innerText = `${m.confidence.toFixed(2)}%`;
+                    document.getElementById('nbEmotion').innerText = m.emotion;
+                }
+
             } catch (e) {
-                console.error("Analytics fetch error:", e);
+                console.error("Consensus Error:", e);
+                showToast("Consensus evaluation failed: " + e.message, "❌");
+                ratioEl.innerText = "EVALUATION FAILED";
             }
         }
 
-        // Telemetry Filtering Controls & Handlers
-        function setSentimentFilter(sentiment, btnEl) {
-            activeSentimentFilter = sentiment;
-            document.querySelectorAll('.filter-sentiment-group .filter-btn').forEach(b => b.classList.remove('active'));
-            if (btnEl) btnEl.classList.add('active');
-            applyTelemetryFilters();
-        }
+        // Telemetry Data Fetching
+        async function fetchTelemetryData() {
+            try {
+                const [analyticsRes, historyRes] = await Promise.all([
+                    fetch('/api/v1/analytics'),
+                    fetch('/api/v1/history?limit=25')
+                ]);
 
-        function resetTelemetryFilters() {
-            activeSentimentFilter = 'ALL';
-            activeEngineFilter = 'ALL';
-            activeSearchQuery = '';
-
-            document.querySelectorAll('.filter-sentiment-group .filter-btn').forEach(b => {
-                b.classList.toggle('active', b.dataset.sentiment === 'ALL');
-            });
-
-            const engineEl = document.getElementById('filterEngine');
-            if (engineEl) engineEl.value = 'ALL';
-
-            const searchEl = document.getElementById('filterSearch');
-            if (searchEl) searchEl.value = '';
-
-            applyTelemetryFilters();
-        }
-
-        function applyTelemetryFilters() {
-            const engineEl = document.getElementById('filterEngine');
-            if (engineEl) activeEngineFilter = engineEl.value;
-
-            const searchEl = document.getElementById('filterSearch');
-            if (searchEl) activeSearchQuery = searchEl.value.trim().toLowerCase();
-
-            const filtered = cachedHistoryList.filter(item => {
-                if (activeSentimentFilter !== 'ALL' && item.sentiment !== activeSentimentFilter) {
-                    return false;
+                if (analyticsRes.ok) {
+                    const a = await analyticsRes.json();
+                    document.getElementById('statTotal').innerText = a.total_analyzed;
+                    document.getElementById('statSpread').innerText = `${a.positive} / ${a.negative} / ${a.neutral}`;
+                    document.getElementById('statAvgLat').innerText = `${a.avg_latency_ms.toFixed(2)} ms`;
+                    document.getElementById('statPercentiles').innerText = `${a.p95_latency_ms} / ${a.p99_latency_ms}`;
                 }
-                if (activeEngineFilter !== 'ALL' && item.engine !== activeEngineFilter) {
-                    return false;
+
+                if (historyRes.ok) {
+                    historyRecordsCache = await historyRes.json();
+                    renderHistoryTable(historyRecordsCache);
                 }
-                if (activeSearchQuery) {
-                    const reqId = (item.request_id || '').toLowerCase();
-                    const engine = (item.engine || '').toLowerCase();
-                    const emotion = (item.emotion || '').toLowerCase();
-                    const sentiment = (item.sentiment || '').toLowerCase();
-                    const feedback = (item.user_feedback || '').toLowerCase();
-                    const idStr = String(item.id || '');
 
-                    const match = reqId.includes(activeSearchQuery) ||
-                                  engine.includes(activeSearchQuery) ||
-                                  emotion.includes(activeSearchQuery) ||
-                                  sentiment.includes(activeSearchQuery) ||
-                                  feedback.includes(activeSearchQuery) ||
-                                  idStr.includes(activeSearchQuery);
-                    if (!match) return false;
-                }
-                return true;
-            });
-
-            renderTelemetryViews(filtered);
-        }
-
-        // Keyboard & Click Record Expansion
-        function toggleRecordExpansion(recId) {
-            recId = String(recId);
-            if (expandedRecordIds.has(recId)) {
-                expandedRecordIds.delete(recId);
-            } else {
-                expandedRecordIds.add(recId);
-            }
-
-            const desktopDrawer = document.getElementById('drawer-desktop-' + recId);
-            const desktopRow = document.getElementById('row-desktop-' + recId);
-            const mobileDrawer = document.getElementById('drawer-mobile-' + recId);
-            const mobileBtn = document.getElementById('btn-expand-mobile-' + recId);
-
-            const isOpen = expandedRecordIds.has(recId);
-
-            if (desktopDrawer) {
-                desktopDrawer.classList.toggle('open', isOpen);
-            }
-            if (desktopRow) {
-                desktopRow.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-            }
-            if (mobileDrawer) {
-                mobileDrawer.classList.toggle('open', isOpen);
-            }
-            if (mobileBtn) {
-                mobileBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-                mobileBtn.innerHTML = isOpen ?
-                    `<span>Collapse Inspection</span><span>&#9652;</span>` :
-                    `<span>Inspect Forensic Details</span><span>&#9662;</span>`;
+            } catch (e) {
+                console.error("Telemetry Error:", e);
+                showToast("Failed to refresh telemetry: " + e.message, "⚠️");
             }
         }
 
-        // Render Desktop Table + Mobile Cards with Real Backend Data Only
-        function renderTelemetryViews(records) {
-            const desktopTbody = document.getElementById('historyTableBody');
-            const mobileContainer = document.getElementById('mobileHistoryContainer');
-            const emptyState = document.getElementById('telemetryEmptyState');
-
+        function renderHistoryTable(records) {
+            const tbody = document.getElementById('historyTableBody');
             if (!records || records.length === 0) {
-                if (desktopTbody) desktopTbody.innerHTML = '';
-                if (mobileContainer) mobileContainer.innerHTML = '';
-                if (emptyState) emptyState.style.display = 'block';
+                tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding:20px; color:var(--text-muted);">No records found in database.</td></tr>';
                 return;
             }
 
-            if (emptyState) emptyState.style.display = 'none';
-
-            // Desktop Table Rows
-            if (desktopTbody) {
-                desktopTbody.innerHTML = records.map(item => {
-                    const isExp = expandedRecordIds.has(String(item.id));
-                    const badgeClass = item.sentiment === 'Positive' ? 'badge-pos' : (item.sentiment === 'Negative' ? 'badge-neg' : 'badge-neu');
-                    const scoreSign = item.ai_score > 0 ? '+' : '';
-                    const feedbackText = item.user_feedback || 'Unreviewed';
-                    const recId = String(item.id);
-
-                    return `
-                        <tr class="telemetry-row" id="row-desktop-${recId}" tabindex="0" role="button" aria-expanded="${isExp}" onclick="toggleRecordExpansion('${recId}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleRecordExpansion('${recId}');}" title="Click or press Enter/Space to expand forensic details">
-                            <td style="font-family:var(--font-mono); font-size:11px;">${escapeHtml(item.timestamp)}</td>
-                            <td style="font-family:var(--font-mono); font-size:11px; color:var(--text-primary); font-weight:500;">${escapeHtml(item.request_id)}</td>
-                            <td style="font-family:var(--font-mono); font-size:11px;">${escapeHtml(item.engine)}</td>
-                            <td><span class="badge-sentiment ${badgeClass}" style="padding:2px 8px; font-size:10px;">${escapeHtml(item.sentiment)}</span></td>
-                            <td style="font-family:var(--font-mono); font-variant-numeric:tabular-nums;">${scoreSign}${item.ai_score}</td>
-                            <td style="font-family:var(--font-mono);">${item.confidence}%</td>
-                            <td style="font-family:var(--font-mono);">${item.latency_ms} ms</td>
-                            <td style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);">${escapeHtml(feedbackText)}</td>
-                        </tr>
-                        <tr id="drawer-desktop-${recId}" class="record-drawer ${isExp ? 'open' : ''}">
-                            <td colspan="8" style="padding:0; border-bottom: 1px solid var(--border-subtle);">
-                                <div class="drawer-content-box">
-                                    <div class="drawer-grid">
-                                        <div>
-                                            <div class="drawer-field-label">Record Index</div>
-                                            <div class="drawer-field-val">#${item.id}</div>
-                                        </div>
-                                        <div>
-                                            <div class="drawer-field-label">Tracking Request ID</div>
-                                            <div class="drawer-field-val">${escapeHtml(item.request_id)}</div>
-                                        </div>
-                                        <div>
-                                            <div class="drawer-field-label">Timestamp (UTC)</div>
-                                            <div class="drawer-field-val">${escapeHtml(item.timestamp)}</div>
-                                        </div>
-                                        <div>
-                                            <div class="drawer-field-label">Classifier Engine</div>
-                                            <div class="drawer-field-val">${escapeHtml(item.engine)}</div>
-                                        </div>
-                                        <div>
-                                            <div class="drawer-field-label">Affective Heuristic</div>
-                                            <div class="drawer-field-val">${escapeHtml(item.emotion || 'Standard')}</div>
-                                        </div>
-                                        <div>
-                                            <div class="drawer-field-label">Audit Feedback State</div>
-                                            <div class="drawer-field-val">${escapeHtml(feedbackText)}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
-                }).join('');
-            }
-
-            // Mobile Cards (< 768px)
-            if (mobileContainer) {
-                mobileContainer.innerHTML = records.map(item => {
-                    const isExp = expandedRecordIds.has(String(item.id));
-                    const badgeClass = item.sentiment === 'Positive' ? 'badge-pos' : (item.sentiment === 'Negative' ? 'badge-neg' : 'badge-neu');
-                    const scoreSign = item.ai_score > 0 ? '+' : '';
-                    const feedbackText = item.user_feedback || 'Unreviewed';
-                    const recId = String(item.id);
-
-                    return `
-                        <div class="telemetry-card" id="card-mobile-${recId}">
-                            <div class="card-top-row">
-                                <span class="card-time">${escapeHtml(item.timestamp)}</span>
-                                <div style="display:flex; align-items:center; gap:6px;">
-                                    <span class="card-engine-tag">${escapeHtml(item.engine)}</span>
-                                    <span class="badge-sentiment ${badgeClass}" style="padding:2px 8px; font-size:10px;">${escapeHtml(item.sentiment)}</span>
-                                </div>
-                            </div>
-                            <div class="card-metrics-grid">
-                                <div class="card-metric-cell">
-                                    <span class="cell-label">AI Score</span>
-                                    <span class="cell-val">${scoreSign}${item.ai_score}</span>
-                                </div>
-                                <div class="card-metric-cell">
-                                    <span class="cell-label">Confidence</span>
-                                    <span class="cell-val">${item.confidence}%</span>
-                                </div>
-                                <div class="card-metric-cell">
-                                    <span class="cell-label">Latency</span>
-                                    <span class="cell-val">${item.latency_ms} ms</span>
-                                </div>
-                                <div class="card-metric-cell">
-                                    <span class="cell-label">Feedback</span>
-                                    <span class="cell-val" style="font-size:10px; color:var(--text-muted);">${escapeHtml(feedbackText)}</span>
-                                </div>
-                            </div>
-                            <button type="button" id="btn-expand-mobile-${recId}" class="card-expand-btn" aria-expanded="${isExp}" onclick="toggleRecordExpansion('${recId}')" aria-label="Toggle record ${item.id} forensic details">
-                                <span>${isExp ? 'Collapse Inspection' : 'Inspect Forensic Details'}</span>
-                                <span>${isExp ? '&#9652;' : '&#9662;'}</span>
-                            </button>
-                            <div id="drawer-mobile-${recId}" class="card-drawer-content ${isExp ? 'open' : ''}">
-                                <div class="mobile-drawer-grid">
-                                    <div>
-                                        <div class="drawer-field-label">Record Index</div>
-                                        <div class="drawer-field-val">#${item.id}</div>
-                                    </div>
-                                    <div>
-                                        <div class="drawer-field-label">Request ID</div>
-                                        <div class="drawer-field-val">${escapeHtml(item.request_id)}</div>
-                                    </div>
-                                    <div>
-                                        <div class="drawer-field-label">Affective Heuristic</div>
-                                        <div class="drawer-field-val">${escapeHtml(item.emotion || 'Standard')}</div>
-                                    </div>
-                                    <div>
-                                        <div class="drawer-field-label">Feedback State</div>
-                                        <div class="drawer-field-val">${escapeHtml(feedbackText)}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-            }
+            tbody.innerHTML = records.map(r => `
+                <tr>
+                    <td data-label="ID">#${r.id}</td>
+                    <td data-label="Request ID">${escapeHtml(r.request_id)}</td>
+                    <td data-label="Engine">${escapeHtml(r.engine)}</td>
+                    <td data-label="Sentiment">
+                        <span style="color: ${r.sentiment === 'Positive' ? 'var(--signal-positive)' : r.sentiment === 'Negative' ? 'var(--signal-negative)' : 'var(--signal-neutral)'}; font-weight:600;">
+                            ${escapeHtml(r.sentiment)}
+                        </span>
+                    </td>
+                    <td data-label="Polarity">${(r.ai_score >= 0 ? '+' : '') + Number(r.ai_score).toFixed(4)}</td>
+                    <td data-label="Confidence">${Number(r.confidence).toFixed(2)}%</td>
+                    <td data-label="Affective State">${escapeHtml(r.emotion)}</td>
+                    <td data-label="Latency">${Number(r.latency_ms).toFixed(2)} ms</td>
+                    <td data-label="Feedback">${r.user_feedback ? escapeHtml(r.user_feedback) : '<span style="color:var(--text-muted);">Unreviewed</span>'}</td>
+                    <td data-label="Timestamp">${escapeHtml(r.timestamp)}</td>
+                </tr>
+            `).join('');
         }
 
-        // Refresh History with Restrained Loading State
-        async function refreshHistory() {
-            const btn = document.getElementById('btnRefreshHistory');
-            if (btn) {
-                btn.innerText = "Refreshing...";
-                btn.disabled = true;
+        function filterHistoryTable() {
+            const query = document.getElementById('historyFilter').value.toLowerCase().trim();
+            if (!query) {
+                renderHistoryTable(historyRecordsCache);
+                return;
             }
+            const filtered = historyRecordsCache.filter(r => 
+                (r.sentiment && r.sentiment.toLowerCase().includes(query)) ||
+                (r.engine && r.engine.toLowerCase().includes(query)) ||
+                (r.request_id && r.request_id.toLowerCase().includes(query)) ||
+                (r.emotion && r.emotion.toLowerCase().includes(query))
+            );
+            renderHistoryTable(filtered);
+        }
+
+        function exportData(format) {
+            window.location.href = `/api/v1/export/${format}`;
+        }
+
+        // Developer REST Sandbox
+        async function sendApiRequest() {
+            const payloadStr = document.getElementById('devPayload').value;
+            const resPre = document.getElementById('devResponse');
+            const statusTag = document.getElementById('apiStatusTag');
+            const btn = document.getElementById('btnSendApi');
+
+            btn.disabled = true;
+            statusTag.innerText = "SENDING...";
+
+            let parsed;
             try {
-                const res = await fetch('/api/v1/history?limit=50');
-                if (res.ok) {
-                    cachedHistoryList = await res.json();
-                    applyTelemetryFilters();
-                }
-            } catch (e) {
-                console.error("History fetch error:", e);
-                showNotification("Telemetry Sync", "Failed to retrieve telemetry records from database.", "warning");
-            } finally {
-                if (btn) {
-                    btn.innerText = "Refresh Log";
-                    btn.disabled = false;
-                }
+                parsed = JSON.parse(payloadStr);
+            } catch (err) {
+                resPre.innerText = "// JSON Parse Error: " + err.message;
+                statusTag.innerText = "INVALID JSON";
+                btn.disabled = false;
+                return;
             }
-        }
 
-        // Canonical Confusion Matrix Switcher & Data Binding
-        function switchMatrixModel(modelKey, btnEl) {
-            document.querySelectorAll('.model-toggle-btn').forEach(b => b.classList.remove('active'));
-            if (btnEl) btnEl.classList.add('active');
-            renderConfusionMatrix(modelKey);
-        }
-
-        function renderConfusionMatrix(modelKey) {
-            if (!benchmarkCache || !benchmarkCache.models || !benchmarkCache.models[modelKey]) return;
-            const modelData = benchmarkCache.models[modelKey];
-            const cm = modelData.confusion_matrix;
-            if (!cm) return;
-
-            const tn = cm.true_negative;
-            const fp = cm.false_positive;
-            const fn = cm.false_negative;
-            const tp = cm.true_positive;
-            const total = cm.total_evaluated || (tn + fp + fn + tp);
-
-            const actualNeg = tn + fp;
-            const actualPos = fn + tp;
-            const predNeg = tn + fn;
-            const predPos = fp + tp;
-
-            // Quadrant counts & percentages
-            document.getElementById('val-tn').innerText = tn.toLocaleString();
-            document.getElementById('pct-tn').innerText = ((tn / total) * 100).toFixed(2) + '%';
-
-            document.getElementById('val-fp').innerText = fp.toLocaleString();
-            document.getElementById('pct-fp').innerText = ((fp / total) * 100).toFixed(2) + '% (Type I)';
-
-            document.getElementById('val-fn').innerText = fn.toLocaleString();
-            document.getElementById('pct-fn').innerText = ((fn / total) * 100).toFixed(2) + '% (Type II)';
-
-            document.getElementById('val-tp').innerText = tp.toLocaleString();
-            document.getElementById('pct-tp').innerText = ((tp / total) * 100).toFixed(2) + '%';
-
-            // Marginals
-            document.getElementById('cm-total-neg').innerText = actualNeg.toLocaleString();
-            document.getElementById('cm-total-pos').innerText = actualPos.toLocaleString();
-            document.getElementById('cm-col-neg').innerText = predNeg.toLocaleString();
-            document.getElementById('cm-col-pos').innerText = predPos.toLocaleString();
-            document.getElementById('cm-grand-total').innerText = total.toLocaleString();
-
-            // Analytical Rates (Derived from real counts)
-            const sensitivity = (tp / actualPos) * 100;
-            const specificity = (tn / actualNeg) * 100;
-            const precision = (tp / predPos) * 100;
-            const accuracy = ((tp + tn) / total) * 100;
-
-            document.getElementById('cm-sensitivity').innerText = sensitivity.toFixed(2) + '%';
-            document.getElementById('cm-specificity').innerText = specificity.toFixed(2) + '%';
-            document.getElementById('cm-precision').innerText = precision.toFixed(2) + '%';
-            document.getElementById('cm-accuracy').innerText = accuracy.toFixed(2) + '%';
-
-            document.getElementById('cmActiveModelLabel').innerText = modelData.name || modelKey;
-        }
-
-        // Load Benchmark Data from /api/v1/models
-        async function loadBenchmarkData() {
             try {
-                const res = await fetch('/api/v1/models');
-                const data = await res.json();
-                if (data.models) {
-                    benchmarkCache = data;
-                    renderConfusionMatrix('logistic_regression');
-                }
-            } catch (e) {
-                console.error("Model registry fetch error:", e);
-            }
-        }
-
-        // Initial Data & Route Load on Page Ready
-        loadBenchmarkData();
-        handleHashRoute();
-
-        // API Test Console
-        async function testAPI() {
-            const reqBox = document.getElementById('apiPayload').value;
-            const resBox = document.getElementById('apiResponse');
-            const btn = document.getElementById('btnTestApi');
-            if (btn) btn.disabled = true;
-            resBox.innerText = "// Dispatching request...";
-            try {
+                const start = performance.now();
                 const res = await fetch('/api/v1/predict', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: reqBox
+                    body: JSON.stringify(parsed)
                 });
+                const duration = (performance.now() - start).toFixed(2);
+                statusTag.innerText = `HTTP ${res.status} (${duration}ms)`;
+                statusTag.style.color = res.ok ? 'var(--signal-positive)' : 'var(--signal-negative)';
+
                 const data = await res.json();
-                resBox.innerText = JSON.stringify(data, null, 2);
+                resPre.innerText = JSON.stringify(data, null, 2);
             } catch (e) {
-                resBox.innerText = "// Error: Invalid JSON or network failure: " + e;
+                resPre.innerText = "// Request Failed: " + e.message;
+                statusTag.innerText = "ERROR";
             } finally {
-                if (btn) btn.disabled = false;
+                btn.disabled = false;
             }
         }
+
+        async function checkHealth() {
+            try {
+                const res = await fetch('/health');
+                if (res.ok) {
+                    const data = await res.json();
+                    document.getElementById('diagStatus').innerText = `${data.status.toUpperCase()} (v${data.version})`;
+                    document.getElementById('diagDb').innerText = data.database_connected ? "CONNECTED (OK)" : "DEGRADED";
+                    document.getElementById('diagVec').innerText = data.vectorizer_loaded ? "READY (5,000 Vocab)" : "NOT LOADED";
+                }
+            } catch (e) {
+                console.warn("Health check error:", e);
+            }
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        // Initialize view from URL hash on load
+        window.addEventListener('DOMContentLoaded', () => {
+            handleHashRoute();
+            updateCounters();
+        });
     </script>
 </body>
 </html>
