@@ -1,0 +1,99 @@
+{
+  "predict_logistic_regression": {
+    "status_code": 200,
+    "json": {
+      "request_id": "SN-62FEB8A8",
+      "prediction_id": 4,
+      "sentiment": "Positive",
+      "ai_score": 0.8534,
+      "confidence": 92.67,
+      "emotion": "Joy / High Satisfaction",
+      "explanation": {
+        "positive_drivers": [
+          {
+            "token": "brilliant",
+            "weight": 2.1007
+          },
+          {
+            "token": "breathtak",
+            "weight": 0.5925
+          },
+          {
+            "token": "cinematographi",
+            "weight": 0.0313
+          }
+        ],
+        "negative_drivers": [
+          {
+            "token": "absolut",
+            "weight": -0.2193
+          }
+        ]
+      },
+      "latency_ms": 1.89,
+      "tokens_count": 4
+    }
+  },
+  "predict_linear_svm": {
+    "status_code": 200,
+    "json": {
+      "request_id": "SN-CCDD3BBB",
+      "prediction_id": 5,
+      "sentiment": "Positive",
+      "ai_score": 0.9169,
+      "confidence": 95.85,
+      "emotion": "Joy / High Satisfaction",
+      "explanation": {
+        "positive_drivers": [],
+        "negative_drivers": []
+      },
+      "latency_ms": 3.79,
+      "tokens_count": 4
+    }
+  },
+  "predict_naive_bayes": {
+    "status_code": 200,
+    "json": {
+      "request_id": "SN-87836D43",
+      "prediction_id": 6,
+      "sentiment": "Positive",
+      "ai_score": 0.6649,
+      "confidence": 83.25,
+      "emotion": "Joy / High Satisfaction",
+      "explanation": {
+        "positive_drivers": [],
+        "negative_drivers": []
+      },
+      "latency_ms": 1.49,
+      "tokens_count": 4
+    }
+  },
+  "analytics": {
+    "status_code": 200,
+    "json": {
+      "total_analyzed": 6,
+      "positive": 6,
+      "negative": 0,
+      "avg_latency_ms": 6.61
+    }
+  },
+  "feedback": {
+    "status_code": 200,
+    "json": {
+      "status": "Telemetry recorded."
+    }
+  },
+  "export_csv": {
+    "status_code": 200,
+    "sample_headers": "attachment; filename=sentinel_telemetry.csv",
+    "row_count": 7
+  },
+  "export_json": {
+    "status_code": 200,
+    "item_count": 6
+  },
+  "frontend_root": {
+    "status_code": 200,
+    "content_length": 31468
+  }
+}

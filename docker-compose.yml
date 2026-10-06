@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  sentinel-ai:
+    build: .
+    container_name: sentinel_enterprise_core
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - ENVIRONMENT=production
+      - STORE_RAW_TEXT=false
+    restart: unless-stopped

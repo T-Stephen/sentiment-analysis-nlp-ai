@@ -1,0 +1,38 @@
+# Git and Environment
+.git/
+.gitignore
+.venv/
+venv/
+ENV/
+env/
+.env
+
+# Agent Metadata & Transcripts
+.agents/
+skills-lock.json
+
+# Caches and temporary files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
+
+# Large Raw Datasets (Exclude 66MB raw training CSV)
+data/IMDB Dataset.csv
+data/.py
+
+# Local SQLite databases (volume-mounted at runtime)
+data/*.db
+data/*.db-journal
+data/*.db-wal
+*.db
+
+# IDE & OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

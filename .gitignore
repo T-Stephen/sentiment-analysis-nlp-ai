@@ -1,0 +1,46 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Caches & test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environments & Dependencies
+.venv/
+venv/
+ENV/
+env/
+
+# Secrets, Environment Configurations & Credentials
+.env
+*.pem
+*.key
+*.token
+*.cert
+
+# Large Dataset (Raw CSV training source, 66MB) & Scratch files
+data/IMDB Dataset.csv
+data/.py
+
+# Agent Framework Metadata
+.agents/
+skills-lock.json
+
+# Runtime Database (SQLite instance data)
+data/*.db
+data/*.db-journal
+data/*.db-wal
+*.db
+
+# OS & Editor generated files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logging
+*.log

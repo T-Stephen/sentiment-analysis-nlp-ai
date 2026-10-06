@@ -1,0 +1,35 @@
+{
+  "model_benchmarks_training": {
+    "naive_bayes": {
+      "accuracy": 85.1,
+      "precision": 0.8471,
+      "recall": 0.8595,
+      "f1_score": 0.8532,
+      "train_time_sec": 0.03,
+      "latency_ms_per_sample": 0.0005
+    },
+    "logistic_regression": {
+      "accuracy": 88.55,
+      "precision": 0.8747,
+      "recall": 0.902,
+      "f1_score": 0.8881,
+      "train_time_sec": 0.6,
+      "latency_ms_per_sample": 0.0003
+    },
+    "linear_svm": {
+      "accuracy": 88.4,
+      "precision": 0.8751,
+      "recall": 0.898,
+      "f1_score": 0.8864,
+      "train_time_sec": 3.79,
+      "latency_ms_per_sample": 0.002
+    }
+  },
+  "database_telemetry_baseline": {
+    "total_predictions_stored": 7,
+    "positive_count": 7,
+    "negative_count": 0,
+    "neutral_count": 0,
+    "average_latency_ms": 5.93
+  }
+}
