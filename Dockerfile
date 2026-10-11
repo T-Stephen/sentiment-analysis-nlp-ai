@@ -15,8 +15,12 @@ RUN python -c "import nltk; nltk.download('stopwords', download_dir='/usr/local/
 
 COPY . .
 
-# Ensure data directory exists
-RUN mkdir -p /app/data
+# Ensure data directory exists and assign ownership to unprivileged user
+RUN useradd -u 1000 -m -s /bin/bash sentinel \
+    && mkdir -p /app/data \
+    && chown -R sentinel:sentinel /app
+
+USER sentinel
 
 EXPOSE 8000
 
