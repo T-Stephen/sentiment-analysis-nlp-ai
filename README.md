@@ -1,430 +1,419 @@
 # SENTINEL AI — NLP Sentiment Intelligence Platform
 
 [![Python Version](https://img.shields.io/badge/Python-3.11-blue.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.141.1-009688.svg)](https://fastapi.tiangolo.com/)
-[![Scikit-Learn](https://img.shields.io/badge/scikit--learn-1.3.2-F7931E.svg)](https://scikit-learn.org/)
-[![Test Suite](https://img.shields.io/badge/Tests-34%2F34%20Passing-brightgreen.svg)]()
-[![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED.svg)](https://www.docker.com/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Release](https://img.shields.io/badge/Release-v14.3.0--PROD-informational.svg)](https://github.com/T-Stephen/sentiment-analysis-nlp-ai)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104.1-009688.svg)](https://fastapi.tiangolo.com/)
+[![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-1.3.2-F7931E.svg)](https://scikit-learn.org/)
+[![Test Suite](https://img.shields.io/badge/Test_Suite-34%2F34_Passing-brightgreen.svg)](#14-automated-testing--verification)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg)](https://www.docker.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Release](https://img.shields.io/badge/Release-v14.3.0--PROD-blueviolet.svg)](https://github.com/T-Stephen/sentiment-analysis-nlp-ai)
+[![Live Demo](https://img.shields.io/badge/Render-Live_Demo-46E3B7.svg)](https://sentinel-nlp-intelligence.onrender.com/)
 
-> **Academic Topic:** NLP Project: Sentiment Analysis (AI + Text Processing)  
-> **Repository:** [sentiment-analysis-nlp-ai](https://github.com/T-Stephen/sentiment-analysis-nlp-ai)  
-> **Target Release:** `v14.3.0-PROD`  
-> **Platform Category:** Classical ML Sentiment Intelligence Platform / Defense & Scientific Analytical Terminal  
-
----
-
-## 1. Project Overview & Product Description
-**SENTINEL AI** is a research-grade, privacy-conscious natural language processing (NLP) sentiment intelligence platform. Engineered as a precision analytical instrument, it performs high-throughput sentiment classification, multi-model consensus verification, and mathematical feature explainability without external cloud API dependencies.
-
-Built on classical machine learning foundations, SENTINEL AI demonstrates that well-regularized linear classifiers combined with domain-aligned feature engineering can deliver low-latency inference, full statistical transparency, and defensible auditability.
+> **Academic Topic:** NLP Project: Sentiment Analysis (AI + Text Processing)
+> **Repository:** [sentiment-analysis-nlp-ai](https://github.com/T-Stephen/sentiment-analysis-nlp-ai)
+> **Live Deployment:** [sentinel-nlp-intelligence.onrender.com](https://sentinel-nlp-intelligence.onrender.com/)
+> **Release:** `v14.3.0-PROD`
+> **Classification:** Classical ML Sentiment Intelligence Platform / Analytical Research Terminal
 
 ---
 
-## 2. Problem Statement & Why Sentiment Analysis Matters
-In enterprise governance, customer intelligence, and academic research, evaluating unstructured qualitative discourse at scale presents three major operational hurdles:
-1. **The Black-Box Dilemma:** Deep learning transformers often obscure *why* a particular sentiment score was assigned, making automated decisions difficult to audit in regulated environments.
-2. **Model Fragility & Overconfidence:** Individual models frequently exhibit single-point failure modes when confronted with ambiguous discourse or borderline lexical polarity.
-3. **Privacy & Data Governance:** Sending proprietary executive memos or sensitive customer feedback to third-party proprietary LLM APIs introduces data exfiltration and regulatory compliance risks.
+## 1. Title and Product Description
 
-**SENTINEL AI addresses these challenges directly** by offering:
-- Completely local, offline inference using scikit-learn classifiers.
-- Exact mathematical explainability (XAI) derived from linear decision boundaries.
-- Multi-model consensus resolution to detect and flag model divergence.
-- Default SHA-256 raw-text redaction to guarantee zero unmasked text persistence.
+**SENTINEL AI** is a production-hardened, privacy-conscious Natural Language Processing (NLP) sentiment intelligence platform. Engineered as a high-throughput analytical terminal, it provides deterministic sentiment classification, multi-model consensus verification, and mathematical feature attribution without external cloud API dependencies.
+
+Built on classical machine learning foundations, SENTINEL AI demonstrates that regularized linear models paired with domain-aligned feature engineering can deliver low-latency inference, full statistical transparency, and defensible auditability for enterprise and academic workflows.
 
 ---
 
-## 3. Key Capabilities
-- **Three-Engine Model Ensemble:** Logistic Regression (L2 Regularized), Linear SVM (Platt Calibrated), and Multinomial Naive Bayes.
-- **Epistemic Model Consensus:** Concurrent multi-model inference determining agreement ratios and raising automated `MODEL DISAGREEMENT DETECTED` flags.
-- **Mathematical Explainability (XAI):** Exact linear token attribution ($w_i \times \text{TF-IDF}_i$) rendering positive and negative proportional driver bars.
-- **Calibrated Polarity & Confidence:** Normalized polarity delta ($[-1.0, +1.0]$) paired with empirical class probabilities ($[50.0\%, 100.0\%]$).
-- **Affective Heuristics Engine:** Deterministic mapping of lexical polarity and sentiment to cognitive emotional states (*Joy / High Satisfaction*, *Optimism*, *Anger / Frustration*, *Critical / Discontent*, *Balanced Neutral*).
-- **Zero-Dependency Executive Terminal:** Precision Intelligence Instrument interface styled in deep obsidian (`#07080B`), chassis plates (`#0C0E14`), subtle brass accents, and responsive dual-mode telemetry (desktop data table and mobile stacked intelligence cards with collapsible forensic drawers).
-- **Privacy-by-Design Persistence:** Automatic SHA-256 text hashing prior to SQLite storage (`STORE_RAW_TEXT=False` default).
-- **Telemetry & Operational Metrics:** Real-time throughput analytics, P95/P99 latency tracking, and human auditor feedback loops (`Confirmed` / `Flagged Incorrect`).
-- **Standardized Data Portability:** Streaming in-memory RFC-4180 CSV and JSON export pipelines.
+## 2. Technology Badges
+
+The platform components and operational status are reflected by the verified badges below:
+
+- **Runtime & Frameworks:** Python 3.11 | FastAPI 0.104.1 | Scikit-Learn 1.3.2
+- **Quality Assurance:** 34/34 Passing Unit & Integration Tests (see [Section 14](#14-automated-testing--verification))
+- **Deployment & Packaging:** Docker Ready | Containerized microservice
+- **Governance & Licensing:** Open-source under the MIT License
+- **Live Cloud Deployment:** Publicly available on Render Free Tier
 
 ---
 
-## 4. System Architecture
-The application runs as a modular, asynchronous FastAPI microservice with embedded Scikit-Learn pipelines and SQLite telemetry:
+## 3. Live Demo and Repository Links
 
+- **Repository:** [https://github.com/T-Stephen/sentiment-analysis-nlp-ai](https://github.com/T-Stephen/sentiment-analysis-nlp-ai)
+- **Live Application:** [Open application](https://sentinel-nlp-intelligence.onrender.com/)
+- **Live Health Endpoint:** [View health endpoint](https://sentinel-nlp-intelligence.onrender.com/health)
+- **Live OpenAPI Documentation:** [OpenAPI docs](https://sentinel-nlp-intelligence.onrender.com/docs)
+
+> **Hosting Operational Notes (Render Free Tier):**
+> - **Cold Starts:** Hosted on Render's Free tier, the web service automatically spins down after periods of inactivity. An initial request may encounter a cold start delay of 15–30 seconds while the runtime initializes and model artifacts load into memory.
+> - **Ephemeral Storage:** Telemetry records stored in SQLite (`data/sentinel.db`) are ephemeral and reset upon container restarts or redeployments. Serialized model binaries and application code remain permanently tracked in Git version control.
+> - **Observed Health Verification:** The root health check (`/health`) was verified operational with `status: healthy`, active database connectivity, and all three models plus the TF-IDF vectorizer loaded.
+
+---
+
+## 4. Analytical Dashboard Interface
+
+<!-- OPTIONAL SCREENSHOT: Insert terminal dashboard screenshot here -->
+
+The user interface is designed as an analytical terminal styled in deep obsidian (`#07080B`) with subtle brass accents, providing:
+- Real-time single-model inference and multi-model consensus controls.
+- Dynamic Explainable AI (XAI) feature attribution driver bars.
+- Live telemetry monitoring with P95/P99 latency calculations.
+- Human-in-the-loop audit verification controls (`Confirmed` / `Flagged Incorrect`).
+- Dual-mode responsiveness: full forensic desktop telemetry table and mobile stacked intelligence cards with collapsible drawers.
+
+---
+
+## 5. Executive Summary & Problem Statement
+
+In enterprise compliance, customer intelligence, and academic research, processing qualitative natural language discourse presents three persistent challenges:
+
+1. **The Black-Box Opacity Problem:** Deep neural architectures and third-party LLMs rarely provide transparent, deterministic explanations for specific sentiment classifications, creating compliance hurdles in auditable environments.
+2. **Model Fragility & Single-Engine Bias:** Individual machine learning models can exhibit edge-case fragility when processing ambiguous or borderline discourse.
+3. **Data Governance & Exfiltration Risks:** Transmitting sensitive internal communications or proprietary customer feedback to external commercial APIs exposes organizations to privacy violations and intellectual property leakage.
+
+**SENTINEL AI addresses these challenges directly by providing:**
+- Fully offline, local inference using pinned Scikit-Learn classifiers.
+- Exact, deterministic feature attribution derived from linear model mathematics.
+- Epistemic multi-model consensus resolution to flag borderline classifications.
+- Privacy-by-design SHA-256 text redaction prior to database persistence.
+
+---
+
+## 6. Key Features & Project Scope
+
+- **Three-Engine Model Registry:**
+  - **Logistic Regression v1.0:** Primary production classifier with L2 regularization ($C=1.0$).
+  - **Linear SVM v1.0:** High-margin classifier calibrated via 5-fold Platt sigmoid scaling.
+  - **Multinomial Naive Bayes:** Probabilistic baseline model with Laplace smoothing ($\alpha=1.0$).
+- **Multi-Model Consensus Resolution (`POST /api/v1/consensus`):** Concurrent multi-engine inference that calculates agreement ratios and automatically flags model divergence.
+- **Explainable AI (XAI) Feature Attribution:** Deterministic calculation of token-level contributions ($w_i \times \text{TF-IDF}_i$) rendering positive and negative driver bars.
+- **Calibrated Scoring Architecture:** Normalized polarity delta ($\text{AI Score} \in [-1.0, +1.0]$) paired with empirical classification confidence ($[50.0\%, 100.0\%]$).
+- **Affective State Heuristics:** Deterministic mapping of lexical polarity and sentiment to cognitive emotional indicators (*Joy / High Satisfaction*, *Optimism*, *Anger / Frustration*, *Critical / Discontent*, or *Balanced Neutral*).
+- **Privacy-by-Design Architecture:** Incoming natural language text is hashed via cryptographic SHA-256 prior to persistence (`STORE_RAW_TEXT=False` default). The `/api/v1/history` endpoint strictly excludes raw text from SQL queries.
+- **Telemetry & Human Auditor Governance:** Latency profiling (P95/P99), sentiment distribution analytics, and human feedback auditing (`POST /api/v1/feedback`).
+- **Data Portability:** Streaming in-memory RFC-4180 CSV and structured JSON exports (`/api/v1/export/csv`, `/api/v1/export/json`).
+
+---
+
+## 7. System Architecture
+
+The microservice architecture decouples input validation, NLP feature extraction, model inference, and audit logging into a single cohesive, low-latency pipeline:
+
+```mermaid
+flowchart TD
+    A["User Input Discourse"] --> B["Input Validation<br/>(Pydantic v2: 1–5,000 chars)"]
+    B --> C["NLP Preprocessing Pipeline<br/>(HTML Stripping, Regex, Lowercase, Stopwords, Stemming)"]
+    C --> D["TF-IDF Vectorizer<br/>(5,000 Dimensions, Sublinear TF)"]
+    D --> E["Model Inference Engine"]
+
+    subgraph ModelRegistry ["Model Registry"]
+        E1["Logistic Regression v1.0<br/>(L2 Regularized)"]
+        E2["Linear SVM v1.0<br/>(Platt Calibrated)"]
+        E3["Multinomial Naive Bayes<br/>(Laplace Smoothed)"]
+    end
+
+    E --> E1
+    E --> E2
+    E --> E3
+
+    E1 --> F["Scoring Engine<br/>(Polarity Delta & Confidence)"]
+    E2 --> F
+    E3 --> F
+
+    F --> G["XAI Attribution Engine<br/>(Linear Weights × TF-IDF)"]
+    F --> H["Consensus Engine<br/>(Agreement Ratio & Divergence Detection)"]
+
+    G --> I["API Gateway & Analytics Dashboard<br/>(Security Headers, Latency Metrics)"]
+    H --> I
+
+    I --> J["SQLite Telemetry Database<br/>(Default SHA-256 Text Redaction)"]
 ```
-[User Text Input]
-       │
-       ▼
-[1. Input Validation (Pydantic v2 Boundaries, 1–5000 chars)]
-       │
-       ▼
-[2. NLP Preprocessing Pipeline (HTML Stripping, Regex, Lowercasing, Stopwords, Stemming)]
-       │
-       ▼
-[3. TF-IDF Vectorization (5,000 Dimensions, Sublinear TF)]
-       │
-       ▼
-[4. ML Model Registry] ───► Evaluates: Logistic Regression | Linear SVM | Naive Bayes
-       │
-       ▼
-[5. Prediction Engine] ───► Computes class probabilities P(pos) and P(neg)
-       │
-       ▼
-[6. Polarity & Confidence] ───► Polarity = P(pos) - P(neg); Confidence = max(P) * 100%
-       │
-       ▼
-[7. XAI Attribution Engine] ───► Computes TF-IDF(i) × w_i for positive & negative drivers
-       │
-       ▼
-[8. Consensus Engine] ───► Evaluates 3-way agreement ratio & divergence flags
-       │
-       ▼
-[9. Telemetry & History] ───► Logs SHA-256 redacted record, latency, and auditor state to SQLite
-       │
-       ▼
-[10. API Gateway / Dashboard] ───► Injects security headers (X-Request-ID, CSP) & streams responses
-```
 
 ---
 
-## 5. NLP Preprocessing Pipeline
-To guarantee exact parity between training and inference pipelines:
-1. **HTML Stripping:** Removes markup tags (`<.*?>`) preserving core textual sentences.
-2. **Regex Sanitation:** Filters non-alphabetical characters (`[^a-zA-Z]`), normalizing word separators.
-3. **Case Normalization:** Converts all tokens to standard lowercase.
-4. **Stopword Elimination:** Filters non-informative grammatical tokens using NLTK's English stopword corpus.
-5. **Morphological Stemming:** Applies the algorithmic Porter Stemmer to map inflected forms back to their morphological roots (e.g., `spectacular` $\rightarrow$ `spectacular`, `moving` $\rightarrow$ `move`).
+## 8. Technology Stack
+
+| Layer | Component | Version | Role |
+| :--- | :--- | :--- | :--- |
+| **Runtime** | Python | `3.11` | Core execution environment |
+| **API Framework** | FastAPI | `0.104.1` | High-performance asynchronous REST API framework |
+| **Validation** | Pydantic | `2.5.2` | Strict request/response schema modeling and boundary enforcement |
+| **ASGI Server** | Uvicorn | `0.24.0.post1` | Lightweight, asynchronous server implementation |
+| **Machine Learning** | Scikit-Learn | `1.3.2` | Model training, calibration, and inference pipelines |
+| **NLP Processing** | NLTK | `3.8.1` | Stopword removal and Porter Stemmer morphological reduction |
+| **Numerical Computing** | NumPy / SciPy | `1.26.2` / `1.11.4` | Matrix computations and sparse linear algebra |
+| **Database** | SQLite3 | Native | Zero-dependency transactional telemetry and audit storage |
+| **Testing** | Pytest | `7.4.3` | Comprehensive 34-test automated verification suite |
+| **Containerization** | Docker | Engine 20+ | Multi-stage production container deployment |
 
 ---
 
-## 6. TF-IDF Vectorization Methodology
-Feature extraction uses a pre-fitted `TfidfVectorizer` configured with:
-- **Vocabulary Dimension:** Exactly 5,000 maximum informative features (`max_features=5000`).
-- **N-gram Range:** Unigrams (`ngram_range=(1, 1)`).
-- **Term Weighting:** Standard TF-IDF weighting with sublinear term-frequency scaling:
-  $$\text{TF-IDF}(t, d) = \text{TF}(t, d) \times \left( \log \frac{1 + N}{1 + \text{DF}(t)} + 1 \right)$$
-- **Sparse Representation:** Vectorized inputs are projected as $1 \times 5,000$ sparse matrices (`scipy.sparse.csr_matrix`), minimizing memory overhead.
+## 9. Dataset & Experimental Methodology
+
+- **Source Corpus:** IMDb Large Movie Review Dataset ([Andrew L. Maas et al., Stanford University](https://ai.stanford.edu/~amaas/data/sentiment/)).
+- **Corpus Volume:** 50,000 balanced, highly polarized natural language reviews (25,000 positive, 25,000 negative).
+- **Split Configuration:** 80% training partition (40,000 samples) and 20% independent holdout test partition (10,000 samples).
+- **Reproducibility Seed:** Fixed pseudo-random seed `42` applied across all dataset splits and estimators.
+- **Corpus Exclusion:** In accordance with open-source hygiene, the raw 66.2 MB dataset (`data/IMDB Dataset.csv`) is excluded from Git tracking via `.gitignore`.
+- **Text Preprocessing Pipeline:**
+  1. *HTML Strip:* Removal of markup tags (`<.*?>`) preserving underlying textual discourse.
+  2. *Character Normalization:* Filtering non-alphabetic characters (`[^a-zA-Z]`) and whitespace standardization.
+  3. *Case Folding:* Conversion of all tokens to lowercase.
+  4. *Stopword Filtering:* Removal of non-informative grammatical tokens via NLTK English stopword lexicon.
+  5. *Morphological Stemming:* Algorithmic reduction to morphological roots using the Porter Stemmer.
+- **Feature Extraction:**
+  - Fitted `TfidfVectorizer` configured with 5,000 maximum unigram features (`max_features=5000`, `ngram_range=(1, 1)`).
+  - Sublinear term frequency scaling applied: $\text{TF-IDF}(t, d) = \text{TF}(t, d) \times (\log \frac{1 + N}{1 + \text{DF}(t)} + 1)$.
 
 ---
 
-## 7. Machine Learning Models
-SENTINEL AI houses three complementary supervised classifiers in its model registry:
+## 10. Model Comparison & Verified Benchmarks
 
-1. **Logistic Regression v1.0 (Primary Production Engine):**
-   - **Type:** Generalized Linear Model with L2 regularization ($C=1.0$, `max_iter=1000`).
-   - **Characteristics:** Provides smooth, well-calibrated class posterior probabilities via sigmoid transformation.
-2. **Linear Support Vector Machine v1.0 (High-Margin Engine):**
-   - **Type:** Linear Support Vector Classifier wrapped with Platt's `CalibratedClassifierCV` (5-fold sigmoid calibration).
-   - **Characteristics:** Combines maximum-margin hyperplane separation with calibrated probability distributions.
-3. **Multinomial Naive Bayes (Probabilistic Baseline):**
-   - **Type:** Classical generative multinomial probabilistic classifier with Laplace smoothing ($\alpha=1.0$).
-   - **Characteristics:** Fast Bayesian baseline evaluating class conditional word likelihoods.
+The machine learning models were evaluated on the independent **10,000-sample holdout test partition** ($N=10,000$, 4,961 actual negatives, 5,039 actual positives). All metrics below are verified directly against `artifacts/benchmark/model_metrics.json`:
 
----
-
-## 8. Empirical Model Benchmarks & Validation
-Evaluated across **10,000 independent holdout test samples** from the IMDb Large Movie Review Dataset (80/20 train/test split, random seed 42):
-
-| Model Engine | Architecture | Accuracy | Precision | Recall | F1 Score | ROC-AUC | Status |
+| Model Engine | Model Family | Accuracy | Precision | Recall | F1-Score | ROC-AUC | Status |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Logistic Regression v1.0** | GLM (L2 Regularized) | **88.55%** | **0.8747** | **0.9020** | **0.8881** | **0.9571** | **ACTIVE** |
-| **Linear SVM v1.0** | SVM (Platt Calibrated) | **88.40%** | **0.8751** | **0.8980** | **0.8864** | **0.9534** | **READY** |
-| **Multinomial Naive Bayes** | Probabilistic Bayes | **85.10%** | **0.8471** | **0.8595** | **0.8532** | **0.9255** | **BASELINE** |
+| **Logistic Regression v1.0** | Generalized Linear Model (L2) | **88.55%** | **0.8747** | **0.9020** | **0.8881** | **0.9571** | **Active Production** |
+| **Linear SVM v1.0** | Calibrated Support Vector Classifier | **88.40%** | **0.8751** | **0.8980** | **0.8864** | **0.9534** | **Ensemble Ready** |
+| **Multinomial Naive Bayes** | Probabilistic Bayes (Laplace) | **85.10%** | **0.8471** | **0.8595** | **0.8532** | **0.9255** | **Baseline** |
 
 ### Verified Test Partition Confusion Matrix (Logistic Regression, N=10,000)
-| | Predicted Negative | Predicted Positive | Total Actual |
+
+| Classification | Predicted Negative | Predicted Positive | Total Actual |
 | :--- | :---: | :---: | :---: |
-| **Actual Negative** | **TN = 4,310** (86.20%) | **FP = 651** (Type I Error) | 4,961 |
+| **Actual Negative** | **TN = 4,310** (86.88%) | **FP = 651** (Type I Error) | 4,961 |
 | **Actual Positive** | **FN = 494** (Type II Error) | **TP = 4,545** (90.20%) | 5,039 |
-| **Total Predicted** | 4,804 | 5,196 | **10,000** |
+| **Total Predicted** | **4,804** | **5,196** | **10,000** |
+
+$$\text{Accuracy} = \frac{4310 + 4545}{10000} = 88.55\% \quad \Big| \quad \text{Precision} = \frac{4545}{5196} \approx 0.8747 \quad \Big| \quad \text{Recall} = \frac{4545}{5039} \approx 0.9020$$
 
 ---
 
-## 9. Sentiment Prediction & Scoring Workflow
-For any input discourse:
-1. Model generates raw posterior probabilities: $P(\text{Negative})$ and $P(\text{Positive})$ where $P(\text{Pos}) + P(\text{Neg}) = 1.0$.
-2. **Polarity Delta ($\text{AI Score}$):**
+## 11. Prediction Methodology & Explainability Limitations
+
+### Mathematical Scoring Workflow
+For an incoming input text:
+1. **Class Probabilities:** The selected model outputs posterior probabilities $P(\text{Negative})$ and $P(\text{Positive})$ where $P(\text{Negative}) + P(\text{Positive}) = 1.0$.
+2. **Polarity Delta (AI Score):**
    $$\text{Polarity} = P(\text{Positive}) - P(\text{Negative}) \in [-1.0, +1.0]$$
-3. **Confidence Score:**
+3. **Confidence Level:**
    $$\text{Confidence} = \max(P(\text{Positive}), P(\text{Negative})) \times 100\% \in [50.0\%, 100.0\%]$$
-4. **Classification Boundary:**
+4. **Classification Thresholds:**
    - $\text{Polarity} \ge +0.10 \implies \text{Positive}$
    - $\text{Polarity} \le -0.10 \implies \text{Negative}$
-   - $-0.10 < \text{Polarity} < +0.10 \implies \text{Neutral}$ (Indeterminate / Low Margin)
-5. **Affective Heuristic State:** Maps polarity combined with affective lexicons to cognitive states (*Joy / High Satisfaction*, *Optimism*, *Anger / Frustration*, *Critical / Discontent*, or *Balanced Neutral*).
+   - $-0.10 < \text{Polarity} < +0.10 \implies \text{Neutral}$ (Low-margin / Indeterminate)
+5. **Affective Heuristic State:** Deterministic heuristic mapping based on polarity and sentiment:
+   - Positive + high confidence $\rightarrow$ *Joy / High Satisfaction*
+   - Positive + moderate confidence $\rightarrow$ *Optimism*
+   - Negative + high confidence $\rightarrow$ *Anger / Frustration*
+   - Negative + moderate confidence $\rightarrow$ *Critical / Discontent*
+   - Neutral boundary $\rightarrow$ *Balanced Neutral*
 
----
-
-## 10. Explainable AI (XAI) Methodology
-SENTINEL AI provides deterministic, exact feature attribution directly from model mathematics without stochastic approximations (such as LIME or sampling-based SHAP):
+### Explainable AI (XAI) Attribution
+Feature attribution is computed deterministically from model linear weights without stochastic sampling approximations:
 
 $$\text{Attribution}(i) = \text{TF-IDF}(i) \times w_i$$
 
-Where feature weight $w_i$ is derived strictly according to engine architecture:
-- **Logistic Regression:** $w_i = \text{coef\_}[0][i]$.
-- **Linear SVM:** $w_i = \frac{1}{K} \sum_{k=1}^K \text{coef\_}^{(k)}[i]$ averaged across calibrated base estimators.
-- **Multinomial Naive Bayes:** $w_i = \log P(x_i \mid \text{Pos}) - \log P(x_i \mid \text{Neg})$ (Weight of Evidence).
+Where feature weight $w_i$ is derived by model architecture:
+- **Logistic Regression:** $w_i = \text{coef\_}[0][i]$
+- **Linear SVM:** $w_i = \frac{1}{K} \sum_{k=1}^K \text{coef\_}^{(k)}[i]$ averaged across calibrated base estimators
+- **Multinomial Naive Bayes:** $w_i = \log P(x_i \mid \text{Pos}) - \log P(x_i \mid \text{Neg})$ (Weight of Evidence)
 
-Tokens with positive contributions ($w_i > 0$) are categorized as **Positive Drivers**; tokens with negative contributions ($w_i < 0$) are categorized as **Negative Drivers**. The user interface visualizes these drivers using proportional horizontal attribution bars.
-
----
-
-## 11. Multi-Model Consensus Resolution
-The consensus endpoint (`POST /api/v1/consensus`) evaluates text across all three engines simultaneously:
-- Computes individual classifications, AI scores, and confidences.
-- Determines majority consensus sentiment.
-- Generates an exact agreement ratio (e.g., `3 / 3 models agree` or `2 / 3 models agree`).
-- **Epistemic Disagreement Flag:** If unanimity is not achieved, the platform automatically flags `disagreement_detected = true`, alerting analysts that the discourse lies near engine decision boundaries.
+> **Explainability Limitations:** Feature attribution scores reflect linear mathematical correlations with respect to the learned decision hyperplane. They do not represent causal relationships, semantic discourse comprehension, or contextual transformer attention.
 
 ---
 
-## 12. Privacy Architecture & Raw-Text Redaction
-- **Default Privacy Mode (`STORE_RAW_TEXT=False`):** Incoming natural language text is hashed via cryptographic SHA-256 prior to persistence:
-  $$\text{Stored Record} = \text{"[REDACTED] - SHA256:"} + \text{SHA256}(\text{Text})$$
-- **History Isolation:** The `/api/v1/history` endpoint strictly excludes textual payload columns from database queries, preventing accidental text leakage in frontend session memory.
-- **Export Sanitization:** Telemetry exports retain correlation identifiers (`request_id`) and hash digests while preventing plaintext data leakage.
+## 12. API Endpoint Reference
 
----
+All endpoints are implemented in [`app.py`](app.py) and adhere to Pydantic v2 validation boundaries:
 
-## 13. Security Architecture & Threat Mitigation
-- **Input Boundaries:** Pydantic v2 schemas reject payloads $>5,000$ characters and reject pure-whitespace inputs with HTTP 422.
-- **SQL Injection Defense:** 100% of SQLite database operations utilize parameterized queries with `?` parameter substitution.
-- **HTTP Security Headers:** Injected by [`SecurityAndObservabilityMiddleware`](file:///d:/Capstone_NLP_Sentiment/app.py#L120-L163) on every response:
-  - `X-Content-Type-Options: nosniff`
-  - `X-Frame-Options: DENY`
-  - `X-XSS-Protection: 1; mode=block`
-  - `Referrer-Policy: strict-origin-when-cross-origin`
-  - `Permissions-Policy: geolocation=(), camera=(), microphone=()`
-  - `Content-Security-Policy`: Restricts scripts, styles, and fonts to `self` and Google Fonts.
-  - `X-Request-ID`: Correlation tracing header assigned to every inbound request.
-- **Path Traversal Protection:** Telemetry exports stream in-memory via `io.StringIO` without reading from or writing to the host filesystem.
+| Method | Endpoint | Description | Request Payload / Params | Response Status |
+| :--- | :--- | :--- | :--- | :---: |
+| `GET` | `/` | Analytical Terminal UI | None | `200 OK` |
+| `GET` | `/health` | Core system health check | None | `200 OK` |
+| `GET` | `/api/v1/health` | Standardized versioned health endpoint | None | `200 OK` |
+| `GET` | `/api/v1/models` | Metadata and benchmark metrics for all models | None | `200 OK` |
+| `POST` | `/api/v1/predict` | Single-engine sentiment classification & XAI drivers | `{"text": str, "model_choice": str}` | `200 OK` |
+| `POST` | `/api/v1/consensus` | Multi-engine concurrent consensus & divergence analysis | `{"text": str}` | `200 OK` |
+| `POST` | `/api/v1/feedback` | Records auditor verification (`Confirmed` / `Flagged`) | `{"request_id": str, "feedback_state": str}` | `200 OK` |
+| `GET` | `/api/v1/analytics` | Telemetry summary, latency percentiles (P95/P99) | None | `200 OK` |
+| `GET` | `/api/v1/history` | Chronological audit logs (Redacted text by default) | None (limit 50) | `200 OK` |
+| `GET` | `/api/v1/export/csv` | Streams database audit logs as RFC-4180 CSV attachment | None | `200 OK` |
+| `GET` | `/api/v1/export/json` | Streams database audit logs as structured JSON dump | None | `200 OK` |
+| `GET` | `/docs` | Interactive Swagger UI API documentation | None | `200 OK` |
+| `GET` | `/redoc` | Interactive ReDoc API documentation | None | `200 OK` |
 
----
+### Sample cURL Requests
 
-## 14. API Specification
-
-| Method | Endpoint | Description | Sample Status |
-| :--- | :--- | :--- | :---: |
-| `GET` | `/` | Analytical Terminal User Interface (HTML5/CSS3/Vanilla JS) | `200 OK` |
-| `GET` | `/health` | Core system health check (DB, models, vectorizer) | `200 OK` |
-| `GET` | `/api/v1/health` | Standardized versioned health endpoint | `200 OK` |
-| `GET` | `/api/v1/models` | Verified benchmark metrics & model metadata | `200 OK` |
-| `POST` | `/api/v1/predict` | Single-engine sentiment inference & XAI drivers | `200 OK` |
-| `POST` | `/api/v1/consensus` | Multi-engine concurrent consensus & divergence analysis | `200 OK` |
-| `POST` | `/api/v1/feedback` | Records auditor verification (`Confirmed` / `Flagged Incorrect`) | `200 OK` |
-| `GET` | `/api/v1/analytics` | Telemetry overview, P95/P99 latencies, engine distribution | `200 OK` |
-| `GET` | `/api/v1/history` | Chronological audit logs (Privacy-redacted by default) | `200 OK` |
-| `GET` | `/api/v1/export/csv` | Streams database audit logs as RFC-4180 CSV attachment | `200 OK` |
-| `GET` | `/api/v1/export/json`| Streams database audit logs as structured JSON dump | `200 OK` |
-| `GET` | `/docs` | Interactive Swagger UI API documentation | `200 OK` |
-| `GET` | `/redoc` | Interactive ReDoc API documentation | `200 OK` |
-
-### Example cURL Requests
-
-**Single Model Inference:**
+**Single Model Inference (`POST /api/v1/predict`):**
 ```bash
 curl -X POST http://localhost:8000/api/v1/predict \
   -H "Content-Type: application/json" \
   -d '{
-    "text": "The operational results showed magnificent resilience and decisive strategic execution.",
+    "text": "The strategic execution demonstrated exceptional resilience and clarity.",
     "model_choice": "logistic_regression"
   }'
 ```
 
-**Multi-Model Consensus:**
+**Multi-Model Consensus (`POST /api/v1/consensus`):**
 ```bash
 curl -X POST http://localhost:8000/api/v1/consensus \
   -H "Content-Type: application/json" \
   -d '{
-    "text": "The leadership demonstrated exceptional clarity and unprecedented focus."
+    "text": "The quarterly operational review highlighted significant organizational discipline."
   }'
 ```
 
 ---
 
-## 15. Repository Directory Structure
-```
-sentiment-analysis-nlp-ai/
-├── artifacts/
-│   └── benchmark/
-│       └── model_metrics.json       # Machine-readable verified benchmark metrics
-├── baseline/                        # Historical pre-hardening captures & baselines
-│   ├── api_samples.json
-│   ├── environment.txt
-│   ├── metrics.json
-│   └── test_results.txt
-├── models/                          # Serialized scikit-learn model binaries
-│   ├── linear_svm_model.pkl         # Platt-Calibrated Linear SVM artifact
-│   ├── logistic_regression_model.pkl# L2-Regularized Logistic Regression artifact
-│   ├── naive_bayes_model.pkl        # Multinomial Naive Bayes artifact
-│   └── tfidf_vectorizer.pkl         # 5,000-term fitted TF-IDF vectorizer
-├── tests/                           # 34-test automated regression suite
-│   ├── test_analytics.py            # Telemetry & latency tests
-│   ├── test_api.py                  # Baseline regression tests
-│   ├── test_errors.py               # Health & error-handling tests
-│   ├── test_exports.py              # CSV/JSON streaming tests
-│   ├── test_feedback.py             # Telemetry audit feedback tests
-│   ├── test_models.py               # Model registry tests
-│   ├── test_prediction.py           # Single-model & consensus tests
-│   ├── test_preprocessing.py        # Cleaning & stemming tests
-│   ├── test_validation.py           # Input boundaries & validators
-│   └── test_xai.py                  # Linear attribution mathematical tests
-├── .dockerignore                    # Excludes 66MB raw CSV, caches, and local databases
-├── .gitignore                       # Standard production exclusions
-├── app.py                           # Core FastAPI application & Analytical Terminal UI
-├── ARCHITECTURE.md                  # Comprehensive architectural topology specification
-├── AUDIT_REPORT.md                  # Phase 0 hardening audit documentation
-├── benchmark_evaluation.py          # Reproducible test partition evaluation script
-├── CHANGELOG.md                     # Semantic version history (v14.3.0-PROD)
-├── docker-compose.yml               # Container orchestration configuration
-├── Dockerfile                       # Multi-stage production container specification
-├── FINAL_AUDIT_REPORT.md            # Pre-release audit sign-off report
-├── LICENSE                          # MIT Open Source License with dataset attribution
-├── pytest.ini                       # Test suite runner configuration
-├── README.md                        # Master platform documentation
-├── requirements.txt                 # Pinned, verified production dependencies
-├── SECURITY.md                      # Threat modeling & security controls specification
-└── train_benchmarks.py              # Offline model training & benchmark generation script
-```
-
----
-
-## 16. Installation & Local Setup
+## 13. Local Installation & Execution
 
 ### Prerequisites
 - Python 3.11+
 - Git
+
+### Installation Steps
 
 ```bash
 # 1. Clone repository
 git clone https://github.com/T-Stephen/sentiment-analysis-nlp-ai.git
 cd sentiment-analysis-nlp-ai
 
-# 2. Create and activate a virtual environment
+# 2. Create a virtual environment
 python -m venv .venv
-# On Windows:
-.venv\Scripts\activate
-# On Linux / macOS:
-source .venv/bin/activate
+```
 
-# 3. Install production dependencies
+**Activate Virtual Environment:**
+
+- **On Windows (PowerShell):**
+  ```powershell
+  .\.venv\Scripts\Activate.ps1
+  ```
+- **On Linux / macOS (Bash/Zsh):**
+  ```bash
+  source .venv/bin/activate
+  ```
+
+**Install Dependencies & Launch Service:**
+
+```bash
+# 3. Install pinned dependencies
 pip install -r requirements.txt
 
 # 4. Run automated test suite
 pytest -q
 
-# 5. Launch the application
+# 5. Launch local analytical service
 uvicorn app:app --host 0.0.0.0 --port 8000
 ```
-Access the analytical dashboard at `http://localhost:8000`.
+Open your web browser and navigate to `http://localhost:8000` to access the terminal dashboard.
 
 ---
 
-## 17. Docker Container Deployment
+## 14. Automated Testing & Verification
 
-The application is containerized with an optimized `python:3.11-slim` image and pre-cached NLTK corpora to eliminate runtime internet dependencies:
+The repository contains an automated 34-test regression test suite in the `tests/` directory covering data validation, preprocessing, model loading, single and consensus predictions, explainability math, error handling, telemetry, and exports:
 
 ```bash
-# Build and launch via Docker Compose
+# Run test suite quietly
+pytest -q
+
+# Run with verbose test reporting
+pytest -v
+```
+
+### Verified Test Result
+- **Reported Local Baseline:** `34 passed, 1 warning in 13.92s`
+- **Warning Detail:** Harmless deprecation warning in third-party NLTK regex compilation (`DeprecationWarning: Flags not at the start of the expression '(\\?#[^)]*)'`).
+- **Test Modules:**
+  - `test_validation.py`: Pydantic length bounds (1–5,000 characters), empty string rejection, whitespace validation.
+  - `test_preprocessing.py`: HTML stripping, regex filtering, stopword elimination, Porter stemming.
+  - `test_models.py`: Model serialization integrity, registry loading, class label consistency.
+  - `test_prediction.py`: Single-model inference, probability sums ($P=1.0$), score bounds, consensus unanimity and divergence.
+  - `test_xai.py`: Exact attribution formula calculations ($w_i \times \text{TF-IDF}_i$), positive and negative driver separation.
+  - `test_errors.py`: Malformed JSON handling, unhandled route responses, health check verification.
+  - `test_feedback.py`: Telemetry auditor updates (`Confirmed`, `Flagged Incorrect`), unknown request ID rejection.
+  - `test_analytics.py`: Real-time analytics aggregation, P95/P99 latency math, distribution accounting.
+  - `test_exports.py`: In-memory RFC-4180 CSV and JSON stream generation without disk leaks.
+  - `test_api.py`: Baseline regression tests and legacy route compatibility.
+
+---
+
+## 15. Docker Container Deployment
+
+The application includes a production-grade [`Dockerfile`](Dockerfile) and [`docker-compose.yml`](docker-compose.yml) based on `python:3.11-slim` with offline NLTK corpora pre-downloaded to eliminate runtime internet dependencies:
+
+```bash
+# Build and launch the containerized service
 docker compose up --build -d
 
 # Verify container health
 curl -f http://localhost:8000/health
 
-# View live application logs
+# Inspect live container logs
 docker compose logs -f
 
-# Gracefully terminate service
+# Terminate container service
 docker compose down
 ```
 
 ---
 
-## 18. Automated Testing & Verification
-The platform includes an automated 34-test regression suite ensuring stability across preprocessing, inference, validation, and security:
+## 16. Privacy, Security Controls & Governance
 
-```bash
-# Run complete test suite quietly
-pytest -q
+### Privacy Architecture
+- **Default Raw-Text Redaction (`STORE_RAW_TEXT=False`):** Text discourse is never saved in plaintext by default. Instead, it is hashed using SHA-256 before insertion into SQLite:
+  $$\text{Stored Record} = \text{"[REDACTED] - SHA256:"} + \text{SHA256}(\text{Text})$$
+- **History Isolation:** The `/api/v1/history` endpoint executes an explicit SQL query excluding the raw text column, preventing textual data leakage in client session state.
+- **In-Memory Streaming:** Telemetry exports (`/api/v1/export/csv`, `/api/v1/export/json`) are assembled in-memory using `io.StringIO` and streamed directly to the client without temporary file creation.
 
-# Run with verbose output and test profiling
-pytest -v --durations=10
-```
-**Current Baseline:** `34 passed in ~5.0s (100% pass rate)`.
+### Application Security Controls
+- **Input Boundaries:** Pydantic v2 schemas reject text exceeding 5,000 characters and reject whitespace-only strings with HTTP 422.
+- **SQL Injection Defense:** 100% of SQLite database operations utilize parameterized queries with `?` parameter substitution.
+- **HTTP Security Headers:** Injected by `SecurityAndObservabilityMiddleware` on all responses:
+  - `X-Content-Type-Options: nosniff`
+  - `X-Frame-Options: DENY`
+  - `X-XSS-Protection: 1; mode=block`
+  - `Referrer-Policy: strict-origin-when-cross-origin`
+  - `Permissions-Policy: geolocation=(), camera=(), microphone=()`
+  - `Content-Security-Policy`: Restricts scripts, styles, and fonts to `self` and specified CDNs.
+  - `X-Request-ID`: Unique correlation tracing UUID header assigned to every request.
 
----
-
-## 19. Dataset Information
-- **Source:** IMDb Large Movie Review Dataset ([Maas et al., Stanford University](https://ai.stanford.edu/~amaas/data/sentiment/)).
-- **Sample Count:** 50,000 highly polarized movie reviews (25,000 positive, 25,000 negative).
-- **Split Configuration:** 80% training partition (40,000 samples) / 20% independent holdout test partition (10,000 samples).
-- **Random Seed:** 42 (Reproducible).
-- **Exclusion:** The 66.2 MB raw CSV (`data/IMDB Dataset.csv`) is intentionally excluded from Git tracking via `.gitignore`. Evaluation can be reproduced using `benchmark_evaluation.py`.
-
----
-
-## 20. Limitations & Boundaries
-- **Domain Specificity:** Evaluated primarily on narrative cinematic discourse. While lexical polarity translates broadly, distribution shifts may occur when applied directly to legal contracts, technical manuals, or financial SEC filings.
-- **Language Boundary:** The cleaning pipeline filters non-English characters; multilingual discourse is not currently supported.
-- **Complex Negation & Sarcasm:** Complex double negatives or deeply nuanced sarcasm in lengthy text may reduce classifier confidence.
-- **Persistence Scalability:** SQLite is optimized for local workstations and single-container deployments; high-concurrency multi-worker deployments should migrate to PostgreSQL.
+### Operational Security Boundaries
+- **Transport Security:** HTTP-level headers are enforced in-application. TLS termination, certificate management, and HSTS headers are deferred to the production reverse proxy or hosting provider (e.g. Render edge gateway).
+- **Security Limitations:** Security defenses mitigate common application vulnerabilities (e.g. injection, MIME sniffing, framing). SENTINEL AI does not make absolute claims of zero-vulnerability guarantees.
 
 ---
 
-## 21. Responsible AI & Transparency
-- **No Artificial General Intelligence (AGI) Claims:** SENTINEL AI is a statistical machine learning tool. It does not possess understanding, human emotion, or consciousness.
-- **Non-Causal Feature Attribution:** XAI driver bars represent linear mathematical correlations ($w_i \times \text{TF-IDF}_i$) with respect to the decision boundary, not causal mechanisms.
-- **Auditor Governance:** Telemetry supports explicit human auditor review (`/api/v1/feedback`) to encourage human-in-the-loop oversight.
+## 17. Known Limitations & Future Improvements
+
+### Technical & Analytical Boundaries
+- **Domain Distribution Shift:** Models are trained on narrative cinematic reviews. While general lexical polarity generalizes well, distribution shifts may occur when analyzing specialized domains (such as legal contracts, clinical notes, or financial disclosures).
+- **Language Boundary:** The preprocessing pipeline is tailored for the English language; non-English discourse is filtered by the regex stage.
+- **Complex Negation & Sarcasm:** As linear bag-of-words models using unigrams, the models may misinterpret subtle sarcasm, double negatives, or complex rhetorical irony.
+- **Database Scalability:** SQLite is optimized for single-worker instances and local analytical workloads. High-concurrency enterprise deployments should transition to PostgreSQL or MySQL.
+- **Hosting Constraints (Render Free Tier):** Inactivity triggers runtime spin-down causing 15–30 second cold starts, and container storage is ephemeral between redeployments.
+
+### Planned Enhancements
+- **Domain Adaptation:** Fine-tuned domain vocabularies for financial and customer service text.
+- **Sub-word Tokenization:** Optional Byte-Pair Encoding (BPE) fallback to handle out-of-vocabulary terms.
+- **Enterprise Persistence:** Pluggable PostgreSQL database backend for multi-worker container scaling.
+- **Continuous Integration:** GitHub Actions matrix workflow running automated tests across Python 3.10, 3.11, and 3.12.
 
 ---
 
-## 22. User Interface Preview
+## 18. License, Attribution & Author Information
 
-```
-┌────────────────────────────────────────────────────────────────────────┐
-│ SENTINEL AI // PRECISION INTELLIGENCE TERMINAL            v14.3.0-PROD │
-│ DOMAIN: IMDB CORPUS (50K) │ ENGINES: 3 LOADED │ SYSTEM HEALTH: 100%    │
-├────────────────────────────────────────────────────────────────────────┤
-│ INPUT DISCOURSE:                                                       │
-│ [ The leadership demonstrated exceptional clarity and vision.        ] │
-│                                                                        │
-│ [ EXECUTE INFERENCE (LOGISTIC REGRESSION) ]   [ EVALUATE CONSENSUS ]   │
-├────────────────────────────────────────────────────────────────────────┤
-│ PREDICTION: POSITIVE (JOY / HIGH SATISFACTION)                         │
-│ POLARITY: +0.8534  │ CONFIDENCE: 92.67%  │ LATENCY: 1.84 ms            │
-│ CONSENSUS: 3 / 3 ENGINES AGREE [LR, SVM, NB]                           │
-├────────────────────────────────────────────────────────────────────────┤
-│ STATISTICAL XAI ATTRIBUTION DRIVERS:                                   │
-│   exceptional  [+1.4821] ██████████████████████                        │
-│   vision       [+0.9124] █████████████                                 │
-│   clarity      [+0.7410] ██████████                                    │
-├────────────────────────────────────────────────────────────────────────┤
-│ TELEMETRY AUDIT LOG (P95: 1.82ms | P99: 2.14ms):                       │
-│ #163 │ 2026-10-06 │ SN-8F2B1A99 │ LR │ POSITIVE │ 92.67% │ [CONFIRMED] │
-└────────────────────────────────────────────────────────────────────────┘
-```
+### License
+This project is open-sourced under the **MIT License**. See the [LICENSE](LICENSE) file for complete terms.
 
----
+### Dataset & Third-Party Attribution
+- **IMDb Large Movie Review Dataset:** Provided for scientific research and education by Andrew L. Maas et al., Stanford University (2011).
+- **Open-Source Libraries:** Scikit-Learn (BSD-3-Clause), FastAPI (MIT), NLTK (Apache 2.0), Pydantic (MIT), Uvicorn (BSD-3-Clause).
 
-## 23. Future Roadmap
-- **Domain Adaptation Modules:** Sub-models fine-tuned on financial discourse (Financial PhraseBank).
-- **Sub-word Tokenization:** Optional BPE tokenization to handle out-of-vocabulary technical jargon.
-- **Distributed Persistence:** Optional pluggable PostgreSQL / TimescaleDB telemetry backend.
-- **CI/CD Integration:** Automated GitHub Actions workflow running `pytest` across Python 3.10, 3.11, and 3.12.
-
----
-
-## 24. License
-This repository is open-sourced under the **MIT License**. See the [LICENSE](LICENSE) file for complete details.
-
-### Dataset & Dependency Attribution
-- **IMDb Dataset:** Provided for research and education by Andrew L. Maas et al., Stanford University.
-- **Third-Party Libraries:** Scikit-Learn (BSD-3-Clause), NLTK (Apache 2.0), FastAPI (MIT), Pydantic (MIT), Uvicorn (BSD-3-Clause).
-
----
-
-## 25. Author
-**T-Stephen**  
-GitHub: [@T-Stephen](https://github.com/T-Stephen)  
-Repository: [sentiment-analysis-nlp-ai](https://github.com/T-Stephen/sentiment-analysis-nlp-ai)
+### Author & Repository Metadata
+- **Author:** **T-Stephen**
+- **GitHub Profile:** [@T-Stephen](https://github.com/T-Stephen)
+- **Repository:** [sentiment-analysis-nlp-ai](https://github.com/T-Stephen/sentiment-analysis-nlp-ai)
+- **Live Deployment:** [sentinel-nlp-intelligence.onrender.com](https://sentinel-nlp-intelligence.onrender.com/)
